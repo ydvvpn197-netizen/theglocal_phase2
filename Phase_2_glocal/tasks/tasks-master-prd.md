@@ -279,8 +279,8 @@
     - [ ] 2.2.12 Implement community post feed on community page (requires posts from 2.3)
     - [x] 2.2.13 Add community search and filter functionality (by location, member count, recent activity)
     - [x] 2.2.14 Display community rules/guidelines on community page
-    - [ ] 2.2.15 Write unit tests for community components
-    - [ ] 2.2.16 Write integration tests for community CRUD operations
+    - [x] 2.2.15 Write unit tests for community components
+    - [x] 2.2.16 Write integration tests for community CRUD operations
   - [ ] 2.3 **Posts & Comments**
     - [ ] 2.3.1 Create post card component (title, body, image, author, metadata, vote counts)
     - [ ] 2.3.2 Build create post form (title, body, image upload, community selector)
