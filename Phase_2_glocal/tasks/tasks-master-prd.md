@@ -303,19 +303,19 @@
     - [x] 2.3.19 Add loading states and error handling
     - [x] 2.3.20 Write unit tests for post/comment components
     - [x] 2.3.21 Write integration tests for post CRUD and voting
-  - [ ] 2.4 **Location-Based Main Feed**
-    - [ ] 2.4.1 Create main feed page (app/page.tsx)
-    - [ ] 2.4.2 Implement location context provider (lib/context/location-context.tsx)
-    - [ ] 2.4.3 Build feed API endpoint (GET /api/feed) that aggregates posts from joined communities
-    - [ ] 2.4.4 Implement location filtering logic (filter by city/region based on user location)
-    - [ ] 2.4.5 Add sort options: Recent (default), Popular (by upvote ratio)
-    - [ ] 2.4.6 Create feed filter controls component (location radius: 5km, 10km, 25km, 50km, city-wide)
-    - [ ] 2.4.7 Implement location radius indicator at top of feed
-    - [ ] 2.4.8 Add infinite scroll with 20 posts per page
-    - [ ] 2.4.9 Implement manual refresh functionality
-    - [ ] 2.4.10 Add empty state message when no content available
-    - [ ] 2.4.11 Optimize feed query performance with proper indexes
-    - [ ] 2.4.12 Write integration tests for feed filtering and sorting
+  - [x] 2.4 **Location-Based Main Feed**
+    - [x] 2.4.1 Create main feed page (app/page.tsx)
+    - [x] 2.4.2 Implement location context provider (lib/context/location-context.tsx)
+    - [x] 2.4.3 Build feed API endpoint (GET /api/feed) that aggregates posts from joined communities
+    - [x] 2.4.4 Implement location filtering logic (filter by city/region based on user location)
+    - [x] 2.4.5 Add sort options: Recent (default), Popular (by upvote ratio)
+    - [x] 2.4.6 Create feed filter controls component (location radius: 5km, 10km, 25km, 50km, city-wide)
+    - [x] 2.4.7 Implement location radius indicator at top of feed
+    - [x] 2.4.8 Add infinite scroll with 20 posts per page
+    - [x] 2.4.9 Implement manual refresh functionality
+    - [x] 2.4.10 Add empty state message when no content available
+    - [x] 2.4.11 Optimize feed query performance with proper indexes
+    - [x] 2.4.12 Write integration tests for feed filtering and sorting
 
 - [ ] **3.0 Discovery & Aggregation: Feeds, News & Events**
   - [ ] 3.1 **Discovery Feed UI**
