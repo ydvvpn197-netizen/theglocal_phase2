@@ -4,25 +4,26 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* PRD Colors - Light Mode */
+    --background: 220 14% 98%; /* #F9FAFB - Light gray */
+    --foreground: 220 17% 7%; /* #111827 - Dark gray */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 17% 7%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
+    --popover-foreground: 220 17% 7%;
+    --primary: 221 83% 33%; /* #1E3A8A - Deep blue */
     --primary-foreground: 210 40% 98%;
-    --secondary: 24.6 95% 53.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 172.5 66% 50.4%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
+    --secondary: 25 95% 53%; /* #F97316 - Warm orange */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 173 66% 40%; /* #14B8A6 - Teal */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 83% 33%;
     --radius: 0.5rem;
   }
 
@@ -57,4 +58,3 @@
     @apply bg-background text-foreground;
   }
 }
-
