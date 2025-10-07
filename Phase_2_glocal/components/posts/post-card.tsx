@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar } from '@/components/ui/avatar'
 import { MessageSquare, MapPin } from 'lucide-react'
 import { VoteButtons } from './vote-buttons'
+import { PostActions } from './post-actions'
 import { generateAvatarDataUrl } from '@/lib/utils/avatar-generator'
 
 interface Post {
@@ -36,9 +37,10 @@ interface Post {
 interface PostCardProps {
   post: Post
   showCommunity?: boolean
+  onUpdate?: () => void
 }
 
-export function PostCard({ post, showCommunity = true }: PostCardProps) {
+export function PostCard({ post, showCommunity = true, onUpdate }: PostCardProps) {
   if (post.is_deleted) {
     return (
       <Card className="opacity-60">
@@ -99,6 +101,16 @@ export function PostCard({ post, showCommunity = true }: PostCardProps) {
               </div>
             </div>
           </div>
+
+          {/* Post Actions */}
+          <PostActions
+            postId={post.id}
+            authorId={post.author_id}
+            title={post.title}
+            body={post.body}
+            createdAt={post.created_at}
+            onUpdate={onUpdate}
+          />
         </div>
       </CardHeader>
 

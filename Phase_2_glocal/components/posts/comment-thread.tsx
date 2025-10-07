@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card'
 import { Avatar } from '@/components/ui/avatar'
 import { VoteButtons } from './vote-buttons'
 import { CommentForm } from './comment-form'
+import { CommentActions } from './comment-actions'
 import { generateGeometricAvatar } from '@/lib/utils/avatar-generator'
 
 interface Author {
@@ -17,6 +18,7 @@ interface Author {
 
 interface Reply {
   id: string
+  author_id: string
   text: string
   author: Author
   created_at: string
@@ -29,6 +31,7 @@ interface Reply {
 
 interface Comment {
   id: string
+  author_id: string
   text: string
   author: Author
   created_at: string
@@ -126,13 +129,22 @@ function CommentCard({
         </Avatar>
 
         <div className="flex-1 space-y-2">
-          {/* Author & Timestamp */}
-          <div className="flex items-baseline gap-2 text-sm">
-            <span className="font-medium">{comment.author.anonymous_handle}</span>
-            <span className="text-muted-foreground">
-              {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
-            </span>
-            {comment.is_edited && <span className="text-xs text-muted-foreground">(edited)</span>}
+          {/* Author & Timestamp & Actions */}
+          <div className="flex items-baseline justify-between gap-2">
+            <div className="flex items-baseline gap-2 text-sm">
+              <span className="font-medium">{comment.author.anonymous_handle}</span>
+              <span className="text-muted-foreground">
+                {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+              </span>
+              {comment.is_edited && <span className="text-xs text-muted-foreground">(edited)</span>}
+            </div>
+            <CommentActions
+              commentId={comment.id}
+              authorId={comment.author_id}
+              text={comment.text}
+              createdAt={comment.created_at}
+              onUpdate={onReplySuccess}
+            />
           </div>
 
           {/* Comment Text */}
