@@ -292,9 +292,9 @@
     - [x] 2.3.8 Create comment form component
     - [x] 2.3.9 Build API endpoint for creating comment (POST /api/posts/[id]/comments)
     - [x] 2.3.10 Build API endpoint for listing comments (GET /api/posts/[id]/comments)
-    - [ ] 2.3.11 Implement edit post functionality (within 10 minutes of creation)
-    - [ ] 2.3.12 Implement delete post/comment (replace with "[deleted]" placeholder)
-    - [ ] 2.3.13 Add "edited" indicator with timestamp on edited content
+    - [x] 2.3.11 Implement edit post functionality (within 10 minutes of creation)
+    - [x] 2.3.12 Implement delete post/comment (replace with "[deleted]" placeholder)
+    - [x] 2.3.13 Add "edited" indicator with timestamp on edited content
     - [x] 2.3.14 Create vote buttons component (upvote/downvote UI)
     - [x] 2.3.15 Build voting endpoint (POST /api/posts/[id]/vote) with one-vote-per-user validation
     - [x] 2.3.16 Build comment voting endpoint (POST /api/comments/[id]/vote)
