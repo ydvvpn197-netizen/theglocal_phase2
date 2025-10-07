@@ -250,20 +250,20 @@
 
 - [ ] **2.0 Core User Features: Authentication, Communities & Content**
   - [ ] 2.1 **Authentication System**
-    - [ ] 2.1.1 Create signup page with email/phone input (app/auth/signup/page.tsx)
-    - [ ] 2.1.2 Implement OTP verification page (app/auth/verify/page.tsx)
-    - [ ] 2.1.3 Build signup API endpoint with Supabase Auth OTP (app/api/auth/signup/route.ts)
-    - [ ] 2.1.4 Build OTP verification endpoint (app/api/auth/verify-otp/route.ts)
-    - [ ] 2.1.5 Implement anonymous handle generation on signup (LocalAdjective+Noun+3digits)
-    - [ ] 2.1.6 Create anonymous handle generator with profanity filter
-    - [ ] 2.1.7 Build location permission prompt component (request GPS on first login)
-    - [ ] 2.1.8 Implement manual city selection fallback if GPS denied
-    - [ ] 2.1.9 Create authentication context provider (lib/context/auth-context.tsx)
-    - [ ] 2.1.10 Create useAuth hook for accessing auth state
-    - [ ] 2.1.11 Implement logout endpoint (app/api/auth/logout/route.ts)
-    - [ ] 2.1.12 Add session persistence (30-day JWT tokens in httpOnly cookies)
-    - [ ] 2.1.13 Create protected route middleware for authenticated pages
-    - [ ] 2.1.14 Write integration tests for auth flow (**tests**/integration/auth.test.ts)
+    - [x] 2.1.1 Create signup page with email/phone input (app/auth/signup/page.tsx)
+    - [x] 2.1.2 Implement OTP verification page (app/auth/verify/page.tsx)
+    - [x] 2.1.3 Build signup API endpoint with Supabase Auth OTP (app/api/auth/signup/route.ts)
+    - [x] 2.1.4 Build OTP verification endpoint (app/api/auth/verify-otp/route.ts)
+    - [x] 2.1.5 Implement anonymous handle generation on signup (LocalAdjective+Noun+3digits)
+    - [x] 2.1.6 Create anonymous handle generator with profanity filter
+    - [x] 2.1.7 Build location permission prompt component (request GPS on first login)
+    - [x] 2.1.8 Implement manual city selection fallback if GPS denied
+    - [x] 2.1.9 Create authentication context provider (lib/context/auth-context.tsx)
+    - [x] 2.1.10 Create useAuth hook for accessing auth state
+    - [x] 2.1.11 Implement logout endpoint (app/api/auth/logout/route.ts)
+    - [x] 2.1.12 Add session persistence (30-day JWT tokens in httpOnly cookies)
+    - [x] 2.1.13 Create protected route middleware for authenticated pages
+    - [x] 2.1.14 Write integration tests for auth flow (**tests**/integration/auth.test.ts)
   - [ ] 2.2 **Communities**
     - [ ] 2.2.1 Create communities listing page (app/communities/page.tsx)
     - [ ] 2.2.2 Build community card component with stats (members, posts, activity)
