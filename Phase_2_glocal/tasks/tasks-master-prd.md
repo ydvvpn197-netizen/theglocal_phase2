@@ -265,20 +265,20 @@
     - [x] 2.1.13 Create protected route middleware for authenticated pages
     - [x] 2.1.14 Write integration tests for auth flow (**tests**/integration/auth.test.ts)
   - [ ] 2.2 **Communities**
-    - [ ] 2.2.1 Create communities listing page (app/communities/page.tsx)
-    - [ ] 2.2.2 Build community card component with stats (members, posts, activity)
-    - [ ] 2.2.3 Implement community creation page (app/communities/create/page.tsx)
-    - [ ] 2.2.4 Build create community form with validation (name, description, location)
-    - [ ] 2.2.5 Create API endpoint for listing communities (GET /api/communities) with location filtering
-    - [ ] 2.2.6 Create API endpoint for creating community (POST /api/communities)
-    - [ ] 2.2.7 Ensure community creator auto-becomes admin (insert into community_members with role='admin')
-    - [ ] 2.2.8 Build individual community page (app/communities/[id]/page.tsx)
-    - [ ] 2.2.9 Implement community header with stats, join/leave button, admin badge
-    - [ ] 2.2.10 Create join community endpoint (POST /api/communities/[id]/join)
-    - [ ] 2.2.11 Create leave community endpoint (DELETE /api/communities/[id]/leave)
-    - [ ] 2.2.12 Implement community post feed on community page
-    - [ ] 2.2.13 Add community search and filter functionality (by location, member count, recent activity)
-    - [ ] 2.2.14 Display community rules/guidelines on community page
+    - [x] 2.2.1 Create communities listing page (app/communities/page.tsx)
+    - [x] 2.2.2 Build community card component with stats (members, posts, activity)
+    - [x] 2.2.3 Implement community creation page (app/communities/create/page.tsx)
+    - [x] 2.2.4 Build create community form with validation (name, description, location)
+    - [x] 2.2.5 Create API endpoint for listing communities (GET /api/communities) with location filtering
+    - [x] 2.2.6 Create API endpoint for creating community (POST /api/communities)
+    - [x] 2.2.7 Ensure community creator auto-becomes admin (insert into community_members with role='admin')
+    - [x] 2.2.8 Build individual community page (app/communities/[id]/page.tsx)
+    - [x] 2.2.9 Implement community header with stats, join/leave button, admin badge
+    - [x] 2.2.10 Create join community endpoint (POST /api/communities/[id]/join)
+    - [x] 2.2.11 Create leave community endpoint (DELETE /api/communities/[id]/leave)
+    - [ ] 2.2.12 Implement community post feed on community page (requires posts from 2.3)
+    - [x] 2.2.13 Add community search and filter functionality (by location, member count, recent activity)
+    - [x] 2.2.14 Display community rules/guidelines on community page
     - [ ] 2.2.15 Write unit tests for community components
     - [ ] 2.2.16 Write integration tests for community CRUD operations
   - [ ] 2.3 **Posts & Comments**
