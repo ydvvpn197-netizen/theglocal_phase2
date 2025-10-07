@@ -276,7 +276,7 @@
     - [x] 2.2.9 Implement community header with stats, join/leave button, admin badge
     - [x] 2.2.10 Create join community endpoint (POST /api/communities/[id]/join)
     - [x] 2.2.11 Create leave community endpoint (DELETE /api/communities/[id]/leave)
-    - [ ] 2.2.12 Implement community post feed on community page (requires posts from 2.3)
+    - [x] 2.2.12 Implement community post feed on community page (requires posts from 2.3)
     - [x] 2.2.13 Add community search and filter functionality (by location, member count, recent activity)
     - [x] 2.2.14 Display community rules/guidelines on community page
     - [x] 2.2.15 Write unit tests for community components
@@ -298,9 +298,9 @@
     - [x] 2.3.14 Create vote buttons component (upvote/downvote UI)
     - [x] 2.3.15 Build voting endpoint (POST /api/posts/[id]/vote) with one-vote-per-user validation
     - [x] 2.3.16 Build comment voting endpoint (POST /api/comments/[id]/vote)
-    - [ ] 2.3.17 Update vote counts in real-time (optimistic updates)
-    - [ ] 2.3.18 Implement infinite scroll pagination for posts
-    - [ ] 2.3.19 Add loading states and error handling
+    - [x] 2.3.17 Update vote counts in real-time (optimistic updates)
+    - [x] 2.3.18 Implement infinite scroll pagination for posts
+    - [x] 2.3.19 Add loading states and error handling
     - [ ] 2.3.20 Write unit tests for post/comment components
     - [ ] 2.3.21 Write integration tests for post CRUD and voting
   - [ ] 2.4 **Location-Based Main Feed**
