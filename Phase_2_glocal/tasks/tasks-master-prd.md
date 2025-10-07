@@ -301,8 +301,8 @@
     - [x] 2.3.17 Update vote counts in real-time (optimistic updates)
     - [x] 2.3.18 Implement infinite scroll pagination for posts
     - [x] 2.3.19 Add loading states and error handling
-    - [ ] 2.3.20 Write unit tests for post/comment components
-    - [ ] 2.3.21 Write integration tests for post CRUD and voting
+    - [x] 2.3.20 Write unit tests for post/comment components
+    - [x] 2.3.21 Write integration tests for post CRUD and voting
   - [ ] 2.4 **Location-Based Main Feed**
     - [ ] 2.4.1 Create main feed page (app/page.tsx)
     - [ ] 2.4.2 Implement location context provider (lib/context/location-context.tsx)
