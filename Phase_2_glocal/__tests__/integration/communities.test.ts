@@ -56,8 +56,7 @@ describe('Community Integration Tests', () => {
       const isDuplicate = (newMembership: { community_id: string; user_id: string }) => {
         return memberships.some(
           (m) =>
-            m.community_id === newMembership.community_id &&
-            m.user_id === newMembership.user_id
+            m.community_id === newMembership.community_id && m.user_id === newMembership.user_id
         )
       }
 
@@ -135,4 +134,3 @@ describe('Community Integration Tests', () => {
     })
   })
 })
-
