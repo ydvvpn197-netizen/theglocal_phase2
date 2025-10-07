@@ -226,7 +226,7 @@
 
 ## Tasks
 
-- [ ] **1.0 Project Foundation & Infrastructure Setup**
+- [x] **1.0 Project Foundation & Infrastructure Setup**
   - [x] 1.1 Initialize Next.js 14 project with TypeScript and App Router
   - [x] 1.2 Install and configure core dependencies (TailwindCSS, shadcn/ui, React Query, React Hook Form, Zod)
   - [x] 1.3 Set up Supabase project (create account, initialize project, get credentials)
@@ -241,12 +241,12 @@
   - [x] 1.12 Set up Supabase client and server utilities (lib/supabase/)
   - [x] 1.13 Implement design system: configure Tailwind with custom colors, spacing, typography
   - [x] 1.14 Install and configure shadcn/ui components (button, input, card, dialog, badge, toast, avatar)
-  - [ ] 1.15 Create layout components (navbar, sidebar, mobile navigation)
-  - [ ] 1.16 Implement anonymous avatar generation system (geometric patterns based on user ID hash)
-  - [ ] 1.17 Set up global styles and theme configuration
-  - [ ] 1.18 Create utility functions (anonymous ID generator, location utilities, constants)
-  - [ ] 1.19 Write unit tests for utility functions (anonymous-id.test.ts, location.test.ts)
-  - [ ] 1.20 Set up development workflow documentation (README.md with setup instructions)
+  - [x] 1.15 Create layout components (navbar, sidebar, mobile navigation)
+  - [x] 1.16 Implement anonymous avatar generation system (geometric patterns based on user ID hash)
+  - [x] 1.17 Set up global styles and theme configuration
+  - [x] 1.18 Create utility functions (anonymous ID generator, location utilities, constants)
+  - [x] 1.19 Write unit tests for utility functions (anonymous-id.test.ts, location.test.ts)
+  - [x] 1.20 Set up development workflow documentation (README.md with setup instructions)
 
 - [ ] **2.0 Core User Features: Authentication, Communities & Content**
   - [ ] 2.1 **Authentication System**
