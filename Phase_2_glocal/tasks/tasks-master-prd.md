@@ -363,24 +363,24 @@
     - [x] 3.5.4 Add source attribution to shared posts
     - [x] 3.5.5 Write tests for sharing functionality
 
-  - [ ] 3.6 **Polls & Civic Engagement**
-    - [ ] 3.6.1 Create poll card component with voting UI
-    - [ ] 3.6.2 Build create poll form (question, 2-10 options, expiry date, category)
-    - [ ] 3.6.3 Add poll category selector (Infrastructure, Safety, Events, Environment, General)
-    - [ ] 3.6.4 Implement government authority tagging field (symbolic, text only)
-    - [ ] 3.6.5 Create poll creation endpoint (POST /api/polls) with location metadata
-    - [ ] 3.6.6 Build poll listing endpoint (GET /api/polls) with location filtering
-    - [ ] 3.6.7 Implement anonymous voting hash generation (lib/utils/poll-anonymity.ts)
-    - [ ] 3.6.8 Create poll voting endpoint (POST /api/polls/[id]/vote) with anonymity guarantee
-    - [ ] 3.6.9 Ensure one vote per user using anonymous hash (no user-vote association stored)
-    - [ ] 3.6.10 Build poll results endpoint (GET /api/polls/[id]/results)
-    - [ ] 3.6.11 Create poll results visualization component (percentage bars)
-    - [ ] 3.6.12 Implement real-time vote count updates
-    - [ ] 3.6.13 Add poll expiry logic (disable voting after expiry, show final results)
-    - [ ] 3.6.14 Display tagged authorities on poll card
-    - [ ] 3.6.15 Implement poll search by location and category
-    - [ ] 3.6.16 Write unit tests for poll anonymity utilities (poll-anonymity.test.ts)
-    - [ ] 3.6.17 Write integration tests for poll creation and voting
+  - [x] 3.6 **Polls & Civic Engagement**
+    - [x] 3.6.1 Create poll card component with voting UI
+    - [x] 3.6.2 Build create poll form (question, 2-10 options, expiry date, category)
+    - [x] 3.6.3 Add poll category selector (Infrastructure, Safety, Events, Environment, General)
+    - [x] 3.6.4 Implement government authority tagging field (symbolic, text only)
+    - [x] 3.6.5 Create poll creation endpoint (POST /api/polls) with location metadata
+    - [x] 3.6.6 Build poll listing endpoint (GET /api/polls) with location filtering
+    - [x] 3.6.7 Implement anonymous voting hash generation (lib/utils/poll-anonymity.ts)
+    - [x] 3.6.8 Create poll voting endpoint (POST /api/polls/[id]/vote) with anonymity guarantee
+    - [x] 3.6.9 Ensure one vote per user using anonymous hash (no user-vote association stored)
+    - [x] 3.6.10 Build poll results endpoint (GET /api/polls/[id]/results)
+    - [x] 3.6.11 Create poll results visualization component (percentage bars)
+    - [x] 3.6.12 Implement real-time vote count updates
+    - [x] 3.6.13 Add poll expiry logic (disable voting after expiry, show final results)
+    - [x] 3.6.14 Display tagged authorities on poll card
+    - [x] 3.6.15 Implement poll search by location and category
+    - [x] 3.6.16 Write unit tests for poll anonymity utilities (poll-anonymity.test.ts)
+    - [x] 3.6.17 Write integration tests for poll creation and voting
 
   - [ ] 3.7 **BookMyShow Events Integration**
     - [ ] 3.7.1 Set up BookMyShow API partnership/credentials
