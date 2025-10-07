@@ -31,9 +31,20 @@ interface Post {
 interface PostFeedProps {
   communityId?: string
   initialPosts?: Post[]
+  useFeedApi?: boolean
+  sort?: 'recent' | 'popular'
+  city?: string | null
+  radius?: number
 }
 
-export function PostFeed({ communityId, initialPosts = [] }: PostFeedProps) {
+export function PostFeed({
+  communityId,
+  initialPosts = [],
+  useFeedApi = false,
+  sort = 'recent',
+  city,
+  radius,
+}: PostFeedProps) {
   const [posts, setPosts] = useState<Post[]>(initialPosts)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
@@ -54,11 +65,19 @@ export function PostFeed({ communityId, initialPosts = [] }: PostFeedProps) {
           offset: offset.toString(),
         })
 
-        if (communityId) {
+        // Use feed API or posts API
+        let endpoint = '/api/posts'
+
+        if (useFeedApi) {
+          endpoint = '/api/feed'
+          if (sort) params.append('sort', sort)
+          if (city) params.append('city', city)
+          if (radius) params.append('radius', radius.toString())
+        } else if (communityId) {
           params.append('community_id', communityId)
         }
 
-        const response = await fetch(`/api/posts?${params}`)
+        const response = await fetch(`${endpoint}?${params}`)
         const result = await response.json()
 
         if (!response.ok) {
@@ -81,7 +100,7 @@ export function PostFeed({ communityId, initialPosts = [] }: PostFeedProps) {
         setIsLoading(false)
       }
     },
-    [communityId, isLoading, hasMore]
+    [communityId, useFeedApi, sort, city, radius, isLoading, hasMore]
   )
 
   const handlePostUpdate = useCallback(() => {

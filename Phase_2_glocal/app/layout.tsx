@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { QueryProvider } from '@/lib/providers/query-provider'
 import { AuthProvider } from '@/lib/context/auth-context'
+import { LocationProvider } from '@/lib/context/location-context'
 import { AppLayout } from '@/components/layout/app-layout'
 
 const inter = Inter({
@@ -29,7 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased">
         <QueryProvider>
           <AuthProvider>
-            <AppLayout>{children}</AppLayout>
+            <LocationProvider>
+              <AppLayout>{children}</AppLayout>
+            </LocationProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

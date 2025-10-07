@@ -1,4 +1,4 @@
-import { PostFeed } from '@/components/posts/post-feed'
+import { LocationFeed } from '@/components/feed/location-feed'
 import { CreatePostForm } from '@/components/posts/create-post-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -16,8 +16,8 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* Post Feed */}
-        <PostFeed />
+        {/* Location-Based Feed */}
+        <LocationFeed />
       </div>
     </div>
   )
