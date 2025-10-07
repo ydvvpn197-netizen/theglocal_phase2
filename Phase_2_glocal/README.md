@@ -20,6 +20,7 @@ A privacy-first, hyper-local digital public square designed to be the virtual to
 ### Installation
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -41,6 +42,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 See `SUPABASE_SETUP.md` and `ENV_SETUP.md` for detailed instructions.
 
 3. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -59,16 +61,85 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Development Workflow
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm test` - Run Jest tests
-- `npm run test:e2e` - Run Playwright E2E tests
+### Common Commands
+
+```bash
+# Development
+npm run dev              # Start dev server (http://localhost:3000)
+npm run build            # Build for production
+npm run start            # Start production server
+
+# Code Quality
+npm run lint             # Run ESLint
+npm run lint:fix         # Fix lint issues automatically
+npm run format           # Format all files with Prettier
+npm run format:check     # Check if files are formatted
+npm run type-check       # Run TypeScript compiler
+
+# Testing
+npm test                 # Run Jest unit/integration tests
+npm run test:watch       # Run tests in watch mode
+npm run test:e2e         # Run Playwright E2E tests (requires dev server)
+
+# Database (Supabase)
+npm run db:start         # Start local Supabase (requires Docker)
+npm run db:stop          # Stop local Supabase
+npm run db:reset         # Reset database and reapply migrations
+npm run db:migrate       # Push migrations to remote database
+npm run generate-types   # Generate TypeScript types from schema
+```
+
+### Development Flow
+
+1. **Start development:**
+   ```bash
+   npm run dev
+   ```
+
+2. **Make changes** to code
+
+3. **Run tests:**
+   ```bash
+   npm test
+   ```
+
+4. **Check code quality:**
+   ```bash
+   npm run lint
+   npm run type-check
+   ```
+
+5. **Format code:**
+   ```bash
+   npm run format
+   ```
+
+6. **Commit changes:**
+   ```bash
+   git add .
+   git commit -m "feat: your change description"
+   ```
+
+### Before Pushing
+
+Always run before pushing to ensure quality:
+
+```bash
+npm run lint            # No linting errors
+npm run type-check      # No type errors
+npm test                # All tests pass
+npm run build           # Build succeeds
+```
+
+Or use this one-liner:
+```bash
+npm run lint && npm run type-check && npm test && npm run build
+```
 
 ## Privacy First
 
 This platform is built with privacy as a first-class feature:
+
 - Anonymous user identities by default
 - No tracking or behavioral profiling
 - Location data kept at city level only
@@ -78,10 +149,10 @@ This platform is built with privacy as a first-class feature:
 ## Documentation
 
 See the `docs/` directory for detailed documentation:
+
 - [PRD](./master_prd.md) - Product Requirements Document
 - [Tasks](./tasks/tasks-master-prd.md) - Development task list
 
 ## License
 
 Proprietary - All rights reserved
-
