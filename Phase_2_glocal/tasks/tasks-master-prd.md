@@ -318,50 +318,50 @@
     - [x] 2.4.12 Write integration tests for feed filtering and sorting
 
 - [ ] **3.0 Discovery & Aggregation: Feeds, News & Events**
-  - [ ] 3.1 **Discovery Feed UI**
-    - [ ] 3.1.1 Create discovery page (app/discover/page.tsx)
-    - [ ] 3.1.2 Build unified feed component for mixed content (news, Reddit, events)
-    - [ ] 3.1.3 Create news card component with source attribution
-    - [ ] 3.1.4 Create Reddit post card component with subreddit info
-    - [ ] 3.1.5 Implement "Share to Community" button on discovery items
-    - [ ] 3.1.6 Build share dialog (select community, pre-filled title/link)
-    - [ ] 3.1.7 Add content type badges (News, Reddit, Event)
-    - [ ] 3.1.8 Implement loading skeletons for discovery feed
-  - [ ] 3.2 **Google News API Integration**
-    - [ ] 3.2.1 Register for Google News API key (newsapi.org)
-    - [ ] 3.2.2 Add API key to environment variables
-    - [ ] 3.2.3 Create Google News API client (lib/integrations/google-news.ts)
-    - [ ] 3.2.4 Implement news fetching by location (country, region, city)
-    - [ ] 3.2.5 Build news API endpoint (GET /api/discover/news) with location param
-    - [ ] 3.2.6 Implement caching strategy (15-minute TTL) to respect rate limits
-    - [ ] 3.2.7 Add error handling for API failures (graceful degradation)
-    - [ ] 3.2.8 Parse and transform news data to unified format
-    - [ ] 3.2.9 Write unit tests for Google News client (google-news.test.ts)
-  - [ ] 3.3 **Reddit API Integration**
-    - [ ] 3.3.1 Set up Reddit API credentials (OAuth app)
-    - [ ] 3.3.2 Add Reddit API credentials to environment variables
-    - [ ] 3.3.3 Create Reddit API client (lib/integrations/reddit.ts)
-    - [ ] 3.3.4 Implement location-based subreddit selection logic
-    - [ ] 3.3.5 Fetch hot/trending posts from local subreddits
-    - [ ] 3.3.6 Build Reddit API endpoint (GET /api/discover/reddit) with caching
-    - [ ] 3.3.7 Implement rate limiting (60 req/min) and caching
-    - [ ] 3.3.8 Parse Reddit JSON response to unified format
-    - [ ] 3.3.9 Add error handling and fallback content
-    - [ ] 3.3.10 Write unit tests for Reddit client (reddit.test.ts)
-  - [ ] 3.4 **Discovery Feed Aggregation**
-    - [ ] 3.4.1 Create discovery aggregator endpoint (GET /api/discover)
-    - [ ] 3.4.2 Fetch and merge content from News, Reddit, and Events APIs
-    - [ ] 3.4.3 Implement unified content interface for mixed feed
-    - [ ] 3.4.4 Add smart sorting (mix of recency, relevance, content type diversity)
-    - [ ] 3.4.5 Implement pagination for aggregated feed
-    - [ ] 3.4.6 Add content deduplication logic
-    - [ ] 3.4.7 Write integration tests for discovery aggregation
-  - [ ] 3.5 **Share External Content**
-    - [ ] 3.5.1 Build share-to-community endpoint (POST /api/discover/share)
-    - [ ] 3.5.2 Create post with external link and metadata
-    - [ ] 3.5.3 Implement link preview generation (title, description, image)
-    - [ ] 3.5.4 Add source attribution to shared posts
-    - [ ] 3.5.5 Write tests for sharing functionality
+  - [x] 3.1 **Discovery Feed UI**
+    - [x] 3.1.1 Create discovery page (app/discover/page.tsx)
+    - [x] 3.1.2 Build unified feed component for mixed content (news, Reddit, events)
+    - [x] 3.1.3 Create news card component with source attribution
+    - [x] 3.1.4 Create Reddit post card component with subreddit info
+    - [x] 3.1.5 Implement "Share to Community" button on discovery items
+    - [x] 3.1.6 Build share dialog (select community, pre-filled title/link)
+    - [x] 3.1.7 Add content type badges (News, Reddit, Event)
+    - [x] 3.1.8 Implement loading skeletons for discovery feed
+  - [x] 3.2 **Google News API Integration**
+    - [x] 3.2.1 Register for Google News API key (newsapi.org)
+    - [x] 3.2.2 Add API key to environment variables
+    - [x] 3.2.3 Create Google News API client (lib/integrations/google-news.ts)
+    - [x] 3.2.4 Implement news fetching by location (country, region, city)
+    - [x] 3.2.5 Build news API endpoint (GET /api/discover/news) with location param
+    - [x] 3.2.6 Implement caching strategy (15-minute TTL) to respect rate limits
+    - [x] 3.2.7 Add error handling for API failures (graceful degradation)
+    - [x] 3.2.8 Parse and transform news data to unified format
+    - [x] 3.2.9 Write unit tests for Google News client (google-news.test.ts)
+  - [x] 3.3 **Reddit API Integration**
+    - [x] 3.3.1 Set up Reddit API credentials (OAuth app)
+    - [x] 3.3.2 Add Reddit API credentials to environment variables
+    - [x] 3.3.3 Create Reddit API client (lib/integrations/reddit.ts)
+    - [x] 3.3.4 Implement location-based subreddit selection logic
+    - [x] 3.3.5 Fetch hot/trending posts from local subreddits
+    - [x] 3.3.6 Build Reddit API endpoint (GET /api/discover/reddit) with caching
+    - [x] 3.3.7 Implement rate limiting (60 req/min) and caching
+    - [x] 3.3.8 Parse Reddit JSON response to unified format
+    - [x] 3.3.9 Add error handling and fallback content
+    - [x] 3.3.10 Write unit tests for Reddit client (reddit.test.ts)
+  - [x] 3.4 **Discovery Feed Aggregation**
+    - [x] 3.4.1 Create discovery aggregator endpoint (GET /api/discover)
+    - [x] 3.4.2 Fetch and merge content from News, Reddit, and Events APIs
+    - [x] 3.4.3 Implement unified content interface for mixed feed
+    - [x] 3.4.4 Add smart sorting (mix of recency, relevance, content type diversity)
+    - [x] 3.4.5 Implement pagination for aggregated feed
+    - [x] 3.4.6 Add content deduplication logic
+    - [x] 3.4.7 Write integration tests for discovery aggregation
+  - [x] 3.5 **Share External Content**
+    - [x] 3.5.1 Build share-to-community endpoint (POST /api/discover/share)
+    - [x] 3.5.2 Create post with external link and metadata
+    - [x] 3.5.3 Implement link preview generation (title, description, image)
+    - [x] 3.5.4 Add source attribution to shared posts
+    - [x] 3.5.5 Write tests for sharing functionality
 
   - [ ] 3.6 **Polls & Civic Engagement**
     - [ ] 3.6.1 Create poll card component with voting UI
