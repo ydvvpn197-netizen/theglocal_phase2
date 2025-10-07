@@ -9,6 +9,7 @@
 ## Relevant Files
 
 ### Configuration & Setup
+
 - `.env.local` - Environment variables for API keys, Supabase credentials, and external services
 - `next.config.js` - Next.js configuration with image domains, security headers
 - `tailwind.config.ts` - TailwindCSS configuration with custom colors and design tokens
@@ -18,6 +19,7 @@
 - `.prettierrc` - Code formatting rules
 
 ### Database & Types
+
 - `supabase/migrations/0001_initial_schema.sql` - Initial database schema for all tables
 - `supabase/migrations/0002_rls_policies.sql` - Row Level Security policies
 - `supabase/migrations/0003_indexes.sql` - Database indexes for performance
@@ -26,6 +28,7 @@
 - `lib/types/models.ts` - Application-level type definitions
 
 ### Core Libraries
+
 - `lib/supabase/client.ts` - Supabase client configuration
 - `lib/supabase/server.ts` - Server-side Supabase client
 - `lib/utils/anonymous-id.ts` - Anonymous handle generation logic
@@ -40,6 +43,7 @@
 - `lib/hooks/use-location.ts` - Location hook
 
 ### Design System
+
 - `components/ui/button.tsx` - Button component (shadcn)
 - `components/ui/input.tsx` - Input component (shadcn)
 - `components/ui/card.tsx` - Card component (shadcn)
@@ -52,6 +56,7 @@
 - `components/layout/mobile-nav.tsx` - Mobile bottom navigation
 
 ### Authentication
+
 - `app/auth/signup/page.tsx` - Signup page with OTP
 - `app/auth/verify/page.tsx` - OTP verification page
 - `app/api/auth/signup/route.ts` - Signup API endpoint
@@ -62,6 +67,7 @@
 - `components/auth/location-permission.tsx` - Location permission prompt
 
 ### Communities
+
 - `app/communities/page.tsx` - Communities listing page
 - `app/communities/[id]/page.tsx` - Individual community page
 - `app/communities/create/page.tsx` - Create community page
@@ -75,6 +81,7 @@
 - `components/communities/community-header.tsx` - Community header with stats
 
 ### Posts & Comments
+
 - `app/api/posts/route.ts` - List/create posts
 - `app/api/posts/[id]/route.ts` - Get/update/delete post
 - `app/api/posts/[id]/vote/route.ts` - Vote on post
@@ -90,6 +97,7 @@
 - `components/posts/vote-buttons.tsx` - Upvote/downvote UI
 
 ### Feeds & Discovery
+
 - `app/page.tsx` - Main feed page (home)
 - `app/discover/page.tsx` - Discovery feed (news, Reddit, events)
 - `app/api/feed/route.ts` - Main feed API (location-based)
@@ -106,6 +114,7 @@
 - `components/feed/feed-filters.tsx` - Feed filter controls
 
 ### Polls & Civic Engagement
+
 - `app/api/polls/route.ts` - List/create polls
 - `app/api/polls/[id]/route.ts` - Get poll details
 - `app/api/polls/[id]/vote/route.ts` - Vote on poll (anonymous)
@@ -117,6 +126,7 @@
 - `lib/utils/poll-anonymity.test.ts` - Tests for poll anonymity
 
 ### Events
+
 - `app/events/page.tsx` - Events listing page
 - `app/events/[id]/page.tsx` - Event detail page
 - `app/api/events/route.ts` - List/create events
@@ -131,6 +141,7 @@
 - `components/events/rsvp-button.tsx` - RSVP button component
 
 ### Artist Platform
+
 - `app/artists/page.tsx` - Artist discovery page
 - `app/artists/[id]/page.tsx` - Artist profile page
 - `app/artists/register/page.tsx` - Artist registration page
@@ -148,6 +159,7 @@
 - `components/artists/artist-filters.tsx` - Filter artists by category/location
 
 ### Booking System
+
 - `app/bookings/page.tsx` - User booking history
 - `app/bookings/[id]/page.tsx` - Booking detail with messages
 - `app/api/bookings/route.ts` - List/create bookings
@@ -159,6 +171,7 @@
 - `components/bookings/booking-messages.tsx` - Message thread UI
 
 ### Moderation & Reporting
+
 - `app/api/reports/route.ts` - Create/list reports
 - `app/api/reports/[id]/route.ts` - Resolve report
 - `app/api/moderation/route.ts` - Moderation actions
@@ -168,6 +181,7 @@
 - `components/moderation/moderation-log.tsx` - Public moderation log
 
 ### Admin Dashboards
+
 - `app/admin/page.tsx` - Super admin dashboard home
 - `app/admin/reports/page.tsx` - Reports queue
 - `app/admin/users/page.tsx` - User management
@@ -185,6 +199,7 @@
 - `lib/utils/permissions.test.ts` - Tests for permissions
 
 ### Testing & Documentation
+
 - `jest.config.js` - Jest configuration
 - `jest.setup.js` - Jest setup file
 - `__tests__/integration/auth.test.ts` - Auth integration tests
@@ -196,6 +211,7 @@
 - `CONTRIBUTING.md` - Contribution guidelines
 
 ### Notes
+
 - All component files should have corresponding `.test.tsx` files in the same directory
 - API routes should follow REST conventions and include error handling
 - Use Zod for all input validation
@@ -215,16 +231,16 @@
   - [x] 1.2 Install and configure core dependencies (TailwindCSS, shadcn/ui, React Query, React Hook Form, Zod)
   - [x] 1.3 Set up Supabase project (create account, initialize project, get credentials)
   - [x] 1.4 Configure environment variables (.env.local with Supabase URL, anon key, service role key)
-  - [ ] 1.5 Set up Git repository with proper .gitignore (exclude .env.local, node_modules, .next)
-  - [ ] 1.6 Configure ESLint, Prettier, and TypeScript compiler options
-  - [ ] 1.7 Set up testing infrastructure (Jest for unit tests, React Testing Library, Playwright for E2E)
-  - [ ] 1.8 Create initial database schema migration (all tables: users, communities, posts, comments, polls, artists, bookings, events, reports, moderation_log)
-  - [ ] 1.9 Implement Row Level Security (RLS) policies for all tables based on privacy requirements
-  - [ ] 1.10 Create database indexes for performance (location coordinates, timestamps, foreign keys)
-  - [ ] 1.11 Generate TypeScript types from Supabase schema using CLI
-  - [ ] 1.12 Set up Supabase client and server utilities (lib/supabase/)
-  - [ ] 1.13 Implement design system: configure Tailwind with custom colors, spacing, typography
-  - [ ] 1.14 Install and configure shadcn/ui components (button, input, card, dialog, badge, toast, avatar)
+  - [x] 1.5 Set up Git repository with proper .gitignore (exclude .env.local, node_modules, .next)
+  - [x] 1.6 Configure ESLint, Prettier, and TypeScript compiler options
+  - [x] 1.7 Set up testing infrastructure (Jest for unit tests, React Testing Library, Playwright for E2E)
+  - [x] 1.8 Create initial database schema migration (all tables: users, communities, posts, comments, polls, artists, bookings, events, reports, moderation_log)
+  - [x] 1.9 Implement Row Level Security (RLS) policies for all tables based on privacy requirements
+  - [x] 1.10 Create database indexes for performance (location coordinates, timestamps, foreign keys)
+  - [x] 1.11 Generate TypeScript types from Supabase schema using CLI
+  - [x] 1.12 Set up Supabase client and server utilities (lib/supabase/)
+  - [x] 1.13 Implement design system: configure Tailwind with custom colors, spacing, typography
+  - [x] 1.14 Install and configure shadcn/ui components (button, input, card, dialog, badge, toast, avatar)
   - [ ] 1.15 Create layout components (navbar, sidebar, mobile navigation)
   - [ ] 1.16 Implement anonymous avatar generation system (geometric patterns based on user ID hash)
   - [ ] 1.17 Set up global styles and theme configuration
@@ -247,8 +263,7 @@
     - [ ] 2.1.11 Implement logout endpoint (app/api/auth/logout/route.ts)
     - [ ] 2.1.12 Add session persistence (30-day JWT tokens in httpOnly cookies)
     - [ ] 2.1.13 Create protected route middleware for authenticated pages
-    - [ ] 2.1.14 Write integration tests for auth flow (__tests__/integration/auth.test.ts)
-  
+    - [ ] 2.1.14 Write integration tests for auth flow (**tests**/integration/auth.test.ts)
   - [ ] 2.2 **Communities**
     - [ ] 2.2.1 Create communities listing page (app/communities/page.tsx)
     - [ ] 2.2.2 Build community card component with stats (members, posts, activity)
@@ -266,7 +281,6 @@
     - [ ] 2.2.14 Display community rules/guidelines on community page
     - [ ] 2.2.15 Write unit tests for community components
     - [ ] 2.2.16 Write integration tests for community CRUD operations
-  
   - [ ] 2.3 **Posts & Comments**
     - [ ] 2.3.1 Create post card component (title, body, image, author, metadata, vote counts)
     - [ ] 2.3.2 Build create post form (title, body, image upload, community selector)
@@ -289,7 +303,6 @@
     - [ ] 2.3.19 Add loading states and error handling
     - [ ] 2.3.20 Write unit tests for post/comment components
     - [ ] 2.3.21 Write integration tests for post CRUD and voting
-  
   - [ ] 2.4 **Location-Based Main Feed**
     - [ ] 2.4.1 Create main feed page (app/page.tsx)
     - [ ] 2.4.2 Implement location context provider (lib/context/location-context.tsx)
@@ -314,7 +327,6 @@
     - [ ] 3.1.6 Build share dialog (select community, pre-filled title/link)
     - [ ] 3.1.7 Add content type badges (News, Reddit, Event)
     - [ ] 3.1.8 Implement loading skeletons for discovery feed
-  
   - [ ] 3.2 **Google News API Integration**
     - [ ] 3.2.1 Register for Google News API key (newsapi.org)
     - [ ] 3.2.2 Add API key to environment variables
@@ -325,7 +337,6 @@
     - [ ] 3.2.7 Add error handling for API failures (graceful degradation)
     - [ ] 3.2.8 Parse and transform news data to unified format
     - [ ] 3.2.9 Write unit tests for Google News client (google-news.test.ts)
-  
   - [ ] 3.3 **Reddit API Integration**
     - [ ] 3.3.1 Set up Reddit API credentials (OAuth app)
     - [ ] 3.3.2 Add Reddit API credentials to environment variables
@@ -337,7 +348,6 @@
     - [ ] 3.3.8 Parse Reddit JSON response to unified format
     - [ ] 3.3.9 Add error handling and fallback content
     - [ ] 3.3.10 Write unit tests for Reddit client (reddit.test.ts)
-  
   - [ ] 3.4 **Discovery Feed Aggregation**
     - [ ] 3.4.1 Create discovery aggregator endpoint (GET /api/discover)
     - [ ] 3.4.2 Fetch and merge content from News, Reddit, and Events APIs
@@ -346,7 +356,6 @@
     - [ ] 3.4.5 Implement pagination for aggregated feed
     - [ ] 3.4.6 Add content deduplication logic
     - [ ] 3.4.7 Write integration tests for discovery aggregation
-  
   - [ ] 3.5 **Share External Content**
     - [ ] 3.5.1 Build share-to-community endpoint (POST /api/discover/share)
     - [ ] 3.5.2 Create post with external link and metadata
@@ -409,7 +418,6 @@
     - [ ] 4.1.13 Implement artist filters (location, category, rating, rate range)
     - [ ] 4.1.14 Build artist search functionality
     - [ ] 4.1.15 Write unit tests for artist components
-  
   - [ ] 4.2 **Razorpay Subscription Integration**
     - [ ] 4.2.1 Set up Razorpay account and get API keys
     - [ ] 4.2.2 Add Razorpay key_id and key_secret to environment variables
@@ -430,7 +438,6 @@
     - [ ] 4.2.17 Display subscription status and next billing date on dashboard
     - [ ] 4.2.18 Write unit tests for Razorpay integration (razorpay.test.ts)
     - [ ] 4.2.19 Write integration tests for subscription flow
-  
   - [ ] 4.3 **Artist Events**
     - [ ] 4.3.1 Create artist event creation page (app/artists/dashboard/events/create/page.tsx)
     - [ ] 4.3.2 Build create event form (title, date/time, location, description, category, ticket info)
@@ -439,7 +446,6 @@
     - [ ] 4.3.5 Display artist events on artist profile
     - [ ] 4.3.6 Add edit/delete functionality for artist's own events
     - [ ] 4.3.7 Write tests for artist event creation
-  
   - [ ] 4.4 **Booking System**
     - [ ] 4.4.1 Create booking form component (event date, type, location, budget, message)
     - [ ] 4.4.2 Add "Request Booking" button on artist profile
@@ -455,7 +461,7 @@
     - [ ] 4.4.12 Implement notifications for booking status changes
     - [ ] 4.4.13 Add booking history view for users and artists
     - [ ] 4.4.14 Display booking statistics on artist dashboard
-    - [ ] 4.4.15 Write integration tests for booking flow (__tests__/e2e/booking-flow.spec.ts)
+    - [ ] 4.4.15 Write integration tests for booking flow (**tests**/e2e/booking-flow.spec.ts)
 
 - [ ] **5.0 Moderation, Admin Dashboards & Governance Tools**
   - [ ] 5.1 **Content Reporting**
@@ -468,7 +474,6 @@
     - [ ] 5.1.7 Send notification to community admin and super admin
     - [ ] 5.1.8 Implement rate limiting on reports (prevent spam reporting)
     - [ ] 5.1.9 Write tests for reporting functionality
-  
   - [ ] 5.2 **Community Admin Dashboard**
     - [ ] 5.2.1 Create community admin dashboard page (app/admin/community/[id]/page.tsx)
     - [ ] 5.2.2 Add access control (only community admins can access)
@@ -484,7 +489,6 @@
     - [ ] 5.2.12 Add community info editing functionality
     - [ ] 5.2.13 Show list of community members
     - [ ] 5.2.14 Write tests for community admin actions
-  
   - [ ] 5.3 **Super Admin Dashboard**
     - [ ] 5.3.1 Create super admin dashboard home (app/admin/page.tsx)
     - [ ] 5.3.2 Add super admin access control middleware
@@ -506,7 +510,6 @@
     - [ ] 5.3.18 Create API integration health monitoring dashboard
     - [ ] 5.3.19 Display status of Google News, Reddit, BookMyShow APIs
     - [ ] 5.3.20 Write tests for admin dashboard functionality
-  
   - [ ] 5.4 **Transparent Moderation Log**
     - [ ] 5.4.1 Create public moderation log page (app/communities/[id]/moderation-log/page.tsx)
     - [ ] 5.4.2 Build moderation log table component
@@ -516,7 +519,6 @@
     - [ ] 5.4.6 Create global moderation log (app/transparency/moderation/page.tsx)
     - [ ] 5.4.7 Add export functionality (CSV download)
     - [ ] 5.4.8 Write tests for moderation log visibility
-  
   - [ ] 5.5 **Governance & Transparency Features**
     - [ ] 5.5.1 Create platform transparency dashboard (app/transparency/page.tsx)
     - [ ] 5.5.2 Build public stats page (app/transparency/stats/page.tsx)
@@ -539,7 +541,6 @@
     - [ ] 6.1.5 Add service worker for offline support (optional)
     - [ ] 6.1.6 Measure and optimize Core Web Vitals (LCP, FID, CLS)
     - [ ] 6.1.7 Run Lighthouse audits and fix issues
-  
   - [ ] 6.2 **Security Hardening**
     - [ ] 6.2.1 Implement rate limiting on all API routes (100 req/min per user)
     - [ ] 6.2.2 Add CSRF protection
@@ -550,9 +551,8 @@
     - [ ] 6.2.7 Test XSS and SQL injection prevention
     - [ ] 6.2.8 Verify location data privacy (city-level only in public APIs)
     - [ ] 6.2.9 Audit third-party dependencies for vulnerabilities
-  
   - [ ] 6.3 **Comprehensive Testing**
-    - [ ] 6.3.1 Write E2E test for complete onboarding flow (__tests__/e2e/onboarding.spec.ts)
+    - [ ] 6.3.1 Write E2E test for complete onboarding flow (**tests**/e2e/onboarding.spec.ts)
     - [ ] 6.3.2 Write E2E test for post creation → comment → vote
     - [ ] 6.3.3 Write E2E test for artist registration → booking flow
     - [ ] 6.3.4 Write E2E test for moderation workflow
@@ -562,7 +562,6 @@
     - [ ] 6.3.8 Test on multiple browsers (Chrome, Firefox, Safari, Edge)
     - [ ] 6.3.9 Test on mobile devices (iOS, Android)
     - [ ] 6.3.10 Test accessibility with screen reader
-  
   - [ ] 6.4 **Documentation**
     - [ ] 6.4.1 Update README.md with setup instructions
     - [ ] 6.4.2 Create DEPLOYMENT.md with deployment guide
@@ -573,7 +572,6 @@
     - [ ] 6.4.7 Write privacy policy page (app/privacy/page.tsx)
     - [ ] 6.4.8 Write terms of service page (app/terms/page.tsx)
     - [ ] 6.4.9 Create user guide / FAQ page
-  
   - [ ] 6.5 **Deployment & Monitoring**
     - [ ] 6.5.1 Set up Vercel project and connect GitHub repo
     - [ ] 6.5.2 Configure production environment variables
@@ -589,7 +587,6 @@
     - [ ] 6.5.12 Set up CI/CD pipeline (GitHub Actions)
     - [ ] 6.5.13 Configure automated testing in CI
     - [ ] 6.5.14 Set up database backup verification
-  
   - [ ] 6.6 **Beta Launch**
     - [ ] 6.6.1 Create landing page for beta signup
     - [ ] 6.6.2 Invite 100 beta users
@@ -615,6 +612,7 @@
 ## Notes for Developers
 
 ### Architecture Principles
+
 - **Privacy First:** Never expose PII in API responses, use city-level location only
 - **Anonymity:** User identity must be unlinkable across communities
 - **Transparency:** All moderation actions logged publicly (privacy-preserving)
@@ -622,6 +620,7 @@
 - **Security:** Implement RLS on all tables, rate limiting on all routes
 
 ### Code Standards
+
 - Use TypeScript strictly (no `any` types)
 - Validate all inputs with Zod schemas
 - Implement error boundaries for React components
@@ -631,6 +630,7 @@
 - Maintain WCAG 2.1 AA accessibility compliance
 
 ### Database Best Practices
+
 - Always use RLS policies for access control
 - Never expose raw coordinates (round to 0.01° ~1km)
 - Use geography type for location data
@@ -638,6 +638,7 @@
 - Use transactions for multi-step operations
 
 ### API Route Patterns
+
 - Use Next.js App Router route handlers
 - Implement proper error handling with status codes
 - Return consistent JSON structure: `{ data, error, message }`
@@ -645,6 +646,7 @@
 - Log all errors to monitoring service
 
 ### Testing Requirements
+
 - Unit tests for all utilities and complex logic
 - Component tests for all UI components
 - Integration tests for API routes
@@ -652,6 +654,7 @@
 - Aim for 80%+ code coverage
 
 ### External API Integration Guidelines
+
 - Always implement caching (15min TTL minimum)
 - Graceful degradation if API is down
 - Respect rate limits strictly
@@ -665,4 +668,3 @@
 **Team Size:** 2-3 full-stack developers + 1 designer
 
 **Ready to start implementation!** Begin with Task 1.0 (Foundation) and proceed sequentially through the sprints.
-
