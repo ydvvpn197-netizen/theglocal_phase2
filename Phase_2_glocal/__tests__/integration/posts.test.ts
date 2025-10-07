@@ -406,4 +406,3 @@ describe('Posts Integration Tests', () => {
     })
   })
 })
-

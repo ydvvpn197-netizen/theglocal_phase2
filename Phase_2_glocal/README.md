@@ -92,6 +92,7 @@ npm run generate-types   # Generate TypeScript types from schema
 ### Development Flow
 
 1. **Start development:**
+
    ```bash
    npm run dev
    ```
@@ -99,17 +100,20 @@ npm run generate-types   # Generate TypeScript types from schema
 2. **Make changes** to code
 
 3. **Run tests:**
+
    ```bash
    npm test
    ```
 
 4. **Check code quality:**
+
    ```bash
    npm run lint
    npm run type-check
    ```
 
 5. **Format code:**
+
    ```bash
    npm run format
    ```
@@ -132,6 +136,7 @@ npm run build           # Build succeeds
 ```
 
 Or use this one-liner:
+
 ```bash
 npm run lint && npm run type-check && npm test && npm run build
 ```

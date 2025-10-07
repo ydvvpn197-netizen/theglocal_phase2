@@ -280,4 +280,3 @@ describe('Location-Based Feed Integration Tests', () => {
     })
   })
 })
-

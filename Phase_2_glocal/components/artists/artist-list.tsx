@@ -20,7 +20,12 @@ interface Artist {
   created_at: string
 }
 
-export function ArtistList() {
+interface ArtistListProps {
+  searchQuery?: string
+  category?: string
+}
+
+export function ArtistList({ searchQuery = '', category = 'all' }: ArtistListProps) {
   const [artists, setArtists] = useState<Artist[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -33,6 +38,8 @@ export function ArtistList() {
     try {
       const params = new URLSearchParams()
       if (userCity) params.append('city', userCity)
+      if (searchQuery) params.append('search', searchQuery)
+      if (category && category !== 'all') params.append('category', category)
 
       const response = await fetch(`/api/artists?${params}`)
       const result = await response.json()
@@ -47,7 +54,7 @@ export function ArtistList() {
     } finally {
       setIsLoading(false)
     }
-  }, [userCity])
+  }, [userCity, searchQuery, category])
 
   useEffect(() => {
     fetchArtists()
@@ -79,7 +86,11 @@ export function ArtistList() {
     return (
       <div className="rounded-lg border border-dashed p-12 text-center text-muted-foreground">
         <p className="text-lg">No artists found</p>
-        <p className="mt-2 text-sm">Try adjusting your filters or be the first to register!</p>
+        <p className="mt-2 text-sm">
+          {searchQuery || category !== 'all'
+            ? 'Try adjusting your filters'
+            : 'Be the first to register!'}
+        </p>
       </div>
     )
   }

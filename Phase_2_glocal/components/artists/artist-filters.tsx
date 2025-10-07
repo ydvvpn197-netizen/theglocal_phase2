@@ -1,14 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
 import { ARTIST_CATEGORIES } from '@/lib/utils/constants'
 
-export function ArtistFilters() {
+interface ArtistFiltersProps {
+  onSearchChange?: (query: string) => void
+  onCategoryChange?: (category: string) => void
+}
+
+export function ArtistFilters({ onSearchChange, onCategoryChange }: ArtistFiltersProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onSearchChange?.(searchQuery)
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [searchQuery, onSearchChange])
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category)
+    onCategoryChange?.(category)
+  }
 
   return (
     <div className="space-y-4">
@@ -30,7 +49,7 @@ export function ArtistFilters() {
           <Badge
             variant={selectedCategory === 'all' ? 'default' : 'outline'}
             className="cursor-pointer"
-            onClick={() => setSelectedCategory('all')}
+            onClick={() => handleCategoryChange('all')}
           >
             All
           </Badge>
@@ -39,7 +58,7 @@ export function ArtistFilters() {
               key={category}
               variant={selectedCategory === category ? 'default' : 'outline'}
               className="cursor-pointer capitalize"
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => handleCategoryChange(category)}
             >
               {category.replace('_', ' ')}
             </Badge>

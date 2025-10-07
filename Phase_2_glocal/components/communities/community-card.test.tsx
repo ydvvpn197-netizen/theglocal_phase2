@@ -54,4 +54,3 @@ describe('CommunityCard', () => {
     expect(link).toHaveAttribute('href', '/communities/test-community')
   })
 })
-

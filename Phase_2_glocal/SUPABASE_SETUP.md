@@ -25,7 +25,6 @@ Once the project is ready:
 1. Go to **Project Settings** (gear icon in sidebar)
 2. Navigate to **API** section
 3. Copy the following values:
-
    - **Project URL** - This is your `NEXT_PUBLIC_SUPABASE_URL`
    - **anon public** key - This is your `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - **service_role** key (click "Reveal" button) - This is your `SUPABASE_SERVICE_ROLE_KEY`
@@ -66,11 +65,13 @@ The Supabase client will now connect to your project.
 ## Important Notes
 
 ⚠️ **Security:**
+
 - Never commit `.env.local` to git
 - The anon key is safe for client-side use
 - Keep the service_role key secret (never expose it to clients)
 
 📝 **Next Steps:**
+
 - Database migrations will be created in the next tasks
 - We'll set up authentication and database tables
 - Row Level Security (RLS) policies will be implemented for privacy
@@ -78,11 +79,12 @@ The Supabase client will now connect to your project.
 ## Troubleshooting
 
 **Connection issues:**
+
 - Verify credentials are correct
 - Check that project is not paused (free tier pauses after inactivity)
 - Ensure no typos in environment variable names
 
 **Need help?**
+
 - Check Supabase docs: https://supabase.com/docs
 - Join Supabase Discord: https://discord.supabase.com
-

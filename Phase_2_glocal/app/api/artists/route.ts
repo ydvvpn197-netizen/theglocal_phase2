@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const city = searchParams.get('city')
     const category = searchParams.get('category')
+    const search = searchParams.get('search')
     const limit = parseInt(searchParams.get('limit') || '20')
     const offset = parseInt(searchParams.get('offset') || '0')
 
@@ -23,8 +24,15 @@ export async function GET(request: NextRequest) {
       query = query.eq('location_city', city)
     }
 
-    if (category) {
+    if (category && category !== 'all') {
       query = query.eq('service_category', category)
+    }
+
+    // Search functionality
+    if (search) {
+      query = query.or(
+        `stage_name.ilike.%${search}%,description.ilike.%${search}%,service_category.ilike.%${search}%`
+      )
     }
 
     const { data, error } = await query

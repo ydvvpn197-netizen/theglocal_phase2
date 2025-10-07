@@ -13,13 +13,15 @@
 **Mission:** Empower local populations to connect, share, engage, and organize without compromising their identity or privacy.
 
 **Core Pillars:**
+
 1. **Privacy & Anonymity:** No real names, no tracking, no compromises
-2. **Hyper-Local Discovery:** Location-aware content that matters to your neighborhood  
+2. **Hyper-Local Discovery:** Location-aware content that matters to your neighborhood
 3. **Community Governance:** Self-moderated spaces with transparent rules
 4. **Creator Economy:** Affordable platform for local artists (₹500/month) to reach audiences
 5. **Civic Engagement:** Tools for community polls and local issue discussion
 
 **Core Value Proposition:**
+
 - **For Users:** Anonymously engage with your community, discover local news/events, participate in civic discussions
 - **For Artists:** Low-cost visibility (₹500/month), direct booking system, local audience reach
 - **For Communities:** Self-governed spaces with transparent moderation and civic tools
@@ -30,6 +32,7 @@
 ## 🎯 Product Goals
 
 ### Primary Goals
+
 1. Launch a scalable MVP with core features: Communities, News Feed, and Artist Booking
 2. Maintain user anonymity as a first-class feature across all interactions
 3. Provide seamless location-based content discovery from first launch
@@ -39,6 +42,7 @@
 ### Success Metrics
 
 **User Growth & Engagement:**
+
 - **Primary:** 10K+ active users in first 3 months across 3 pilot cities
 - **DAU/MAU Ratio:** 30%+ (healthy daily engagement)
 - **User Retention:** 60%+ Day 7 retention, 40%+ Day 30 retention
@@ -47,6 +51,7 @@
 - **Posts/Comments:** Avg 10+ interactions per user/week
 
 **Community Vitality:**
+
 - **Communities Created:** 100+ communities across pilot cities
 - **Avg Community Size:** 50+ members per active community
 - **Community Engagement:** 5+ posts per community per day
@@ -54,6 +59,7 @@
 - **Cross-Community Participation:** Users join 3+ communities on average
 
 **Artist Ecosystem:**
+
 - **Artist Adoption:** 100+ subscribed artists in first 3 months
 - **Artist Distribution:** Coverage across all service categories
 - **Profile Quality:** 80%+ artists have complete profiles (10 images, description)
@@ -61,6 +67,7 @@
 - **Event Creation:** 3+ events per artist per month
 
 **Booking & Monetization:**
+
 - **Booking Requests:** 50+ per month by month 3
 - **Booking Conversion:** 30%+ of requests result in accepted bookings
 - **Avg Booking Value:** ₹5,000+ per booking
@@ -68,12 +75,14 @@
 - **Platform GMV:** ₹500K+ in facilitated bookings by month 6
 
 **Content Discovery:**
+
 - **News Feed Usage:** 70%+ users check news/discovery feed weekly
 - **External Content Shares:** 20+ news/Reddit posts shared to communities daily
 - **Event Discovery:** 40%+ users view events feed monthly
 - **RSVP Rate:** 15%+ of event viewers RSVP
 
 **Content Health & Safety:**
+
 - **Content Removal Rate:** <5% of total content
 - **Moderation Response Time:** <24 hours for 90%+ of reports
 - **False Report Rate:** <10% of reports dismissed
@@ -81,6 +90,7 @@
 - **User Ban Rate:** <0.5% of users banned
 
 **Privacy & Trust:**
+
 - **Location Permission Grant:** 80%+ users grant location access
 - **Account Deletion Rate:** <2% per month (healthy churn)
 - **Privacy Concerns:** <1% users report privacy issues
@@ -92,6 +102,7 @@
 ## 👥 User Personas
 
 ### 1. Anonymous Resident (Primary User)
+
 **Needs:** Stay informed about local news, participate in discussions without revealing identity, discover local events and services
 
 **Pain Points:** Lack of local community spaces, privacy concerns on traditional social media, difficulty finding local services
@@ -99,6 +110,7 @@
 **Key Behaviors:** Lurking before posting, location-aware browsing, quick anonymous interactions
 
 ### 2. Community Admin
+
 **Needs:** Tools to create and moderate communities, manage members, handle reported content
 
 **Pain Points:** Time-consuming moderation, unclear escalation paths, lack of co-admin support
@@ -106,6 +118,7 @@
 **Key Behaviors:** Regular moderation checks, community guideline enforcement, member approval
 
 ### 3. Local Artist/Creator
+
 **Needs:** Affordable platform visibility, booking management, event promotion, direct user engagement
 
 **Pain Points:** High platform fees elsewhere, difficulty reaching local audiences, lack of digital presence
@@ -113,6 +126,7 @@
 **Key Behaviors:** Profile optimization, event creation, responding to bookings, portfolio updates
 
 ### 4. Platform Super Admin
+
 **Needs:** System-wide visibility, escalation handling, payment/subscription management, platform health monitoring
 
 **Pain Points:** Scaling moderation, handling edge cases, balancing free expression with safety
@@ -128,6 +142,7 @@
 #### ✅ Must Have (P0)
 
 **1. User Authentication & Identity**
+
 - Email/phone OTP-based signup (no social login in MVP)
 - Auto-generated anonymous display ID (format: "LocalPanda123")
 - Basic profile: anonymous handle, avatar, join date
@@ -136,6 +151,7 @@
 - Privacy-first onboarding flow explaining anonymity benefits
 
 **2. Communities**
+
 - Create community (public only in MVP)
 - Join/leave community (instant, no approval needed in MVP)
 - Community creator auto-becomes admin
@@ -145,6 +161,7 @@
 - Transparent moderation log (visible to members)
 
 **3. Posts & Comments**
+
 - Create text post within community
 - Single image upload per post (optional)
 - Comment on posts (nested up to 2 levels)
@@ -154,6 +171,7 @@
 - Edit history indicator for transparency
 
 **4. Location-Based Feed**
+
 - Main feed showing posts from joined communities
 - Auto-filtered by user location (city/region level)
 - Sort by: Recent, Popular (by upvotes), Trending
@@ -161,6 +179,7 @@
 - Privacy: city-level accuracy only, never precise GPS in public data
 
 **5. News & Content Aggregation**
+
 - **Google News API** integration for local headlines
 - **Reddit API** integration for trending community discussions
 - Fetch content based on user location
@@ -169,7 +188,8 @@
 - Share news/posts as post to community
 - Content refresh every 15 minutes with caching
 
-**6. Polls & Civic Engagement** *(Moved to MVP for civic value)*
+**6. Polls & Civic Engagement** _(Moved to MVP for civic value)_
+
 - Create polls (single-choice and multiple-choice)
 - Vote on polls anonymously
 - View real-time poll results
@@ -179,6 +199,7 @@
 - Poll categories: Infrastructure, Safety, Events, General
 
 **7. Artist Platform**
+
 - Artist account creation (separate from regular user)
 - Public artist profile: name, service category, description, portfolio (max 10 images), location, rate range
 - Service categories: Musician, DJ, Photographer, Videographer, Makeup Artist, Dancer, Comedian, Chef, Artist, Other
@@ -188,6 +209,7 @@
 - Basic artist discovery page with filters (location, category, rating)
 
 **8. Events Discovery**
+
 - **BookMyShow API** integration for local events
 - Artists can create custom event pages (title, date, location, description)
 - Event discussion threads (community feature)
@@ -195,6 +217,7 @@
 - Combined feed: BookMyShow events + artist-created events
 
 **9. Booking System**
+
 - Send booking request to artist (includes: date, event type, budget, message)
 - Artist receives notification of booking request
 - Simple booking status: Pending, Accepted, Declined, Info Requested
@@ -203,6 +226,7 @@
 - Payment coordination off-platform (MVP scope)
 
 **10. Moderation System**
+
 - Report button on posts/comments with reason categories
 - Flagged content appears in admin dashboard (remains visible to users)
 - Community admin dashboard: view reports, remove content, dismiss report
@@ -211,6 +235,7 @@
 - Moderation guidelines publicly accessible
 
 **11. Super Admin Dashboard**
+
 - View all users, artists, communities
 - Manage subscription status manually
 - Access all reports and take action
@@ -226,6 +251,7 @@
 #### 🎯 Should Have (P1)
 
 **12. Anonymous Chat & Messaging**
+
 - 1-on-1 anonymous DMs
 - Group chats within communities
 - Ephemeral message options (auto-delete after read/24h)
@@ -234,6 +260,7 @@
 - Rate limiting to prevent spam (50 messages/day)
 
 **13. Enhanced Communities**
+
 - Private communities with join approval workflow
 - Add/remove co-admins
 - Enhanced community rules/guidelines editor
@@ -242,6 +269,7 @@
 - Community insights for admins (growth, engagement metrics)
 
 **14. Enhanced Artist Features**
+
 - Full event management (ticket types, pricing via Razorpay)
 - Event reminders and notifications
 - Artist analytics dashboard (profile views, booking conversion)
@@ -250,6 +278,7 @@
 - Featured artist listings (paid promotion)
 
 **15. Enhanced Moderation**
+
 - Content removal categories (spam, harassment, misinformation, violence, NSFW)
 - User warnings system (3 strikes = temporary ban)
 - Temporary bans (community level: 1 day, 7 days, 30 days)
@@ -258,6 +287,7 @@
 - Automated spam detection (basic keyword filtering)
 
 **16. Notifications**
+
 - Push notifications for: replies, mentions, booking requests, moderation actions, poll updates
 - In-app notification center with categorization
 - Configurable notification preferences (granular control)
@@ -271,6 +301,7 @@
 #### 💡 Nice to Have (P2)
 
 **17. Advanced Discovery & Recommendations**
+
 - AI-powered trending posts algorithm
 - Personalized community recommendations
 - Nearby events map view (Mapbox integration)
@@ -279,6 +310,7 @@
 - Content feed personalization based on engagement patterns
 
 **18. Government Engagement Dashboard**
+
 - Dedicated dashboard for government authorities (optional opt-in)
 - View polls where they're tagged
 - Official response system to community issues
@@ -286,12 +318,14 @@
 - Issue tracking and resolution status updates
 
 **19. Advanced Analytics**
+
 - Artist analytics: profile views, booking funnel, revenue tracking, peak demand times
 - Community analytics: growth trends, engagement metrics, top contributors
 - User insights: personal contribution history, community impact score
 - Platform-wide transparency reports (public metrics)
 
 **20. Gamification & Reputation**
+
 - Anonymous reputation system (points persist across communities)
 - Community contribution badges (verified helper, top contributor, etc.)
 - Leaderboards per community (optional, community admin controlled)
@@ -299,6 +333,7 @@
 - Special flair for high-reputation users
 
 **21. Premium Features**
+
 - Ad-free experience (₹99/month)
 - Advanced notification controls
 - Extended post edit window (1 hour vs 10 minutes)
@@ -311,6 +346,7 @@
 ## 🚫 Explicit Non-Goals
 
 ### Out of Scope for v1.0
+
 - ❌ Live streaming or video hosting
 - ❌ Direct payment processing for bookings (artists handle payments externally in MVP)
 - ❌ Government authority API integrations
@@ -325,15 +361,18 @@
 ## ⚙️ Functional Requirements
 
 ### FR-001: User Registration & Authentication
+
 **Priority:** P0
 
 **Requirements:**
+
 - Email/phone number + OTP verification via Supabase Auth
 - Auto-generate anonymous display ID on signup (LocalAdjective+Noun+3digits)
 - Store minimal data: ID, handle, email/phone (hashed), location preference, join date
 - No real name, photo, or bio required
 
 **Acceptance Criteria:**
+
 - [ ] User can sign up with email + OTP in <300 seconds
 - [ ] Anonymous handle is unique and auto-generated
 - [ ] Location permission requested immediately after signup
@@ -343,9 +382,11 @@
 ---
 
 ### FR-002: Communities
+
 **Priority:** P0
 
 **Requirements:**
+
 - Any user can create a community (name must be unique per city)
 - Creator automatically becomes admin with full permissions
 - Users can browse communities by: location, member count, recent activity
@@ -354,6 +395,7 @@
 - Community feed shows posts in reverse chronological order
 
 **Acceptance Criteria:**
+
 - [ ] Community creation takes <30 seconds
 - [ ] Community name is unique within geographic area
 - [ ] Community shows member count, post count, creation date
@@ -361,6 +403,7 @@
 - [ ] Users can join unlimited communities
 
 **Database Schema:**
+
 ```sql
 communities (
   id uuid PRIMARY KEY,
@@ -378,9 +421,11 @@ communities (
 ---
 
 ### FR-003: Posts & Comments
+
 **Priority:** P0
 
 **Requirements:**
+
 - Posts contain: title (required, max 300 chars), body (optional, max 10,000 chars), single image (optional, max 5MB)
 - Posts automatically tagged with author location and timestamp
 - Comments support nested replies (max 2 levels deep)
@@ -389,6 +434,7 @@ communities (
 - Delete own post/comment anytime (content replaced with "[deleted]")
 
 **Acceptance Criteria:**
+
 - [ ] Post creation takes <10 seconds
 - [ ] Image upload works on mobile and desktop
 - [ ] Vote counts update in real-time
@@ -396,6 +442,7 @@ communities (
 - [ ] Location metadata stored but not displayed by default
 
 **Database Schema:**
+
 ```sql
 posts (
   id uuid PRIMARY KEY,
@@ -430,9 +477,11 @@ comments (
 ---
 
 ### FR-004: Location-Based Feed
+
 **Priority:** P0
 
 **Requirements:**
+
 - Main feed aggregates posts from user's joined communities
 - Filter posts by user location (city/region level, configurable radius)
 - Sort options: Recent (default), Popular (by upvote ratio)
@@ -441,6 +490,7 @@ comments (
 - Show location radius indicator at top of feed
 
 **Acceptance Criteria:**
+
 - [ ] Feed loads within 2 seconds on 4G connection
 - [ ] Posts are accurately filtered by location
 - [ ] User can adjust location radius (5km, 10km, 25km, 50km, city-wide)
@@ -450,9 +500,11 @@ comments (
 ---
 
 ### FR-005: News & Content Aggregation
+
 **Priority:** P0
 
 **Requirements:**
+
 - Integrate Google News API for local headlines
 - Integrate Reddit API for trending community posts
 - Fetch content based on user's city/region
@@ -463,6 +515,7 @@ comments (
 - Content caching (15-minute TTL) to respect API rate limits
 
 **Acceptance Criteria:**
+
 - [ ] Discover feed loads within 3 seconds
 - [ ] Content refreshes every 15 minutes automatically
 - [ ] News articles are relevant to user location (>80% accuracy)
@@ -472,13 +525,14 @@ comments (
 - [ ] Source attribution clearly displayed (Google News / Reddit)
 
 **API Integration:**
+
 ```javascript
 // Google News API
 // Endpoint: https://newsapi.org/v2/top-headlines
 // Params: country, category, pageSize
 // Rate limit: 100 requests/day (free tier) - use caching
 
-// Reddit API  
+// Reddit API
 // Endpoint: https://www.reddit.com/r/{subreddit}/hot.json
 // Params: limit, location-based subreddit selection
 // Rate limit: 60 requests/minute - use caching
@@ -487,7 +541,8 @@ comments (
 // Endpoint: Integration via partner API
 // Fetch: Local events by city, category
 ```
-```
+
+````
 
 ---
 
@@ -547,14 +602,16 @@ poll_votes (
   selected_option_ids uuid[], -- array for multiple-choice
   voted_at timestamp
 )
-```
+````
 
 ---
 
 ### FR-007: Artist Platform
+
 **Priority:** P0
 
 **Requirements:**
+
 - Artists register as separate account type
 - Artist profile fields: stage name, service category (dropdown), description (max 500 chars), portfolio images (max 10, 5MB each), location, rate range, contact preference
 - Service categories: Musician, DJ, Photographer, Videographer, Makeup Artist, Dancer, Comedian, Chef, Artist, Other
@@ -565,6 +622,7 @@ poll_votes (
 - Payment gateway integration for subscription management
 
 **Acceptance Criteria:**
+
 - [ ] Artist profile creation takes <5 minutes
 - [ ] Payment flow completes in <2 minutes
 - [ ] Free trial activates immediately
@@ -574,6 +632,7 @@ poll_votes (
 - [ ] Artist can pause subscription (profile hidden during pause)
 
 **Database Schema:**
+
 ```sql
 artists (
   id uuid PRIMARY KEY REFERENCES users(id),
@@ -599,9 +658,11 @@ artists (
 ---
 
 ### FR-008: Events Discovery
+
 **Priority:** P0
 
 **Requirements:**
+
 - Integrate BookMyShow API for local event listings
 - Artists can create custom event pages
 - Event fields: title, date/time, location, description (max 1000 chars), category, ticket info (optional)
@@ -612,6 +673,7 @@ artists (
 - Event categories match artist service categories
 
 **Acceptance Criteria:**
+
 - [ ] Event creation takes <3 minutes
 - [ ] BookMyShow events sync every 6 hours
 - [ ] Event feed loads within 3 seconds
@@ -621,6 +683,7 @@ artists (
 - [ ] Event discussions support comments and reactions
 
 **Database Schema:**
+
 ```sql
 events (
   id uuid PRIMARY KEY,
@@ -652,9 +715,11 @@ event_rsvps (
 ---
 
 ### FR-009: Booking System
+
 **Priority:** P0
 
 **Requirements:**
+
 - Users can send booking request to artist from artist profile
 - Booking request form: event date, event type, location, budget, message (max 500 chars)
 - Artist receives in-app notification and email
@@ -665,6 +730,7 @@ event_rsvps (
 - Artists can view all booking requests in dashboard
 
 **Acceptance Criteria:**
+
 - [ ] Booking request sent in <30 seconds
 - [ ] Artist receives notification within 1 minute
 - [ ] Booking status updates reflect immediately
@@ -673,6 +739,7 @@ event_rsvps (
 - [ ] Payment coordination happens off-platform (MVP scope)
 
 **Database Schema:**
+
 ```sql
 bookings (
   id uuid PRIMARY KEY,
@@ -700,9 +767,11 @@ booking_messages (
 ---
 
 ### FR-010: Content Moderation
+
 **Priority:** P0
 
 **Requirements:**
+
 - Report button on all posts, comments, and polls
 - Report reasons: Spam, Harassment, Misinformation, Violence, NSFW, Other
 - Optional additional context (max 200 chars)
@@ -716,6 +785,7 @@ booking_messages (
 - Appeal system for removed content
 
 **Acceptance Criteria:**
+
 - [ ] Report submission takes <15 seconds
 - [ ] Reports appear in admin dashboard within 1 minute
 - [ ] Admins can process reports in bulk
@@ -725,6 +795,7 @@ booking_messages (
 - [ ] Moderation transparency: all actions logged with reason
 
 **Database Schema:**
+
 ```sql
 reports (
   id uuid PRIMARY KEY,
@@ -756,11 +827,13 @@ moderation_log (
 ---
 
 ### FR-011: Admin Dashboards
+
 **Priority:** P0
 
 **Requirements:**
 
 **Community Admin Dashboard:**
+
 - View all reports for their community
 - See community statistics (members, posts, growth)
 - Remove posts/comments
@@ -768,6 +841,7 @@ moderation_log (
 - Edit community info
 
 **Super Admin Dashboard:**
+
 - View all users, artists, communities
 - Global reports queue
 - User management: ban, warn, delete
@@ -777,6 +851,7 @@ moderation_log (
 - API integration health monitoring
 
 **Acceptance Criteria:**
+
 - [ ] Dashboard loads within 3 seconds
 - [ ] Real-time stat updates every 30 seconds
 - [ ] Bulk action support (select multiple reports)
@@ -789,6 +864,7 @@ moderation_log (
 ## 🎨 Design System
 
 ### Visual Identity
+
 - **Style:** Minimal, clean, modern (inspired by X/Twitter + Reddit)
 - **Color Palette:**
   - Primary: Deep blue (#1E3A8A)
@@ -804,6 +880,7 @@ moderation_log (
 - **Corners:** 8px border radius for cards, 4px for buttons
 
 ### Key UI Components
+
 1. **Anonymous Avatar System:** Geometric patterns + color based on user ID hash
 2. **Post Cards:** Clean white cards with clear hierarchy (title → body → metadata)
 3. **Location Badge:** Small pill showing distance/city at top of posts
@@ -812,11 +889,13 @@ moderation_log (
 6. **Artist Profile Card:** Portfolio grid + key info + CTA button
 
 ### Responsive Breakpoints
+
 - Mobile: 320px - 640px (single column)
 - Tablet: 641px - 1024px (two column where appropriate)
 - Desktop: 1025px+ (three column: sidebar + feed + widgets)
 
 ### Accessibility Requirements
+
 - WCAG 2.1 AA compliance
 - Keyboard navigation support
 - Screen reader optimized
@@ -828,6 +907,7 @@ moderation_log (
 ## 🧠 Technical Architecture
 
 ### Frontend Stack
+
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript 5.x
 - **Styling:** TailwindCSS 3.x
@@ -838,6 +918,7 @@ moderation_log (
 - **Image Upload:** Cloudinary or Supabase Storage
 
 ### Backend Stack
+
 - **Database:** Supabase (PostgreSQL 15+)
 - **Authentication:** Supabase Auth (OTP-based)
 - **Storage:** Supabase Storage (images, avatars)
@@ -846,6 +927,7 @@ moderation_log (
 - **Payment:** Razorpay SDK for subscriptions
 
 ### External Integrations
+
 - **News:** Google News API (newsapi.org) for local headlines and breaking news
 - **Social Content:** Reddit API for trending community discussions
 - **Events:** BookMyShow API for local event listings and discovery
@@ -859,6 +941,7 @@ moderation_log (
 ### Database Architecture
 
 **Key Tables:**
+
 - `users` - base user accounts (minimal PII, anonymized)
 - `artists` - artist-specific data (extends users)
 - `communities` - community metadata
@@ -877,6 +960,7 @@ moderation_log (
 - `messages` - chat messages (Phase 2)
 
 **Row Level Security (RLS):**
+
 - Users can only edit their own content
 - Users cannot view PII (email/phone) of other users
 - Artists can only manage their own profile and bookings
@@ -887,6 +971,7 @@ moderation_log (
 - Location data stored at city level only in public schemas
 
 ### Performance Requirements
+
 - **Page Load:** <3s on 4G connection
 - **Time to Interactive:** <5s
 - **API Response:** <500ms for 95th percentile
@@ -895,12 +980,14 @@ moderation_log (
 - **Caching:** Redis/Supabase cache for news, trending posts (15min TTL)
 
 ### Scalability Plan
+
 - **Phase 1 (0-10K users):** Supabase free tier sufficient
 - **Phase 2 (10K-100K users):** Upgrade to Supabase Pro, CDN caching
 - **Phase 3 (100K+ users):** Read replicas, connection pooling, edge functions
 - **Geographic Distribution:** Consider multi-region deployment by region
 
 ### Security Requirements
+
 - **Data Encryption:** TLS 1.3 in transit, AES-256 at rest
 - **Authentication:** OTP-based (no passwords), JWT tokens (7-day expiry)
 - **Rate Limiting:** 100 req/min per user, 1000 req/min per IP
@@ -913,6 +1000,7 @@ moderation_log (
 ## 📱 User Flows
 
 ### Flow 1: New User Onboarding
+
 1. Land on homepage → "Get Started" CTA
 2. Enter email/phone → Receive OTP
 3. Enter OTP → Account created, anonymous handle assigned
@@ -926,6 +1014,7 @@ moderation_log (
 ---
 
 ### Flow 2: Creating a Post
+
 1. From feed → "+" FAB or "Create Post" button
 2. Select community (dropdown of joined communities)
 3. Enter title (required)
@@ -941,6 +1030,7 @@ moderation_log (
 ---
 
 ### Flow 3: Booking an Artist
+
 1. Navigate to "Artists" tab
 2. Filter by location + category
 3. Browse artist cards → Click artist of interest
@@ -957,6 +1047,7 @@ moderation_log (
 ---
 
 ### Flow 4: Moderating Content (Community Admin)
+
 1. Receive notification of reported content
 2. Navigate to admin dashboard
 3. View report details (content, reporter reason, timestamp)
@@ -973,6 +1064,7 @@ moderation_log (
 ## 🧪 Testing Strategy
 
 ### Unit Tests
+
 - Utility functions (location calculations, ID generation)
 - Component logic (form validation, state management)
 - API route handlers
@@ -981,6 +1073,7 @@ moderation_log (
 **Target:** 80% code coverage
 
 ### Integration Tests
+
 - User registration flow
 - Post creation and retrieval
 - Booking request flow
@@ -990,6 +1083,7 @@ moderation_log (
 **Target:** Cover all critical paths
 
 ### E2E Tests (Playwright)
+
 - Complete onboarding flow
 - Create post → Comment → Report
 - Artist profile creation → Booking
@@ -998,11 +1092,13 @@ moderation_log (
 **Target:** Run on every deployment
 
 ### Performance Tests
+
 - Load testing: 1000 concurrent users
 - Database query performance (<100ms for indexed queries)
 - Image upload and delivery (<3s for 5MB image)
 
 ### Security Tests
+
 - OWASP Top 10 vulnerability scanning
 - RLS policy verification
 - Rate limiting effectiveness
@@ -1013,11 +1109,13 @@ moderation_log (
 ## 🚢 Deployment & DevOps
 
 ### Environments
+
 - **Development:** Local + Supabase dev project
 - **Staging:** Vercel preview + Supabase staging
 - **Production:** Vercel production + Supabase production
 
 ### CI/CD Pipeline
+
 1. Push to feature branch → Run linting + unit tests
 2. Open PR → Run integration tests + preview deployment
 3. Merge to main → Run E2E tests
@@ -1025,6 +1123,7 @@ moderation_log (
 5. Post-deployment smoke tests
 
 ### Monitoring
+
 - **Uptime:** Vercel status monitoring
 - **Errors:** Sentry for error tracking
 - **Performance:** Vercel Analytics for Web Vitals
@@ -1033,6 +1132,7 @@ moderation_log (
 - **Payments:** Razorpay webhook monitoring
 
 ### Backup Strategy
+
 - **Database:** Supabase automated daily backups (7-day retention)
 - **Images:** Supabase Storage redundancy
 - **Code:** Git repository (GitHub)
@@ -1042,6 +1142,7 @@ moderation_log (
 ## 📅 Development Roadmap
 
 ### Sprint 1-2 (Weeks 1-4): Foundation
+
 - [ ] Project setup (Next.js + Supabase + Tailwind)
 - [ ] Design system implementation
 - [ ] User authentication (OTP)
@@ -1049,6 +1150,7 @@ moderation_log (
 - [ ] Basic routing and navigation
 
 ### Sprint 3-4 (Weeks 5-8): Core Features
+
 - [ ] Communities (create, join, list)
 - [ ] Posts & comments
 - [ ] Upvote/downvote system
@@ -1056,6 +1158,7 @@ moderation_log (
 - [ ] Report functionality
 
 ### Sprint 5-6 (Weeks 9-12): News & Artists
+
 - [ ] Google News API integration
 - [ ] News feed UI
 - [ ] Artist profile creation
@@ -1063,6 +1166,7 @@ moderation_log (
 - [ ] Artist discovery page
 
 ### Sprint 7-8 (Weeks 13-16): Booking & Moderation
+
 - [ ] Booking request system
 - [ ] Booking messaging
 - [ ] Community admin dashboard
@@ -1070,6 +1174,7 @@ moderation_log (
 - [ ] Moderation workflows
 
 ### Sprint 9-10 (Weeks 17-20): Polish & Launch
+
 - [ ] Comprehensive testing
 - [ ] Performance optimization
 - [ ] Security audit
@@ -1081,46 +1186,50 @@ moderation_log (
 ## ❓ Open Questions & Decisions Needed
 
 ### Technical Decisions
+
 - [ ] **Q:** Should we use Mapbox or Google Maps for location visualization?  
-  **Recommendation:** Google Maps
+       **Recommendation:** Google Maps
 
 - [ ] **Q:** How to handle image storage scaling?  
-  **Recommendation:** Start with Supabase Storage, migrate to Cloudinary if >10K images/day
+       **Recommendation:** Start with Supabase Storage, migrate to Cloudinary if >10K images/day
 
 - [ ] **Q:** Real-time updates via polling or WebSockets?  
-  **Recommendation:** Polling for MVP (60s interval), WebSockets in Phase 2
+       **Recommendation:** Polling for MVP (60s interval), WebSockets in Phase 2
 
 ### Product Decisions
+
 - [ ] **Q:** Should users be able to delete their account and all content?  
-  **Recommendation:** Yes, GDPR compliance requirement
+       **Recommendation:** Yes, GDPR compliance requirement
 
 - [ ] **Q:** How to handle artist disputes/refunds?  
-  **Recommendation:** Manual process via super admin in MVP, automated in Phase 2
+       **Recommendation:** Manual process via super admin in MVP, automated in Phase 2
 
 - [ ] **Q:** Rate limiting strategy for post creation?  
-  **Recommendation:** 10 posts per day, 50 comments per day to prevent spam
+       **Recommendation:** 10 posts per day, 50 comments per day to prevent spam
 
 - [ ] **Q:** Should we allow editing posts after comments exist?  
-  **Recommendation:** Allow edit but show "edited" indicator with timestamp
+       **Recommendation:** Allow edit but show "edited" indicator with timestamp
 
 - [ ] **Q:** How to handle offensive usernames (auto-generated)?  
-  **Recommendation:** Maintain blocklist of inappropriate words in generator
+       **Recommendation:** Maintain blocklist of inappropriate words in generator
 
 ### Business Decisions
+
 - [ ] **Q:** Artist subscription pricing - monthly or quarterly?  
-  **Recommendation:** Monthly in MVP, offer quarterly discount in Phase 2
+       **Recommendation:** Monthly in MVP, offer quarterly discount in Phase 2
 
 - [ ] **Q:** Revenue split for future booking fees?  
-  **Recommendation:** 0% in MVP (artists coordinate payment externally), 10% in Phase 2
+       **Recommendation:** 0% in MVP (artists coordinate payment externally), 10% in Phase 2
 
 - [ ] **Q:** Free trial period for artists?  
-  **Recommendation:** 30-day free trial, card required but not charged
+       **Recommendation:** 30-day free trial, card required but not charged
 
 ---
 
 ## 📚 Appendices
 
 ### A. Glossary
+
 - **Anonymous Handle:** Auto-generated username (e.g., "LocalPanda123")
 - **Community:** Location-based group for discussion
 - **Feed:** Personalized stream of posts and news
@@ -1132,11 +1241,13 @@ moderation_log (
 ### B. API Endpoints Reference
 
 **Authentication:**
+
 - `POST /api/auth/signup` - Create account
 - `POST /api/auth/verify-otp` - Verify OTP code
 - `POST /api/auth/logout` - End session
 
 **Communities:**
+
 - `GET /api/communities` - List communities
 - `POST /api/communities` - Create community
 - `GET /api/communities/:id` - Get community details
@@ -1144,6 +1255,7 @@ moderation_log (
 - `DELETE /api/communities/:id/leave` - Leave community
 
 **Posts:**
+
 - `GET /api/posts` - Get feed
 - `POST /api/posts` - Create post
 - `GET /api/posts/:id` - Get post details
@@ -1153,6 +1265,7 @@ moderation_log (
 - `POST /api/posts/:id/report` - Report post
 
 **Polls:**
+
 - `GET /api/polls` - Get polls feed (location-based)
 - `POST /api/polls` - Create poll
 - `GET /api/polls/:id` - Get poll details
@@ -1160,12 +1273,14 @@ moderation_log (
 - `GET /api/polls/:id/results` - Get poll results
 
 **News & Discovery:**
+
 - `GET /api/discover` - Get aggregated content (news, Reddit, events)
 - `GET /api/news` - Get Google News articles
 - `GET /api/reddit/:subreddit` - Get Reddit posts
 - `POST /api/discover/share` - Share external content as post
 
 **Events:**
+
 - `GET /api/events` - List events (BookMyShow + artist events)
 - `POST /api/events` - Create artist event
 - `GET /api/events/:id` - Get event details
@@ -1173,6 +1288,7 @@ moderation_log (
 - `DELETE /api/events/:id/rsvp` - Remove RSVP
 
 **Artists:**
+
 - `GET /api/artists` - List artists (with filters)
 - `POST /api/artists` - Create artist profile
 - `GET /api/artists/:id` - Get artist details
@@ -1180,6 +1296,7 @@ moderation_log (
 - `POST /api/artists/:id/subscribe` - Start subscription
 
 **Bookings:**
+
 - `POST /api/bookings` - Create booking request
 - `GET /api/bookings` - List user bookings
 - `GET /api/bookings/:id` - Get booking details
@@ -1187,6 +1304,7 @@ moderation_log (
 - `POST /api/bookings/:id/messages` - Send message in booking thread
 
 **Admin:**
+
 - `GET /api/admin/reports` - List reports
 - `PUT /api/admin/reports/:id` - Resolve report
 - `GET /api/admin/stats` - Platform statistics
@@ -1195,6 +1313,7 @@ moderation_log (
 - `GET /api/admin/moderation-log` - Public moderation log
 
 ### C. Database ER Diagram
+
 ```
 users (1) ──< (M) community_members (M) >── (1) communities
 users (1) ──< (M) posts (M) >── (1) communities
@@ -1218,6 +1337,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Governance Model
 
 **Three-Tier Governance:**
+
 1. **Community Admins:** Elected by community creators, moderate their specific communities
 2. **Platform Moderators:** Handle cross-community issues and escalations
 3. **Super Admins:** Platform-wide oversight, policy enforcement, technical management
@@ -1225,6 +1345,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Community Self-Governance
 
 **Community Admin Powers:**
+
 - Remove posts/comments within their community
 - Temporary ban users from community (1-30 days)
 - Add/remove co-admins
@@ -1233,6 +1354,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - Access community insights and analytics
 
 **Community Admin Responsibilities:**
+
 - Respond to reports within 24 hours
 - Enforce community guidelines consistently
 - Document moderation decisions with clear reasons
@@ -1240,6 +1362,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - Escalate complex cases to super admins
 
 **Checks & Balances:**
+
 - All moderation actions logged publicly
 - Users can appeal to super admins
 - Community members can vote to remove admin (Phase 2)
@@ -1249,12 +1372,14 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Transparent Moderation
 
 **Public Moderation Log:**
+
 - Accessible at `/community/{id}/moderation-log`
 - Shows: action type, content type, reason, timestamp
 - Privacy-preserving: no user identities revealed
 - Filterable by date, action type, content type
 
 **Moderation Guidelines (Public):**
+
 - Clear content policy accessible to all users
 - Specific examples of violations
 - Escalation procedures documented
@@ -1262,6 +1387,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - Regular updates based on community feedback
 
 **Community Moderation Reports:**
+
 - Each community shows moderation stats
 - Reports/month, actions taken, response time
 - Builds trust and accountability
@@ -1269,6 +1395,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Platform Transparency
 
 **Public Dashboards:**
+
 1. **Platform Stats:** `/transparency/stats`
    - Total users (aggregated)
    - Posts/comments per day
@@ -1289,6 +1416,7 @@ users (1) ──< (M) moderation_log (admin actions)
    - Security incidents (if any)
 
 **Quarterly Transparency Reports:**
+
 - Published every 3 months
 - Detailed breakdown of platform health
 - Community feedback summary
@@ -1298,6 +1426,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Community Feedback Loops
 
 **User Voice:**
+
 - Dedicated feedback community
 - Monthly community surveys
 - Feature voting system (Phase 2)
@@ -1305,6 +1434,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - Regular AMAs with founders/team
 
 **Policy Changes:**
+
 - All policy changes announced 14 days before implementation
 - Community comment period
 - Rationale clearly explained
@@ -1317,6 +1447,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Privacy Architecture
 
 **Core Privacy Principles:**
+
 1. **Anonymity by Default:** No real names, photos, or identifiable information required
 2. **Zero-Knowledge Design:** Platform doesn't need to know who users are to function
 3. **Location Privacy:** City-level only in public data; precise coordinates never exposed
@@ -1328,6 +1459,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Anonymous Identity System
 
 **How It Works:**
+
 - Auto-generated handle: `LocalAdjective+Noun+3digits` (e.g., "LocalPanda547")
 - Deterministic avatar: Geometric pattern generated from user ID hash
 - No profile photos, real names, or bios
@@ -1335,6 +1467,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - Vote patterns anonymized using one-way hashes
 
 **Privacy Guarantees:**
+
 - No user-to-user identity correlation possible
 - Even admins cannot see email/phone without super admin access
 - Poll votes mathematically provable as anonymous
@@ -1343,12 +1476,14 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Data Protection Implementation
 
 **Authentication:**
+
 - OTP-based (no passwords to leak)
 - JWT tokens with 7-day expiry
 - Tokens stored in httpOnly cookies
 - No session tracking across devices
 
 **Database Security:**
+
 - Row Level Security (RLS) on all tables
 - PII stored in separate encrypted table
 - Poll votes use anonymous hash identifier
@@ -1356,6 +1491,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - Location coordinates: PostGIS geography type, public views rounded
 
 **API Security:**
+
 - Rate limiting: 100 req/min per user
 - No PII in API responses
 - Location data sanitized before response
@@ -1365,6 +1501,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### GDPR & Global Privacy Compliance
 
 **GDPR (EU Users):**
+
 - ✅ Explicit consent for location tracking (prompt on first launch)
 - ✅ Right to access: Export all user data via dashboard
 - ✅ Right to erasure: Delete account → all content anonymized
@@ -1374,12 +1511,14 @@ users (1) ──< (M) moderation_log (admin actions)
 - ✅ Transparent processing: Public privacy policy and terms
 
 **CCPA (California Users):**
+
 - ✅ Right to know what data is collected
 - ✅ Right to delete personal information
 - ✅ Right to opt-out of data sale (we don't sell data)
 - ✅ No discrimination for exercising privacy rights
 
 **India DPDP Act 2023:**
+
 - ✅ Consent for data processing (location, OTP auth)
 - ✅ Purpose limitation: Data used only for stated purposes
 - ✅ Data security safeguards in place
@@ -1389,6 +1528,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Data Retention & Deletion
 
 **Retention Periods:**
+
 - **User accounts:** Until user requests deletion
 - **Posts/comments:** Indefinitely, but anonymized upon account deletion
 - **Poll votes:** Anonymized, retained for statistical integrity
@@ -1399,6 +1539,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - **Analytics:** Aggregated only, no individual tracking
 
 **Account Deletion Process:**
+
 1. User initiates deletion via settings
 2. Confirmation email sent with 7-day grace period
 3. After 7 days: PII permanently deleted
@@ -1410,6 +1551,7 @@ users (1) ──< (M) moderation_log (admin actions)
 ### Transparency Commitments
 
 **Public Transparency Reports (Quarterly):**
+
 - Number of active users (aggregated)
 - Number of content reports filed
 - Moderation actions taken (by category)
@@ -1417,12 +1559,14 @@ users (1) ──< (M) moderation_log (admin actions)
 - Security incidents (if any)
 
 **Transparent Moderation:**
+
 - All moderation actions logged
 - Logs accessible at `/transparency/moderation-log`
 - User anonymity preserved in logs
 - Reasons for actions clearly stated
 
 **Open Source Commitment (Phase 2):**
+
 - Core privacy components open-sourced
 - Third-party security audits published
 - Bug bounty program for privacy/security issues
@@ -1434,6 +1578,7 @@ users (1) ──< (M) moderation_log (admin actions)
 **Major Improvements from v1.0:**
 
 ### New Features Added to MVP (Phase 1):
+
 1. **Polls & Civic Engagement** - Moved from Phase 2 to MVP for stronger community value
 2. **News & Content Aggregation** - Enhanced with Reddit API integration
 3. **Events Discovery** - Added BookMyShow API integration
@@ -1441,6 +1586,7 @@ users (1) ──< (M) moderation_log (admin actions)
 5. **Community Governance** - New section on transparent, community-driven moderation
 
 ### Enhanced Sections:
+
 - **Executive Summary** - Clearer articulation of privacy-first mission and core pillars
 - **Success Metrics** - Comprehensive KPIs across all feature areas
 - **External Integrations** - Added Reddit API and BookMyShow API
@@ -1450,6 +1596,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - **Governance & Transparency** - New dedicated section
 
 ### Technical Enhancements:
+
 - Poll voting system with cryptographic anonymity guarantees
 - Events schema supporting both BookMyShow and artist-created events
 - Enhanced RLS policies for privacy protection
@@ -1457,6 +1604,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - GDPR/CCPA/DPDP compliance documentation
 
 ### Strategic Shifts:
+
 - Stronger emphasis on privacy as core competitive advantage
 - Community self-governance as scaling strategy
 - Transparency as trust-building mechanism
@@ -1464,6 +1612,7 @@ users (1) ──< (M) moderation_log (admin actions)
 - Multi-source content aggregation for richer feeds
 
 **Rationale for Changes:**
+
 - **Privacy-First:** Aligns with founding vision of anonymous, safe community spaces
 - **Civic Value:** Polls enable real community organization from day one
 - **Content Richness:** Reddit + News + Events = compelling discovery experience
@@ -1482,5 +1631,4 @@ users (1) ──< (M) moderation_log (admin actions)
 
 ---
 
-*This PRD is a living document and will be updated as we learn from user feedback and technical constraints during development. All decisions prioritize user privacy, community engagement, and transparent governance.*
-
+_This PRD is a living document and will be updated as we learn from user feedback and technical constraints during development. All decisions prioritize user privacy, community engagement, and transparent governance._

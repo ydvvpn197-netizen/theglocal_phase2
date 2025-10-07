@@ -1,4 +1,6 @@
-import { Suspense } from 'react'
+'use client'
+
+import { useState } from 'react'
 import { ArtistList } from '@/components/artists/artist-list'
 import { ArtistFilters } from '@/components/artists/artist-filters'
 import { Card, CardContent } from '@/components/ui/card'
@@ -7,6 +9,9 @@ import { Palette, Star, Calendar } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ArtistsPage() {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [category, setCategory] = useState('all')
+
   return (
     <div className="container mx-auto max-w-6xl px-4 py-8">
       <div className="space-y-6">
@@ -63,34 +68,11 @@ export default function ArtistsPage() {
         </div>
 
         {/* Filters */}
-        <ArtistFilters />
+        <ArtistFilters onSearchChange={setSearchQuery} onCategoryChange={setCategory} />
 
         {/* Artist List */}
-        <Suspense fallback={<ArtistListSkeleton />}>
-          <ArtistList />
-        </Suspense>
+        <ArtistList searchQuery={searchQuery} category={category} />
       </div>
     </div>
   )
-}
-
-function ArtistListSkeleton() {
-  return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
-        <Card key={i} className="animate-pulse">
-          <div className="aspect-square bg-muted" />
-          <CardContent className="space-y-3 pt-4">
-            <div className="h-4 w-3/4 rounded bg-muted" />
-            <div className="h-4 w-1/2 rounded bg-muted" />
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-export const metadata = {
-  title: 'Artists - Theglocal',
-  description: 'Discover and book local artists and service providers',
 }

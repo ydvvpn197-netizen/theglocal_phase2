@@ -150,4 +150,3 @@ describe('Google News API Client', () => {
     })
   })
 })
-

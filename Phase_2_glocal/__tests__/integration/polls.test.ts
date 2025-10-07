@@ -340,4 +340,3 @@ describe('Polls Integration Tests', () => {
     })
   })
 })
-

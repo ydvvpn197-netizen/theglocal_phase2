@@ -136,4 +136,3 @@ describe('PostCard', () => {
     expect(screen.getByText('just now')).toBeInTheDocument()
   })
 })
-

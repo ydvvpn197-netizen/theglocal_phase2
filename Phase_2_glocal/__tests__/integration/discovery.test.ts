@@ -303,4 +303,3 @@ describe('Discovery Feed Integration Tests', () => {
     })
   })
 })
-
