@@ -282,11 +282,11 @@
     - [x] 2.2.15 Write unit tests for community components
     - [x] 2.2.16 Write integration tests for community CRUD operations
   - [ ] 2.3 **Posts & Comments**
-    - [ ] 2.3.1 Create post card component (title, body, image, author, metadata, vote counts)
-    - [ ] 2.3.2 Build create post form (title, body, image upload, community selector)
-    - [ ] 2.3.3 Implement image upload to Supabase Storage with size validation (max 5MB)
-    - [ ] 2.3.4 Create API endpoint for creating post (POST /api/posts) with location metadata
-    - [ ] 2.3.5 Create API endpoint for listing posts (GET /api/posts) with pagination
+    - [x] 2.3.1 Create post card component (title, body, image, author, metadata, vote counts)
+    - [x] 2.3.2 Build create post form (title, body, image upload, community selector)
+    - [x] 2.3.3 Implement image upload to Supabase Storage with size validation (max 5MB)
+    - [x] 2.3.4 Create API endpoint for creating post (POST /api/posts) with location metadata
+    - [x] 2.3.5 Create API endpoint for listing posts (GET /api/posts) with pagination
     - [ ] 2.3.6 Build post detail page (app/posts/[id]/page.tsx or modal)
     - [ ] 2.3.7 Implement comment thread component with nested replies (max 2 levels)
     - [ ] 2.3.8 Create comment form component
@@ -295,8 +295,8 @@
     - [ ] 2.3.11 Implement edit post functionality (within 10 minutes of creation)
     - [ ] 2.3.12 Implement delete post/comment (replace with "[deleted]" placeholder)
     - [ ] 2.3.13 Add "edited" indicator with timestamp on edited content
-    - [ ] 2.3.14 Create vote buttons component (upvote/downvote UI)
-    - [ ] 2.3.15 Build voting endpoint (POST /api/posts/[id]/vote) with one-vote-per-user validation
+    - [x] 2.3.14 Create vote buttons component (upvote/downvote UI)
+    - [x] 2.3.15 Build voting endpoint (POST /api/posts/[id]/vote) with one-vote-per-user validation
     - [ ] 2.3.16 Build comment voting endpoint (POST /api/comments/[id]/vote)
     - [ ] 2.3.17 Update vote counts in real-time (optimistic updates)
     - [ ] 2.3.18 Implement infinite scroll pagination for posts
