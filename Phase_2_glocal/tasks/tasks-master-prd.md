@@ -382,24 +382,24 @@
     - [x] 3.6.16 Write unit tests for poll anonymity utilities (poll-anonymity.test.ts)
     - [x] 3.6.17 Write integration tests for poll creation and voting
 
-  - [ ] 3.7 **BookMyShow Events Integration**
-    - [ ] 3.7.1 Set up BookMyShow API partnership/credentials
-    - [ ] 3.7.2 Add BookMyShow API credentials to environment variables
-    - [ ] 3.7.3 Create BookMyShow API client (lib/integrations/bookmyshow.ts)
-    - [ ] 3.7.4 Implement event fetching by city and category
-    - [ ] 3.7.5 Create events listing page (app/events/page.tsx)
-    - [ ] 3.7.6 Build event card component (title, date, location, image, source badge)
-    - [ ] 3.7.7 Create event detail page (app/events/[id]/page.tsx)
-    - [ ] 3.7.8 Build events API endpoint (GET /api/events) merging BookMyShow + artist events
-    - [ ] 3.7.9 Implement cron job endpoint for syncing BookMyShow events (GET /api/events/sync-bookmyshow)
-    - [ ] 3.7.10 Set up Vercel cron job to run sync every 6 hours
-    - [ ] 3.7.11 Add event filters (date, category, location radius)
-    - [ ] 3.7.12 Implement RSVP button component
-    - [ ] 3.7.13 Create RSVP endpoint (POST /api/events/[id]/rsvp)
-    - [ ] 3.7.14 Display RSVP count in real-time
-    - [ ] 3.7.15 Add event discussion thread (use existing comment system)
-    - [ ] 3.7.16 Write unit tests for BookMyShow client (bookmyshow.test.ts)
-    - [ ] 3.7.17 Write integration tests for event syncing and RSVP
+  - [x] 3.7 **BookMyShow Events Integration**
+    - [x] 3.7.1 Set up BookMyShow API partnership/credentials
+    - [x] 3.7.2 Add BookMyShow API credentials to environment variables
+    - [x] 3.7.3 Create BookMyShow API client (lib/integrations/bookmyshow.ts)
+    - [x] 3.7.4 Implement event fetching by city and category
+    - [x] 3.7.5 Create events listing page (app/events/page.tsx)
+    - [x] 3.7.6 Build event card component (title, date, location, image, source badge)
+    - [x] 3.7.7 Create event detail page (app/events/[id]/page.tsx)
+    - [x] 3.7.8 Build events API endpoint (GET /api/events) merging BookMyShow + artist events
+    - [x] 3.7.9 Implement cron job endpoint for syncing BookMyShow events (GET /api/events/sync-bookmyshow)
+    - [x] 3.7.10 Set up Vercel cron job to run sync every 6 hours
+    - [x] 3.7.11 Add event filters (date, category, location radius)
+    - [x] 3.7.12 Implement RSVP button component
+    - [x] 3.7.13 Create RSVP endpoint (POST /api/events/[id]/rsvp)
+    - [x] 3.7.14 Display RSVP count in real-time
+    - [x] 3.7.15 Add event discussion thread (use existing comment system)
+    - [x] 3.7.16 Write unit tests for BookMyShow client (bookmyshow.test.ts)
+    - [x] 3.7.17 Write integration tests for event syncing and RSVP
 
 - [ ] **4.0 Artist Ecosystem: Profiles, Subscriptions & Booking**
   - [ ] 4.1 **Artist Registration & Profiles**
