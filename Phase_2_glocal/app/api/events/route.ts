@@ -104,15 +104,23 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/events - Create event (for artists)
+// POST /api/events - Create event (for artists with active/trial subscription)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, description, event_date, venue, city, category, ticket_url, price } = body
+    const {
+      title,
+      description,
+      event_date,
+      location_city,
+      location_address,
+      category,
+      ticket_info,
+    } = body
 
-    if (!title || !event_date || !venue || !city) {
+    if (!title || !event_date || !location_city || !category) {
       return NextResponse.json(
-        { error: 'title, event_date, venue, and city are required' },
+        { error: 'title, event_date, location_city, and category are required' },
         { status: 400 }
       )
     }
@@ -128,22 +136,36 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
 
-    // Verify user is an artist with active subscription
-    const { data: artist } = await supabase
+    // Verify user is an artist with active or trial subscription
+    const { data: artist, error: artistError } = await supabase
       .from('artists')
-      .select('id, subscription_status')
+      .select('id, subscription_status, subscription_end_date')
       .eq('user_id', user.id)
       .single()
 
-    if (!artist) {
-      return NextResponse.json({ error: 'Artist profile required' }, { status: 403 })
-    }
-
-    if (artist.subscription_status !== 'active') {
+    if (artistError || !artist) {
       return NextResponse.json(
-        { error: 'Active subscription required to create events' },
+        { error: 'Artist profile required. Please register as an artist first.' },
         { status: 403 }
       )
+    }
+
+    // Validate subscription status: must be trial or active
+    if (!['trial', 'active'].includes(artist.subscription_status)) {
+      return NextResponse.json(
+        {
+          error: 'Active subscription required to create events',
+          message:
+            'Your subscription has expired. Please renew your subscription to continue creating events.',
+        },
+        { status: 403 }
+      )
+    }
+
+    // Validate event date is in the future
+    const eventDate = new Date(event_date)
+    if (eventDate <= new Date()) {
+      return NextResponse.json({ error: 'Event date must be in the future' }, { status: 400 })
     }
 
     // Create event
@@ -154,23 +176,27 @@ export async function POST(request: NextRequest) {
         title,
         description,
         event_date,
-        venue,
-        city,
+        location_city,
+        location_address,
         category,
-        ticket_url,
-        price,
-        source: 'artist',
+        ticket_info,
       })
       .select()
       .single()
 
-    if (createError) throw createError
+    if (createError) {
+      console.error('Database error creating event:', createError)
+      throw createError
+    }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Event created successfully',
-      data: event,
-    })
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Event created successfully',
+        data: event,
+      },
+      { status: 201 }
+    )
   } catch (error) {
     console.error('Create event error:', error)
     return NextResponse.json(

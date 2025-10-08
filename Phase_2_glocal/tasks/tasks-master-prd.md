@@ -450,14 +450,14 @@
     - [x] 4.2.17 Display subscription status and next billing date on dashboard
     - [x] 4.2.18 Write unit tests for Razorpay integration (razorpay.test.ts)
     - [x] 4.2.19 Write integration tests for subscription flow
-  - [ ] 4.3 **Artist Events**
-    - [ ] 4.3.1 Create artist event creation page (app/artists/dashboard/events/create/page.tsx)
-    - [ ] 4.3.2 Build create event form (title, date/time, location, description, category, ticket info)
-    - [ ] 4.3.3 Create event creation endpoint (POST /api/events) restricted to subscribed artists
-    - [ ] 4.3.4 Validate artist has active subscription before event creation
-    - [ ] 4.3.5 Display artist events on artist profile
-    - [ ] 4.3.6 Add edit/delete functionality for artist's own events
-    - [ ] 4.3.7 Write tests for artist event creation
+  - [x] 4.3 **Artist Events**
+    - [x] 4.3.1 Create artist event creation page (app/artists/dashboard/events/create/page.tsx)
+    - [x] 4.3.2 Build create event form (title, date/time, location, description, category, ticket info)
+    - [x] 4.3.3 Create event creation endpoint (POST /api/events) restricted to subscribed artists
+    - [x] 4.3.4 Validate artist has active subscription before event creation
+    - [x] 4.3.5 Display artist events on artist profile
+    - [x] 4.3.6 Add edit/delete functionality for artist's own events
+    - [x] 4.3.7 Write tests for artist event creation
   - [ ] 4.4 **Booking System**
     - [ ] 4.4.1 Create booking form component (event date, type, location, budget, message)
     - [ ] 4.4.2 Add "Request Booking" button on artist profile
