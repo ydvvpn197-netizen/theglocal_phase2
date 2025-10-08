@@ -417,7 +417,7 @@
     - [x] 3.7.16 Write unit tests for BookMyShow client (bookmyshow.test.ts)
     - [x] 3.7.17 Write integration tests for event syncing and RSVP
 
-- [ ] **4.0 Artist Ecosystem: Profiles, Subscriptions & Booking**
+- [x] **4.0 Artist Ecosystem: Profiles, Subscriptions & Booking**
   - [x] 4.1 **Artist Registration & Profiles**
     - [x] 4.1.1 Create artist registration page (app/artists/register/page.tsx)
     - [x] 4.1.2 Build multi-step artist registration form (stage name, category, description, location)
@@ -462,7 +462,7 @@
     - [x] 4.3.5 Display artist events on artist profile
     - [x] 4.3.6 Add edit/delete functionality for artist's own events
     - [x] 4.3.7 Write tests for artist event creation
-  - [ ] 4.4 **Booking System**
+  - [x] 4.4 **Booking System**
     - [x] 4.4.1 Create booking form component (event date, type, location, budget, message)
     - [x] 4.4.2 Add "Request Booking" button on artist profile  
     - [x] 4.4.3 Build booking creation endpoint (POST /api/bookings)
