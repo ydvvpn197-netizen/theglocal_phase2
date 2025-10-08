@@ -558,16 +558,16 @@
     - [x] 6.1.5 Add service worker for offline support (optional)
     - [x] 6.1.6 Measure and optimize Core Web Vitals (LCP, FID, CLS)
     - [x] 6.1.7 Run Lighthouse audits and fix issues
-  - [ ] 6.2 **Security Hardening**
-    - [ ] 6.2.1 Implement rate limiting on all API routes (100 req/min per user)
-    - [ ] 6.2.2 Add CSRF protection
-    - [ ] 6.2.3 Configure security headers (CSP, X-Frame-Options, etc.)
-    - [ ] 6.2.4 Audit RLS policies for privacy leaks
-    - [ ] 6.2.5 Run OWASP Top 10 vulnerability scan
-    - [ ] 6.2.6 Implement input sanitization on all user inputs
-    - [ ] 6.2.7 Test XSS and SQL injection prevention
-    - [ ] 6.2.8 Verify location data privacy (city-level only in public APIs)
-    - [ ] 6.2.9 Audit third-party dependencies for vulnerabilities
+  - [x] 6.2 **Security Hardening**
+    - [x] 6.2.1 Implement rate limiting on all API routes (100 req/min per user)
+    - [x] 6.2.2 Add CSRF protection
+    - [x] 6.2.3 Configure security headers (CSP, X-Frame-Options, etc.)
+    - [x] 6.2.4 Audit RLS policies for privacy leaks
+    - [x] 6.2.5 Run OWASP Top 10 vulnerability scan
+    - [x] 6.2.6 Implement input sanitization on all user inputs
+    - [x] 6.2.7 Test XSS and SQL injection prevention
+    - [x] 6.2.8 Verify location data privacy (city-level only in public APIs)
+    - [x] 6.2.9 Audit third-party dependencies for vulnerabilities
   - [ ] 6.3 **Comprehensive Testing**
     - [ ] 6.3.1 Write E2E test for complete onboarding flow (**tests**/e2e/onboarding.spec.ts)
     - [ ] 6.3.2 Write E2E test for post creation → comment → vote
