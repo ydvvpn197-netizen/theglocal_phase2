@@ -186,35 +186,29 @@
 
 ### Moderation & Reporting
 
-- `app/admin/community/[id]/page.tsx` - Community admin dashboard
+- `app/admin/community/[id]/page.tsx` - Community admin dashboard with stats
 - `app/api/reports/route.ts` - Create/list reports with filtering
 - `app/api/reports/[id]/route.ts` - Get/resolve report
 - `app/api/moderation/route.ts` - Moderation actions (remove content, ban users)
+- `app/api/moderation/log/route.ts` - Public moderation log API
 - `app/api/communities/[slug]/members/route.ts` - Get community members
+- `app/communities/[slug]/moderation-log/page.tsx` - Community moderation log page
 - `components/moderation/report-button.tsx` - Report content button
 - `components/moderation/report-dialog.tsx` - Report dialog wrapper
 - `components/moderation/report-form.tsx` - Report submission form with rate limiting
 - `components/moderation/report-card.tsx` - Report display with action buttons
 - `components/moderation/report-queue.tsx` - Report queue for moderators
+- `components/moderation/moderation-log-table.tsx` - Moderation log table with filters
 - `components/communities/community-members-list.tsx` - Community members list
 
-### Admin Dashboards
+### Transparency & Admin
 
-- `app/admin/page.tsx` - Super admin dashboard home
-- `app/admin/reports/page.tsx` - Reports queue
-- `app/admin/users/page.tsx` - User management
-- `app/admin/artists/page.tsx` - Artist management
-- `app/admin/communities/page.tsx` - Community management
-- `app/admin/stats/page.tsx` - Platform statistics
-- `app/admin/community/[id]/page.tsx` - Community admin dashboard
-- `app/api/admin/reports/route.ts` - Admin reports API
-- `app/api/admin/users/[id]/ban/route.ts` - Ban user
-- `app/api/admin/stats/route.ts` - Platform stats API
-- `components/admin/stats-card.tsx` - Statistics card component
-- `components/admin/user-table.tsx` - User management table
-- `components/admin/report-queue.tsx` - Report queue component
-- `lib/utils/permissions.ts` - Permission checking utilities
-- `lib/utils/permissions.test.ts` - Tests for permissions
+- `app/transparency/page.tsx` - Platform transparency dashboard
+- `app/transparency/stats/page.tsx` - Public platform statistics
+- `app/transparency/privacy/page.tsx` - Privacy metrics and commitments
+- `app/transparency/moderation/page.tsx` - Global moderation log
+- `app/api/transparency/stats/route.ts` - Public stats API endpoint
+- `app/admin/community/[id]/page.tsx` - Community admin dashboard (implemented)
 
 ### Testing & Documentation
 
@@ -484,7 +478,7 @@
     - [x] 4.4.14 Display booking statistics on artist dashboard
     - [x] 4.4.15 Write integration tests for booking flow (**tests**/integration/bookings.test.ts)
 
-- [ ] **5.0 Moderation, Admin Dashboards & Governance Tools**
+- [x] **5.0 Moderation, Admin Dashboards & Governance Tools**
   - [x] 5.1 **Content Reporting**
     - [x] 5.1.1 Create report button component (on posts, comments, polls)
     - [x] 5.1.2 Build report form with reason categories (Spam, Harassment, Misinformation, Violence, NSFW, Other)
