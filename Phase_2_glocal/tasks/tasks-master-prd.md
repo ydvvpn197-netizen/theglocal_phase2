@@ -480,16 +480,16 @@
     - [x] 4.4.15 Write integration tests for booking flow (**tests**/integration/bookings.test.ts)
 
 - [ ] **5.0 Moderation, Admin Dashboards & Governance Tools**
-  - [ ] 5.1 **Content Reporting**
-    - [ ] 5.1.1 Create report button component (on posts, comments, polls)
-    - [ ] 5.1.2 Build report form with reason categories (Spam, Harassment, Misinformation, Violence, NSFW, Other)
-    - [ ] 5.1.3 Add optional additional context field (max 200 chars)
-    - [ ] 5.1.4 Create report submission endpoint (POST /api/reports)
-    - [ ] 5.1.5 Store report with content reference and reporter (anonymized)
-    - [ ] 5.1.6 Keep reported content visible (no auto-hide in MVP)
+  - [x] 5.1 **Content Reporting**
+    - [x] 5.1.1 Create report button component (on posts, comments, polls)
+    - [x] 5.1.2 Build report form with reason categories (Spam, Harassment, Misinformation, Violence, NSFW, Other)
+    - [x] 5.1.3 Add optional additional context field (max 200 chars)
+    - [x] 5.1.4 Create report submission endpoint (POST /api/reports)
+    - [x] 5.1.5 Store report with content reference and reporter (anonymized)
+    - [x] 5.1.6 Keep reported content visible (no auto-hide in MVP)
     - [ ] 5.1.7 Send notification to community admin and super admin
-    - [ ] 5.1.8 Implement rate limiting on reports (prevent spam reporting)
-    - [ ] 5.1.9 Write tests for reporting functionality
+    - [x] 5.1.8 Implement rate limiting on reports (prevent spam reporting)
+    - [x] 5.1.9 Write tests for reporting functionality
   - [ ] 5.2 **Community Admin Dashboard**
     - [ ] 5.2.1 Create community admin dashboard page (app/admin/community/[id]/page.tsx)
     - [ ] 5.2.2 Add access control (only community admins can access)
