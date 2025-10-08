@@ -141,7 +141,8 @@
 - `lib/integrations/bookmyshow.test.ts` - Tests for BookMyShow API
 - `components/events/event-card.tsx` - Event card component
 - `components/events/event-list.tsx` - Event list component
-- `components/events/create-event-form.tsx` - Create event form (artists)
+- `components/events/event-filters.tsx` - Event filters component
+- `components/events/create-event-form.tsx` - Create event form for artists
 - `components/events/rsvp-button.tsx` - RSVP button component
 
 ### Artist Platform
@@ -151,6 +152,7 @@
 - `app/artists/[id]/subscribe/page.tsx` - Subscription payment page
 - `app/artists/register/page.tsx` - Artist registration page
 - `app/artists/dashboard/page.tsx` - Artist dashboard
+- `app/artists/dashboard/events/create/page.tsx` - Artist event creation page
 - `app/api/artists/route.ts` - List/create artist profiles
 - `app/api/artists/[id]/route.ts` - Get/update/delete artist profile
 - `app/api/artists/[id]/subscribe/route.ts` - Create subscription order
@@ -170,15 +172,16 @@
 
 ### Booking System
 
-- `app/bookings/page.tsx` - User booking history
-- `app/bookings/[id]/page.tsx` - Booking detail with messages
+- `app/bookings/page.tsx` - User booking history with status filters
+- `app/bookings/[id]/page.tsx` - Booking detail with status management and messages
 - `app/api/bookings/route.ts` - List/create bookings
-- `app/api/bookings/[id]/route.ts` - Get/update booking
-- `app/api/bookings/[id]/messages/route.ts` - Booking message thread
+- `app/api/bookings/[id]/route.ts` - Get/update/cancel booking
+- `app/api/bookings/[id]/messages/route.ts` - Booking message thread (list/create)
 - `components/bookings/booking-form.tsx` - Booking request form
+- `components/bookings/booking-dialog.tsx` - Booking dialog wrapper
 - `components/bookings/booking-card.tsx` - Booking card component
-- `components/bookings/booking-status.tsx` - Booking status badge
-- `components/bookings/booking-messages.tsx` - Message thread UI
+- `components/bookings/booking-status.tsx` - Booking status badge with icons
+- `components/bookings/booking-messages.tsx` - Real-time message thread UI
 
 ### Moderation & Reporting
 
@@ -215,6 +218,7 @@
 - `__tests__/integration/auth.test.ts` - Auth integration tests
 - `__tests__/integration/communities.test.ts` - Communities integration tests
 - `__tests__/integration/subscription.test.ts` - Subscription flow integration tests
+- `__tests__/integration/bookings.test.ts` - Booking system integration tests
 - `__tests__/e2e/onboarding.spec.ts` - Playwright E2E test for onboarding
 - `__tests__/e2e/booking-flow.spec.ts` - Playwright E2E test for booking
 - `README.md` - Project documentation
@@ -459,21 +463,21 @@
     - [x] 4.3.6 Add edit/delete functionality for artist's own events
     - [x] 4.3.7 Write tests for artist event creation
   - [ ] 4.4 **Booking System**
-    - [ ] 4.4.1 Create booking form component (event date, type, location, budget, message)
-    - [ ] 4.4.2 Add "Request Booking" button on artist profile
-    - [ ] 4.4.3 Build booking creation endpoint (POST /api/bookings)
+    - [x] 4.4.1 Create booking form component (event date, type, location, budget, message)
+    - [x] 4.4.2 Add "Request Booking" button on artist profile  
+    - [x] 4.4.3 Build booking creation endpoint (POST /api/bookings)
     - [ ] 4.4.4 Send notification to artist on new booking request
-    - [ ] 4.4.5 Create bookings listing page (app/bookings/page.tsx)
-    - [ ] 4.4.6 Build booking card component showing status
-    - [ ] 4.4.7 Create booking detail page (app/bookings/[id]/page.tsx)
-    - [ ] 4.4.8 Implement booking status update endpoint (PUT /api/bookings/[id])
-    - [ ] 4.4.9 Add status options: Pending, Accepted, Declined, Info Requested, Completed
-    - [ ] 4.4.10 Build booking message thread UI
-    - [ ] 4.4.11 Create booking message endpoint (POST /api/bookings/[id]/messages)
+    - [x] 4.4.5 Create bookings listing page (app/bookings/page.tsx)
+    - [x] 4.4.6 Build booking card component showing status
+    - [x] 4.4.7 Create booking detail page (app/bookings/[id]/page.tsx)
+    - [x] 4.4.8 Implement booking status update endpoint (PUT /api/bookings/[id])
+    - [x] 4.4.9 Add status options: Pending, Accepted, Declined, Info Requested, Completed
+    - [x] 4.4.10 Build booking message thread UI
+    - [x] 4.4.11 Create booking message endpoint (POST /api/bookings/[id]/messages)
     - [ ] 4.4.12 Implement notifications for booking status changes
-    - [ ] 4.4.13 Add booking history view for users and artists
-    - [ ] 4.4.14 Display booking statistics on artist dashboard
-    - [ ] 4.4.15 Write integration tests for booking flow (**tests**/e2e/booking-flow.spec.ts)
+    - [x] 4.4.13 Add booking history view for users and artists
+    - [x] 4.4.14 Display booking statistics on artist dashboard
+    - [x] 4.4.15 Write integration tests for booking flow (**tests**/integration/bookings.test.ts)
 
 - [ ] **5.0 Moderation, Admin Dashboards & Governance Tools**
   - [ ] 5.1 **Content Reporting**

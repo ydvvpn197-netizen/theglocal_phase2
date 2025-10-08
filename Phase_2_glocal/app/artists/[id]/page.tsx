@@ -4,8 +4,9 @@ import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { MapPin, Star, Calendar, DollarSign } from 'lucide-react'
+import { MapPin, Star, Calendar, DollarSign, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
+import { BookingDialog } from '@/components/bookings/booking-dialog'
 
 interface ArtistProfilePageProps {
   params: { id: string }
@@ -173,9 +174,12 @@ export default async function ArtistProfilePage({ params }: ArtistProfilePagePro
                 Send a booking request with your event details
               </p>
 
-              <Button asChild className="w-full">
-                <Link href={`/bookings/create?artist=${params.id}`}>Request Booking</Link>
-              </Button>
+              <BookingDialog artistId={params.id} artistName={artist.stage_name}>
+                <Button className="w-full">
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Request Booking
+                </Button>
+              </BookingDialog>
             </CardContent>
           </Card>
 
