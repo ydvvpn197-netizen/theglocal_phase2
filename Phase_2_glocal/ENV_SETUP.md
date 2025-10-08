@@ -32,6 +32,7 @@
 | Variable                        | Where to find                               | Description                            |
 | ------------------------------- | ------------------------------------------- | -------------------------------------- |
 | `CRON_SECRET`                   | Generate a random string (32+ characters)   | Secret for authenticating cron jobs    |
+| `SUPER_ADMIN_EMAILS`            | Comma-separated list of admin emails        | Emails with super admin access         |
 
 **Generate CRON_SECRET:**
 ```bash
