@@ -531,15 +531,15 @@
     - [ ] 5.3.18 Create API integration health monitoring dashboard
     - [ ] 5.3.19 Display status of Google News, Reddit, BookMyShow APIs
     - [ ] 5.3.20 Write tests for admin dashboard functionality
-  - [ ] 5.4 **Transparent Moderation Log**
-    - [ ] 5.4.1 Create public moderation log page (app/communities/[id]/moderation-log/page.tsx)
-    - [ ] 5.4.2 Build moderation log table component
-    - [ ] 5.4.3 Display: action type, content type, reason, timestamp (no user identities)
-    - [ ] 5.4.4 Add filters: date range, action type, content type
-    - [ ] 5.4.5 Implement privacy-preserving log display (anonymize all parties)
-    - [ ] 5.4.6 Create global moderation log (app/transparency/moderation/page.tsx)
+  - [x] 5.4 **Transparent Moderation Log**
+    - [x] 5.4.1 Create public moderation log page (app/communities/[slug]/moderation-log/page.tsx)
+    - [x] 5.4.2 Build moderation log table component
+    - [x] 5.4.3 Display: action type, content type, reason, timestamp (no user identities)
+    - [x] 5.4.4 Add filters: date range, action type, content type
+    - [x] 5.4.5 Implement privacy-preserving log display (anonymize all parties)
+    - [x] 5.4.6 Create global moderation log (app/transparency/moderation/page.tsx)
     - [ ] 5.4.7 Add export functionality (CSV download)
-    - [ ] 5.4.8 Write tests for moderation log visibility
+    - [x] 5.4.8 Write tests for moderation log visibility
   - [ ] 5.5 **Governance & Transparency Features**
     - [ ] 5.5.1 Create platform transparency dashboard (app/transparency/page.tsx)
     - [ ] 5.5.2 Build public stats page (app/transparency/stats/page.tsx)
