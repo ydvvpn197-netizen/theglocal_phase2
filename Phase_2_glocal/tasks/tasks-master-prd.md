@@ -265,8 +265,8 @@
   - [x] 1.19 Write unit tests for utility functions (anonymous-id.test.ts, location.test.ts)
   - [x] 1.20 Set up development workflow documentation (README.md with setup instructions)
 
-- [ ] **2.0 Core User Features: Authentication, Communities & Content**
-  - [ ] 2.1 **Authentication System**
+- [x] **2.0 Core User Features: Authentication, Communities & Content** ✓ COMPLETE
+  - [x] 2.1 **Authentication System** ✓ COMPLETE
     - [x] 2.1.1 Create signup page with email/phone input (app/auth/signup/page.tsx)
     - [x] 2.1.2 Implement OTP verification page (app/auth/verify/page.tsx)
     - [x] 2.1.3 Build signup API endpoint with Supabase Auth OTP (app/api/auth/signup/route.ts)
@@ -281,7 +281,7 @@
     - [x] 2.1.12 Add session persistence (30-day JWT tokens in httpOnly cookies)
     - [x] 2.1.13 Create protected route middleware for authenticated pages
     - [x] 2.1.14 Write integration tests for auth flow (**tests**/integration/auth.test.ts)
-  - [ ] 2.2 **Communities**
+  - [x] 2.2 **Communities** ✓ COMPLETE
     - [x] 2.2.1 Create communities listing page (app/communities/page.tsx)
     - [x] 2.2.2 Build community card component with stats (members, posts, activity)
     - [x] 2.2.3 Implement community creation page (app/communities/create/page.tsx)
@@ -298,7 +298,7 @@
     - [x] 2.2.14 Display community rules/guidelines on community page
     - [x] 2.2.15 Write unit tests for community components
     - [x] 2.2.16 Write integration tests for community CRUD operations
-  - [ ] 2.3 **Posts & Comments**
+  - [x] 2.3 **Posts & Comments** ✓ COMPLETE
     - [x] 2.3.1 Create post card component (title, body, image, author, metadata, vote counts)
     - [x] 2.3.2 Build create post form (title, body, image upload, community selector)
     - [x] 2.3.3 Implement image upload to Supabase Storage with size validation (max 5MB)
@@ -334,7 +334,7 @@
     - [x] 2.4.11 Optimize feed query performance with proper indexes
     - [x] 2.4.12 Write integration tests for feed filtering and sorting
 
-- [ ] **3.0 Discovery & Aggregation: Feeds, News & Events**
+- [x] **3.0 Discovery & Aggregation: Feeds, News & Events** ✓ COMPLETE
   - [x] 3.1 **Discovery Feed UI**
     - [x] 3.1.1 Create discovery page (app/discover/page.tsx)
     - [x] 3.1.2 Build unified feed component for mixed content (news, Reddit, events)
