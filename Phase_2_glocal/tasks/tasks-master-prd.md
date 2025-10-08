@@ -216,8 +216,10 @@
 - `jest.setup.js` - Jest setup file
 - `__tests__/integration/auth.test.ts` - Auth integration tests
 - `__tests__/integration/communities.test.ts` - Communities integration tests
-- `__tests__/integration/subscription.test.ts` - Subscription flow integration tests
-- `__tests__/integration/bookings.test.ts` - Booking system integration tests
+- `__tests__/integration/subscription.test.ts` - Subscription flow integration tests (34 tests)
+- `__tests__/integration/bookings.test.ts` - Booking system integration tests (46 tests)
+- `__tests__/integration/events.test.ts` - Artist events integration tests (28 tests)
+- `__tests__/integration/reporting.test.ts` - Content reporting integration tests (52 tests)
 - `__tests__/e2e/onboarding.spec.ts` - Playwright E2E test for onboarding
 - `__tests__/e2e/booking-flow.spec.ts` - Playwright E2E test for booking
 - `README.md` - Project documentation
