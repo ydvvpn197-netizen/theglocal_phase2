@@ -550,14 +550,14 @@
     - [x] 5.5.11 Write tests for transparency pages
 
 - [ ] **6.0 Polish, Testing & Launch Preparation**
-  - [ ] 6.1 **Performance Optimization**
-    - [ ] 6.1.1 Implement image optimization (WebP format, lazy loading, responsive srcsets)
-    - [ ] 6.1.2 Add code splitting for route-based chunks
-    - [ ] 6.1.3 Optimize database queries with proper indexes
-    - [ ] 6.1.4 Implement React Query caching strategies (stale-while-revalidate)
-    - [ ] 6.1.5 Add service worker for offline support (optional)
-    - [ ] 6.1.6 Measure and optimize Core Web Vitals (LCP, FID, CLS)
-    - [ ] 6.1.7 Run Lighthouse audits and fix issues
+  - [x] 6.1 **Performance Optimization**
+    - [x] 6.1.1 Implement image optimization (WebP format, lazy loading, responsive srcsets)
+    - [x] 6.1.2 Add code splitting for route-based chunks
+    - [x] 6.1.3 Optimize database queries with proper indexes
+    - [x] 6.1.4 Implement React Query caching strategies (stale-while-revalidate)
+    - [x] 6.1.5 Add service worker for offline support (optional)
+    - [x] 6.1.6 Measure and optimize Core Web Vitals (LCP, FID, CLS)
+    - [x] 6.1.7 Run Lighthouse audits and fix issues
   - [ ] 6.2 **Security Hardening**
     - [ ] 6.2.1 Implement rate limiting on all API routes (100 req/min per user)
     - [ ] 6.2.2 Add CSRF protection
