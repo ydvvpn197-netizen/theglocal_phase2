@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Loader2, FileText, MessageSquare, BarChart3, User } from 'lucide-react'
+import { Loader2, FileText, MessageSquare, BarChart3, User, Download } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 
 interface ModerationLog {
@@ -48,7 +48,48 @@ export function ModerationLogTable({ communityId }: ModerationLogTableProps) {
   const [error, setError] = useState<string | null>(null)
   const [actionFilter, setActionFilter] = useState('all')
   const [page, setPage] = useState(0)
+  const [isExporting, setIsExporting] = useState(false)
   const pageSize = 20
+
+  const exportToCSV = () => {
+    setIsExporting(true)
+
+    try {
+      // Convert logs to CSV format
+      const headers = ['Date', 'Content Type', 'Action', 'Reason']
+      const rows = logs.map((log) => [
+        new Date(log.created_at).toISOString(),
+        log.content_type,
+        log.action,
+        log.reason,
+      ])
+
+      const csvContent = [
+        headers.join(','),
+        ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
+      ].join('\n')
+
+      // Create download link
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const link = document.createElement('a')
+      const url = URL.createObjectURL(blob)
+
+      link.setAttribute('href', url)
+      link.setAttribute(
+        'download',
+        `moderation_log_${communityId || 'global'}_${new Date().toISOString().split('T')[0]}.csv`
+      )
+      link.style.visibility = 'hidden'
+
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (error) {
+      console.error('Error exporting CSV:', error)
+    } finally {
+      setIsExporting(false)
+    }
+  }
 
   const fetchLogs = useCallback(async () => {
     setIsLoading(true)
@@ -83,21 +124,34 @@ export function ModerationLogTable({ communityId }: ModerationLogTableProps) {
   return (
     <Card>
       <CardContent className="p-6">
-        {/* Filters */}
-        <div className="flex gap-2 mb-6 flex-wrap">
-          {ACTION_FILTERS.map((filter) => (
-            <Button
-              key={filter.value}
-              variant={actionFilter === filter.value ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => {
-                setActionFilter(filter.value)
-                setPage(0)
-              }}
-            >
-              {filter.label}
+        {/* Filters and Actions */}
+        <div className="flex justify-between items-center mb-6 gap-4">
+          <div className="flex gap-2 flex-wrap">
+            {ACTION_FILTERS.map((filter) => (
+              <Button
+                key={filter.value}
+                variant={actionFilter === filter.value ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => {
+                  setActionFilter(filter.value)
+                  setPage(0)
+                }}
+              >
+                {filter.label}
+              </Button>
+            ))}
+          </div>
+
+          {logs.length > 0 && (
+            <Button variant="outline" size="sm" onClick={exportToCSV} disabled={isExporting}>
+              {isExporting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="mr-2 h-4 w-4" />
+              )}
+              Export CSV
             </Button>
-          ))}
+          )}
         </div>
 
         {/* Loading State */}
