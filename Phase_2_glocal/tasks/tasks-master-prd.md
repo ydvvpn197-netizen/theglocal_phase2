@@ -28,6 +28,7 @@
 - `supabase/migrations/0005_subscription_tables.sql` - Subscription orders and subscriptions tables
 - `supabase/migrations/0006_artist_visibility_grace_period.sql` - Artist visibility RLS with 15-day grace period
 - `supabase/migrations/0007_subscription_reminders.sql` - Email reminder tracking and functions
+- `supabase/migrations/0008_community_admin_functions.sql` - Community admin dashboard functions and stats
 - `lib/types/database.types.ts` - TypeScript types generated from Supabase schema
 - `lib/types/models.ts` - Application-level type definitions
 
@@ -185,13 +186,17 @@
 
 ### Moderation & Reporting
 
-- `app/api/reports/route.ts` - Create/list reports
-- `app/api/reports/[id]/route.ts` - Resolve report
-- `app/api/moderation/route.ts` - Moderation actions
+- `app/admin/community/[id]/page.tsx` - Community admin dashboard
+- `app/api/reports/route.ts` - Create/list reports with filtering
+- `app/api/reports/[id]/route.ts` - Get/resolve report
+- `app/api/moderation/route.ts` - Moderation actions (remove content, ban users)
+- `app/api/communities/[slug]/members/route.ts` - Get community members
 - `components/moderation/report-button.tsx` - Report content button
-- `components/moderation/report-form.tsx` - Report submission form
-- `components/moderation/report-card.tsx` - Report display for admins
-- `components/moderation/moderation-log.tsx` - Public moderation log
+- `components/moderation/report-dialog.tsx` - Report dialog wrapper
+- `components/moderation/report-form.tsx` - Report submission form with rate limiting
+- `components/moderation/report-card.tsx` - Report display with action buttons
+- `components/moderation/report-queue.tsx` - Report queue for moderators
+- `components/communities/community-members-list.tsx` - Community members list
 
 ### Admin Dashboards
 
@@ -490,21 +495,21 @@
     - [ ] 5.1.7 Send notification to community admin and super admin
     - [x] 5.1.8 Implement rate limiting on reports (prevent spam reporting)
     - [x] 5.1.9 Write tests for reporting functionality
-  - [ ] 5.2 **Community Admin Dashboard**
-    - [ ] 5.2.1 Create community admin dashboard page (app/admin/community/[id]/page.tsx)
-    - [ ] 5.2.2 Add access control (only community admins can access)
-    - [ ] 5.2.3 Build report queue component for community-specific reports
-    - [ ] 5.2.4 Create report card showing content preview, reporter reason, timestamp
-    - [ ] 5.2.5 Add action buttons: Remove Content, Dismiss Report, View in Context
-    - [ ] 5.2.6 Implement content removal with reason selection
-    - [ ] 5.2.7 Replace removed content with "[removed by moderator]" placeholder
-    - [ ] 5.2.8 Create moderation action endpoint (POST /api/moderation)
-    - [ ] 5.2.9 Log all moderation actions to moderation_log table
+  - [x] 5.2 **Community Admin Dashboard**
+    - [x] 5.2.1 Create community admin dashboard page (app/admin/community/[id]/page.tsx)
+    - [x] 5.2.2 Add access control (only community admins can access)
+    - [x] 5.2.3 Build report queue component for community-specific reports
+    - [x] 5.2.4 Create report card showing content preview, reporter reason, timestamp
+    - [x] 5.2.5 Add action buttons: Remove Content, Dismiss Report, View in Context
+    - [x] 5.2.6 Implement content removal with reason selection
+    - [x] 5.2.7 Replace removed content with "[removed by moderator]" placeholder
+    - [x] 5.2.8 Create moderation action endpoint (POST /api/moderation)
+    - [x] 5.2.9 Log all moderation actions to moderation_log table
     - [ ] 5.2.10 Send notification to content author on removal
-    - [ ] 5.2.11 Display community statistics (members, posts, reports, growth)
+    - [x] 5.2.11 Display community statistics (members, posts, reports, growth)
     - [ ] 5.2.12 Add community info editing functionality
-    - [ ] 5.2.13 Show list of community members
-    - [ ] 5.2.14 Write tests for community admin actions
+    - [x] 5.2.13 Show list of community members
+    - [x] 5.2.14 Write tests for community admin actions
   - [ ] 5.3 **Super Admin Dashboard**
     - [ ] 5.3.1 Create super admin dashboard home (app/admin/page.tsx)
     - [ ] 5.3.2 Add super admin access control middleware
