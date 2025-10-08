@@ -1,14 +1,81 @@
 # Theglocal - Privacy-First Local Community Platform
 
-A privacy-first, hyper-local digital public square designed to be the virtual town square for communities everywhere.
+> *Your local community's digital town square*
 
-## Tech Stack
+A privacy-first, hyper-local digital public square designed to connect communities, support local artists, and enable civic engagement - all while protecting user anonymity.
 
+## ✨ Features
+
+### 🏘️ **Community Platform**
+- Anonymous participation with auto-generated handles
+- Location-based community discovery
+- Posts, comments, and threaded discussions
+- Upvote/downvote system
+- Community moderation tools
+
+### 🎭 **Artist Ecosystem**
+- Artist profiles with portfolio showcase
+- Subscription-based visibility (₹500/month, 30-day free trial)
+- Event creation and management
+- Direct booking system with messaging
+- Payment integration via Razorpay
+
+### 📊 **Civic Engagement**
+- Anonymous polls with 5 categories
+- Government authority tagging
+- Local issue discussions
+- Community decision-making
+
+### 📰 **Content Discovery**
+- Google News integration for local news
+- Reddit post aggregation
+- BookMyShow event syncing
+- Share external content to communities
+
+### 🛡️ **Moderation & Governance**
+- Content reporting with 6 categories
+- Community admin dashboards
+- Transparent public moderation logs
+- Privacy-preserving enforcement
+- Appeal process
+
+### 🔒 **Privacy & Security**
+- Anonymous handles (no real names)
+- City-level location only (coordinates rounded to ~1km)
+- Row Level Security (RLS) on all tables
+- Encrypted data at rest and in transit
+- No tracking or profiling
+- GDPR/CCPA compliant
+
+## 🚀 Tech Stack
+
+### **Frontend**
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript 5.x
-- **Styling:** TailwindCSS 3.x
-- **Database:** Supabase (PostgreSQL)
-- **Authentication:** Supabase Auth (OTP-based)
+- **Styling:** TailwindCSS 3.x + shadcn/ui
+- **State Management:** React Query (TanStack Query)
+- **Forms:** React Hook Form + Zod validation
+- **Icons:** Lucide React
+
+### **Backend & Infrastructure**
+- **Database:** Supabase (PostgreSQL + PostGIS)
+- **Authentication:** Supabase Auth (Email/Phone OTP)
+- **Storage:** Supabase Storage (images)
+- **Payments:** Razorpay (subscriptions)
+- **Email:** Resend (transactional emails)
+- **Hosting:** Vercel (with Cron Jobs)
+
+### **External APIs**
+- Google News API (local news)
+- Reddit API (community content)
+- BookMyShow API (events)
+
+## 📦 Test Coverage
+
+- **Integration Tests:** 167+ passing
+- **E2E Tests:** 4 critical flows
+- **Unit Tests:** Components and utilities
+- **Total:** 180+ tests
 
 ## Getting Started
 
@@ -151,13 +218,39 @@ This platform is built with privacy as a first-class feature:
 - Transparent moderation logs
 - GDPR/CCPA compliant
 
-## Documentation
+## 📚 Documentation
 
-See the `docs/` directory for detailed documentation:
+### **Setup Guides**
+- [ENV_SETUP.md](./ENV_SETUP.md) - Environment variables configuration
+- [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) - Database setup instructions
+- [APPLY_MIGRATIONS.md](./APPLY_MIGRATIONS.md) - How to apply database migrations
+- [TESTING.md](./TESTING.md) - Testing guide and best practices
+- [CRON_JOBS.md](./CRON_JOBS.md) - Automated job configuration
 
-- [PRD](./master_prd.md) - Product Requirements Document
-- [Tasks](./tasks/tasks-master-prd.md) - Development task list
+### **Project Documentation**
+- [master_prd.md](./master_prd.md) - Product Requirements Document
+- [tasks/tasks-master-prd.md](./tasks/tasks-master-prd.md) - Development task list with progress
+- [PROGRESS_SUMMARY.md](./PROGRESS_SUMMARY.md) - Current implementation status
+- [PRE_6.0_STATUS.md](./PRE_6.0_STATUS.md) - Pre-launch readiness report
 
-## License
+### **Deployment**
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - Production deployment guide
+- [CONTRIBUTING.md](./CONTRIBUTING.md) - Contribution guidelines
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for development guidelines and how to contribute.
+
+## 📄 License
 
 Proprietary - All rights reserved
+
+## 📧 Contact
+
+- **Support:** support@theglocal.com
+- **Appeals:** appeals@theglocal.com
+- **General:** hello@theglocal.com
+
+---
+
+**Built with ❤️ for local communities across India**
