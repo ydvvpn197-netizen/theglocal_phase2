@@ -28,7 +28,7 @@ export async function GET(_request: NextRequest) {
     // Sync events
     const syncedCount = await syncBookMyShowEvents(cities)
 
-    console.log(`Synced ${syncedCount} BookMyShow events across ${cities.length} cities`)
+    // console.log(`Synced ${syncedCount} BookMyShow events across ${cities.length} cities`)
 
     return NextResponse.json({
       success: true,

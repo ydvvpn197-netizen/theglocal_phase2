@@ -40,7 +40,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     }
 
     // Verify option belongs to this poll
-    const option = poll.options.find((opt: any) => opt.id === option_id)
+    const option = poll.options.find((opt: { id: string }) => opt.id === option_id)
     if (!option) {
       return NextResponse.json({ error: 'Invalid option for this poll' }, { status: 400 })
     }

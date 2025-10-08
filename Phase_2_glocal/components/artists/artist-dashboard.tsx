@@ -13,6 +13,9 @@ interface Artist {
   service_category: string
   location_city: string
   subscription_status: string
+  subscription_start_date?: string
+  subscription_end_date?: string
+  trial_end_date?: string
 }
 
 interface Event {
@@ -159,6 +162,16 @@ export function ArtistDashboard({ artist, events, bookings }: ArtistDashboardPro
               {artist.subscription_status === 'active' ? 'Active subscription' : 'Trial period'}
             </span>
           </div>
+          {artist.subscription_end_date && (
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm">
+                {artist.subscription_status === 'trial'
+                  ? `Trial ends: ${new Date(artist.trial_end_date || artist.subscription_end_date).toLocaleDateString()}`
+                  : `Next billing: ${new Date(artist.subscription_end_date).toLocaleDateString()}`}
+              </span>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

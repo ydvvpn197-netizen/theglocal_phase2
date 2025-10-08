@@ -12,6 +12,7 @@
 
 - `.env.local` - Environment variables for API keys, Supabase credentials, and external services
 - `next.config.js` - Next.js configuration with image domains, security headers
+- `vercel.json` - Vercel configuration including cron jobs
 - `tailwind.config.ts` - TailwindCSS configuration with custom colors and design tokens
 - `tsconfig.json` - TypeScript configuration
 - `package.json` - Dependencies and scripts
@@ -22,8 +23,11 @@
 
 - `supabase/migrations/0001_initial_schema.sql` - Initial database schema for all tables
 - `supabase/migrations/0002_rls_policies.sql` - Row Level Security policies
-- `supabase/migrations/0003_indexes.sql` - Database indexes for performance
-- `supabase/seed.sql` - Seed data for development/testing
+- `supabase/migrations/0003_feed_optimization.sql` - Feed query optimization indexes
+- `supabase/migrations/0004_poll_functions.sql` - Poll voting functions and triggers
+- `supabase/migrations/0005_subscription_tables.sql` - Subscription orders and subscriptions tables
+- `supabase/migrations/0006_artist_visibility_grace_period.sql` - Artist visibility RLS with 15-day grace period
+- `supabase/migrations/0007_subscription_reminders.sql` - Email reminder tracking and functions
 - `lib/types/database.types.ts` - TypeScript types generated from Supabase schema
 - `lib/types/models.ts` - Application-level type definitions
 
@@ -144,17 +148,23 @@
 
 - `app/artists/page.tsx` - Artist discovery page
 - `app/artists/[id]/page.tsx` - Artist profile page
+- `app/artists/[id]/subscribe/page.tsx` - Subscription payment page
 - `app/artists/register/page.tsx` - Artist registration page
 - `app/artists/dashboard/page.tsx` - Artist dashboard
 - `app/api/artists/route.ts` - List/create artist profiles
-- `app/api/artists/[id]/route.ts` - Get/update artist profile
-- `app/api/artists/[id]/subscribe/route.ts` - Handle subscription
+- `app/api/artists/[id]/route.ts` - Get/update/delete artist profile
+- `app/api/artists/[id]/subscribe/route.ts` - Create subscription order
+- `app/api/artists/[id]/subscribe/verify/route.ts` - Verify payment and activate subscription
 - `app/api/artists/subscription-webhook/route.ts` - Razorpay webhook handler
+- `app/api/cron/expire-subscriptions/route.ts` - Cron job to expire subscriptions and hide profiles past grace period
+- `app/api/cron/send-renewal-reminders/route.ts` - Cron job to send renewal reminder and expiry notification emails
 - `lib/integrations/razorpay.ts` - Razorpay SDK integration
 - `lib/integrations/razorpay.test.ts` - Tests for payment integration
+- `lib/integrations/resend.ts` - Resend email service integration with email templates
 - `components/artists/artist-card.tsx` - Artist card component
-- `components/artists/artist-profile.tsx` - Full artist profile
-- `components/artists/artist-portfolio.tsx` - Portfolio image grid
+- `components/artists/artist-list.tsx` - Artist list with filters
+- `components/artists/artist-dashboard.tsx` - Dashboard component
+- `components/artists/artist-registration-form.tsx` - Registration form
 - `components/artists/subscription-form.tsx` - Subscription payment form
 - `components/artists/artist-filters.tsx` - Filter artists by category/location
 
@@ -204,11 +214,13 @@
 - `jest.setup.js` - Jest setup file
 - `__tests__/integration/auth.test.ts` - Auth integration tests
 - `__tests__/integration/communities.test.ts` - Communities integration tests
+- `__tests__/integration/subscription.test.ts` - Subscription flow integration tests
 - `__tests__/e2e/onboarding.spec.ts` - Playwright E2E test for onboarding
 - `__tests__/e2e/booking-flow.spec.ts` - Playwright E2E test for booking
 - `README.md` - Project documentation
 - `DEPLOYMENT.md` - Deployment guide
 - `CONTRIBUTING.md` - Contribution guidelines
+- `CRON_JOBS.md` - Documentation for automated cron jobs and subscription lifecycle
 
 ### Notes
 
@@ -402,42 +414,42 @@
     - [x] 3.7.17 Write integration tests for event syncing and RSVP
 
 - [ ] **4.0 Artist Ecosystem: Profiles, Subscriptions & Booking**
-  - [ ] 4.1 **Artist Registration & Profiles**
-    - [ ] 4.1.1 Create artist registration page (app/artists/register/page.tsx)
-    - [ ] 4.1.2 Build multi-step artist registration form (stage name, category, description, location)
-    - [ ] 4.1.3 Add service category dropdown (Musician, DJ, Photographer, Videographer, Makeup Artist, Dancer, Comedian, Chef, Artist, Other)
-    - [ ] 4.1.4 Implement portfolio image uploader (max 10 images, 5MB each)
-    - [ ] 4.1.5 Add rate range input (min and max)
-    - [ ] 4.1.6 Create artist registration endpoint (POST /api/artists)
-    - [ ] 4.1.7 Store artist profile with initial status "trial"
-    - [ ] 4.1.8 Build artist profile page (app/artists/[id]/page.tsx)
-    - [ ] 4.1.9 Create artist profile component with portfolio grid
-    - [ ] 4.1.10 Display artist stats (profile views, rating, bookings)
-    - [ ] 4.1.11 Build artist discovery page (app/artists/page.tsx)
-    - [ ] 4.1.12 Create artist card component for discovery
-    - [ ] 4.1.13 Implement artist filters (location, category, rating, rate range)
-    - [ ] 4.1.14 Build artist search functionality
+  - [x] 4.1 **Artist Registration & Profiles**
+    - [x] 4.1.1 Create artist registration page (app/artists/register/page.tsx)
+    - [x] 4.1.2 Build multi-step artist registration form (stage name, category, description, location)
+    - [x] 4.1.3 Add service category dropdown (Musician, DJ, Photographer, Videographer, Makeup Artist, Dancer, Comedian, Chef, Artist, Other)
+    - [x] 4.1.4 Implement portfolio image uploader (max 10 images, 5MB each)
+    - [x] 4.1.5 Add rate range input (min and max)
+    - [x] 4.1.6 Create artist registration endpoint (POST /api/artists)
+    - [x] 4.1.7 Store artist profile with initial status "trial"
+    - [x] 4.1.8 Build artist profile page (app/artists/[id]/page.tsx)
+    - [x] 4.1.9 Create artist profile component with portfolio grid
+    - [x] 4.1.10 Display artist stats (profile views, rating, bookings)
+    - [x] 4.1.11 Build artist discovery page (app/artists/page.tsx)
+    - [x] 4.1.12 Create artist card component for discovery
+    - [x] 4.1.13 Implement artist filters (location, category, rating, rate range)
+    - [x] 4.1.14 Build artist search functionality
     - [ ] 4.1.15 Write unit tests for artist components
-  - [ ] 4.2 **Razorpay Subscription Integration**
+  - [x] 4.2 **Razorpay Subscription Integration**
     - [ ] 4.2.1 Set up Razorpay account and get API keys
     - [ ] 4.2.2 Add Razorpay key_id and key_secret to environment variables
-    - [ ] 4.2.3 Install Razorpay SDK (npm install razorpay)
-    - [ ] 4.2.4 Create Razorpay client wrapper (lib/integrations/razorpay.ts)
+    - [x] 4.2.3 Install Razorpay SDK (npm install razorpay)
+    - [x] 4.2.4 Create Razorpay client wrapper (lib/integrations/razorpay.ts)
     - [ ] 4.2.5 Create subscription plan in Razorpay (₹500/month)
-    - [ ] 4.2.6 Build subscription form component with Razorpay checkout
-    - [ ] 4.2.7 Create subscription endpoint (POST /api/artists/[id]/subscribe)
-    - [ ] 4.2.8 Implement 30-day free trial logic (card required but not charged)
-    - [ ] 4.2.9 Activate artist profile immediately after trial initiation
-    - [ ] 4.2.10 Set up Razorpay webhook endpoint (POST /api/artists/subscription-webhook)
-    - [ ] 4.2.11 Verify webhook signature for security
-    - [ ] 4.2.12 Handle subscription events (payment.success, payment.failed, subscription.cancelled)
-    - [ ] 4.2.13 Update artist subscription_status based on webhook events
-    - [ ] 4.2.14 Implement profile visibility logic (active when subscription current, hidden after 15-day grace period)
-    - [ ] 4.2.15 Send email reminders 3 days before subscription renewal
-    - [ ] 4.2.16 Build artist dashboard (app/artists/dashboard/page.tsx)
-    - [ ] 4.2.17 Display subscription status and next billing date on dashboard
-    - [ ] 4.2.18 Write unit tests for Razorpay integration (razorpay.test.ts)
-    - [ ] 4.2.19 Write integration tests for subscription flow
+    - [x] 4.2.6 Build subscription form component with Razorpay checkout
+    - [x] 4.2.7 Create subscription endpoint (POST /api/artists/[id]/subscribe)
+    - [x] 4.2.8 Implement 30-day free trial logic (card required but not charged)
+    - [x] 4.2.9 Activate artist profile immediately after trial initiation
+    - [x] 4.2.10 Set up Razorpay webhook endpoint (POST /api/artists/subscription-webhook)
+    - [x] 4.2.11 Verify webhook signature for security
+    - [x] 4.2.12 Handle subscription events (payment.success, payment.failed, subscription.cancelled)
+    - [x] 4.2.13 Update artist subscription_status based on webhook events
+    - [x] 4.2.14 Implement profile visibility logic (active when subscription current, hidden after 15-day grace period)
+    - [x] 4.2.15 Send email reminders 3 days before subscription renewal
+    - [x] 4.2.16 Build artist dashboard (app/artists/dashboard/page.tsx)
+    - [x] 4.2.17 Display subscription status and next billing date on dashboard
+    - [x] 4.2.18 Write unit tests for Razorpay integration (razorpay.test.ts)
+    - [x] 4.2.19 Write integration tests for subscription flow
   - [ ] 4.3 **Artist Events**
     - [ ] 4.3.1 Create artist event creation page (app/artists/dashboard/events/create/page.tsx)
     - [ ] 4.3.2 Build create event form (title, date/time, location, description, category, ticket info)

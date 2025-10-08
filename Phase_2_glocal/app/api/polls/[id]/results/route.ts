@@ -26,7 +26,9 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
     }
 
     // Sort options by position
-    const sortedOptions = poll.options.sort((a: any, b: any) => a.position - b.position)
+    const sortedOptions = poll.options.sort(
+      (a: { position: number }, b: { position: number }) => a.position - b.position
+    )
 
     return NextResponse.json({
       success: true,

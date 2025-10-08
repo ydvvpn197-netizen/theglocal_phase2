@@ -47,11 +47,11 @@ export async function fetchBookMyShowEvents(
   try {
     // In production, this would call the actual BookMyShow API
     // For now, returning mock data
-    console.log(`Fetching BookMyShow events for ${city}, category: ${category}`)
+    // console.log(`Fetching BookMyShow events for ${city}, category: ${category}`)
 
     return generateMockEvents(city, category, limit)
-  } catch (error) {
-    console.error('BookMyShow API error:', error)
+  } catch {
+    // console.error('BookMyShow API error:', error)
     return []
   }
 }
@@ -105,7 +105,7 @@ function generateMockEvents(city: string, category: string, limit: number): Book
  * @param eventId BookMyShow event ID
  * @returns Event details or null
  */
-export async function fetchEventById(eventId: string): Promise<BookMyShowEvent | null> {
+export async function fetchEventById(_eventId: string): Promise<BookMyShowEvent | null> {
   const apiKey = process.env.BOOKMYSHOW_API_KEY
 
   if (!apiKey) {
@@ -116,10 +116,10 @@ export async function fetchEventById(eventId: string): Promise<BookMyShowEvent |
   try {
     // In production: API call to BookMyShow
     // For now: return null or mock data
-    console.log(`Fetching event ${eventId}`)
+    // console.log(`Fetching event ${eventId}`)
     return null
-  } catch (error) {
-    console.error('BookMyShow API error:', error)
+  } catch {
+    // console.error('BookMyShow API error:', error)
     return null
   }
 }
@@ -141,9 +141,9 @@ export async function syncBookMyShowEvents(cities: string[]): Promise<number> {
       // with deduplication logic (check if event already exists)
       syncedCount += events.length
 
-      console.log(`Synced ${events.length} events for ${city}`)
-    } catch (error) {
-      console.error(`Failed to sync events for ${city}:`, error)
+      // console.log(`Synced ${events.length} events for ${city}`)
+    } catch {
+      // console.error(`Failed to sync events for ${city}:`, error)
     }
   }
 
