@@ -1,10 +1,21 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { useAuth } from '@/lib/context/auth-context'
+import { LogOut, User } from 'lucide-react'
 
 export function Navbar() {
+  const router = useRouter()
+  const { user, profile, signOut, isLoading } = useAuth()
+
+  const handleSignOut = async () => {
+    await signOut()
+    router.push('/')
+  }
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -53,10 +64,31 @@ export function Navbar() {
 
         {/* Right side actions */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm">
-            Login
-          </Button>
-          <Button size="sm">Get Started</Button>
+          {!isLoading && (
+            <>
+              {user && profile ? (
+                <>
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="text-sm font-medium">{profile.anonymous_handle}</span>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" size="sm" onClick={() => router.push('/auth/signup')}>
+                    Login
+                  </Button>
+                  <Button size="sm" onClick={() => router.push('/auth/signup')}>
+                    Get Started
+                  </Button>
+                </>
+              )}
+            </>
+          )}
         </div>
       </div>
     </nav>
