@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Skip static page generation errors to allow dynamic pages
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  // Use output: 'standalone' for serverless deployment
+  output: 'standalone',
   images: {
     domains: [],
     remotePatterns: [
