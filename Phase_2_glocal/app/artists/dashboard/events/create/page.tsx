@@ -41,9 +41,7 @@ export default async function CreateEventPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p>
-              You need an active subscription to create events. Your subscription has expired.
-            </p>
+            <p>You need an active subscription to create events. Your subscription has expired.</p>
             <p>
               Please renew your subscription to continue creating events and receiving booking
               requests.
@@ -77,7 +75,7 @@ export default async function CreateEventPage() {
             <CardTitle>Event Details</CardTitle>
           </CardHeader>
           <CardContent>
-            <CreateEventForm artistId={artist.id} artistName={artist.stage_name} />
+            <CreateEventForm artistName={artist.stage_name} />
           </CardContent>
         </Card>
       </div>
@@ -89,4 +87,3 @@ export const metadata = {
   title: 'Create Event - Theglocal',
   description: 'Create a new event for your audience',
 }
-

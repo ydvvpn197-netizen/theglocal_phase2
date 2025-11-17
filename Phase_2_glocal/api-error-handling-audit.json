@@ -1,0 +1,485 @@
+{
+  "totalFiles": 138,
+  "filesWithIssues": 53,
+  "filesWithoutIssues": 85,
+  "issues": [
+    {
+      "file": "app\\api\\admin\\communities\\[id]\\feature\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PUT"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\admin\\users\\[id]\\ban\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PUT"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\admin\\users\\[id]\\unban\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PUT"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "PUT", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\verify\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\verify-paypal\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscription\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "PATCH"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\auth\\callback\\route.ts",
+      "issues": {
+        "missingTryCatch": [],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": ["GET"]
+      }
+    },
+    {
+      "file": "app\\api\\bookings\\[id]\\messages\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\bookings\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "PUT", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\comments\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PATCH", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\comments\\[id]\\vote\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\analytics\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\delete\\route.ts",
+      "issues": {
+        "missingTryCatch": ["DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\edit\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PUT"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\join\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\leave\\route.ts",
+      "issues": {
+        "missingTryCatch": ["DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\[userId]\\ban\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\[userId]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PATCH", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\reclaim-admin\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\restore\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\discover\\bookmyshow\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\discover\\news\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\drafts\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\events\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "PUT", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\events\\[id]\\rsvp\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\jobs\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\messages\\conversations\\[id]\\messages\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\messages\\conversations\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\reactions\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\read\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PATCH", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\notifications\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PATCH", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\analytics\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\comments\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\results\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\vote\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\announcement\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\comments\\enhanced\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\comments\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\edit-history\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\pin\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PATCH", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\view\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\vote\\route.ts",
+      "issues": {
+        "missingTryCatch": ["POST"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\reports\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET", "PUT"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\users\\[handle]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["GET"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\v2\\locations\\[id]\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PUT", "DELETE"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    },
+    {
+      "file": "app\\api\\v2\\locations\\[id]\\set-primary\\route.ts",
+      "issues": {
+        "missingTryCatch": ["PUT"],
+        "missingImports": [],
+        "missingLogger": [],
+        "missingErrorHandler": []
+      }
+    }
+  ],
+  "timestamp": "2025-11-16T12:13:22.681Z"
+}

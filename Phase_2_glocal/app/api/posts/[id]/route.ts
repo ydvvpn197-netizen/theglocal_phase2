@@ -1,18 +1,29 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// PATCH /api/posts/[id] - Edit a post (within 10 minutes)
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * PATCH /api/posts/[id] - Edit a post (within 10 minutes of creation)
+ *
+ * @param request - Next.js request with updated post data
+ * @param params - Route parameters with post ID
+ * @returns Updated post data
+ */
+export const PATCH = withRateLimit(async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: postId } = params
+  const logger = createAPILogger('PATCH', `/api/posts/${postId}`)
+
   try {
-    const { id: postId } = params
     const body = await request.json()
     const { title, body: postBody } = body
 
     if (!title && !postBody) {
-      return NextResponse.json(
-        { error: 'At least one field (title or body) is required' },
-        { status: 400 }
-      )
+      throw APIErrors.badRequest('At least one field (title or body) is required')
     }
 
     const supabase = await createClient()
@@ -23,8 +34,15 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Updating post', {
+      postId,
+      userId: user.id,
+      hasTitle: !!title,
+      hasBody: !!postBody,
+    })
 
     // Get the post
     const { data: post, error: fetchError } = await supabase
@@ -34,12 +52,12 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       .single()
 
     if (fetchError || !post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+      throw APIErrors.notFound('Post')
     }
 
     // Check if user is the author
     if (post.author_id !== user.id) {
-      return NextResponse.json({ error: 'You can only edit your own posts' }, { status: 403 })
+      throw APIErrors.forbidden()
     }
 
     // Check if post was created within 10 minutes
@@ -48,15 +66,12 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     const diffMinutes = (now.getTime() - createdAt.getTime()) / (1000 * 60)
 
     if (diffMinutes > 10) {
-      return NextResponse.json(
-        { error: 'Posts can only be edited within 10 minutes of creation' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Check if post is deleted
     if (post.is_deleted) {
-      return NextResponse.json({ error: 'Cannot edit deleted post' }, { status: 400 })
+      throw APIErrors.badRequest('Cannot edit deleted post')
     }
 
     // Update post
@@ -76,27 +91,32 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     if (updateError) throw updateError
 
-    return NextResponse.json({
-      success: true,
-      message: 'Post updated successfully',
-      data: updatedPost,
-    })
+    logger.info('Post updated successfully', { postId, userId: user.id })
+
+    return createSuccessResponse(updatedPost, { message: 'Post updated successfully' })
   } catch (error) {
-    console.error('Update post error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to update post',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'PATCH',
+      path: `/api/posts/${postId}`,
+    })
   }
-}
+})
 
-// DELETE /api/posts/[id] - Soft delete a post
-export async function DELETE(_request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * DELETE /api/posts/[id] - Soft delete a post
+ *
+ * @param _request - Next.js request (unused)
+ * @param params - Route parameters with post ID
+ * @returns Success message
+ */
+export const DELETE = withRateLimit(async function DELETE(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: postId } = params
+  const logger = createAPILogger('DELETE', `/api/posts/${postId}`)
+
   try {
-    const { id: postId } = params
-
     const supabase = await createClient()
 
     // Get current user
@@ -105,8 +125,10 @@ export async function DELETE(_request: NextRequest, { params }: { params: { id: 
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Deleting post', { postId, userId: user.id })
 
     // Get the post
     const { data: post, error: fetchError } = await supabase
@@ -116,17 +138,17 @@ export async function DELETE(_request: NextRequest, { params }: { params: { id: 
       .single()
 
     if (fetchError || !post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+      throw APIErrors.notFound('Post')
     }
 
     // Check if user is the author
     if (post.author_id !== user.id) {
-      return NextResponse.json({ error: 'You can only delete your own posts' }, { status: 403 })
+      throw APIErrors.forbidden()
     }
 
     // Check if already deleted
     if (post.is_deleted) {
-      return NextResponse.json({ error: 'Post already deleted' }, { status: 400 })
+      throw APIErrors.badRequest('Post already deleted')
     }
 
     // Soft delete: mark as deleted
@@ -137,17 +159,13 @@ export async function DELETE(_request: NextRequest, { params }: { params: { id: 
 
     if (deleteError) throw deleteError
 
-    return NextResponse.json({
-      success: true,
-      message: 'Post deleted successfully',
-    })
+    logger.info('Post deleted successfully', { postId, userId: user.id })
+
+    return createSuccessResponse(null, { message: 'Post deleted successfully' })
   } catch (error) {
-    console.error('Delete post error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to delete post',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'DELETE',
+      path: `/api/posts/${postId}`,
+    })
   }
-}
+})

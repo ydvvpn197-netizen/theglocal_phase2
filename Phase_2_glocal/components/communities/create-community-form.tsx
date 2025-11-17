@@ -8,13 +8,17 @@ import { createCommunitySchema } from '@/lib/utils/validation'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import { useAuth } from '@/lib/context/auth-context'
 
 type CreateCommunityFormData = z.infer<typeof createCommunitySchema>
 
-export function CreateCommunityForm() {
+interface CreateCommunityFormProps {
+  onSuccess?: (communitySlug: string) => void
+}
+
+export function CreateCommunityForm({ onSuccess }: CreateCommunityFormProps = {}) {
   const router = useRouter()
   const { toast } = useToast()
   const { user, profile } = useAuth()
@@ -62,8 +66,13 @@ export function CreateCommunityForm() {
         description: `${data.name} has been created successfully`,
       })
 
-      // Redirect to the new community page
-      router.push(`/communities/${result.data.slug}`)
+      // Call onSuccess callback if provided
+      if (onSuccess && result.data?.slug) {
+        onSuccess(result.data.slug)
+      } else {
+        // Redirect to the new community page
+        router.push(`/communities/${result.data.slug}`)
+      }
     } catch (error) {
       toast({
         title: 'Error',

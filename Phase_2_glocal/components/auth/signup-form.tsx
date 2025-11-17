@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 
 const signupSchema = z.object({
@@ -87,6 +87,8 @@ export function SignupForm() {
         <Input
           id="contact"
           type="text"
+          inputMode="text"
+          autoComplete="email tel"
           placeholder="your@email.com or +1234567890"
           {...register('contact')}
           disabled={isLoading}

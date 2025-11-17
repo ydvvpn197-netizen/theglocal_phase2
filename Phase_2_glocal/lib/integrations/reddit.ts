@@ -1,3 +1,4 @@
+import { logger } from '@/lib/utils/logger'
 /**
  * Reddit API Integration
  * Fetches trending posts from location-based subreddits
@@ -125,7 +126,7 @@ export async function fetchLocalRedditPosts(
       })
       .slice(0, limit)
   } catch (error) {
-    console.error('Reddit API error:', error)
+    logger.error('Reddit API error:', error)
     return []
   }
 }
@@ -187,7 +188,7 @@ export async function fetchMultipleSubreddits(
     // Sort by upvotes and return top N
     return allPosts.sort((a, b) => b.upvotes - a.upvotes).slice(0, limit)
   } catch (error) {
-    console.error('Reddit API error:', error)
+    logger.error('Reddit API error:', error)
     return []
   }
 }

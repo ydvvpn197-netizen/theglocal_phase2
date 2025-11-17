@@ -1,13 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// GET /api/posts - List posts with optional filtering
-export async function GET(request: NextRequest) {
+/**
+ * GET /api/posts - List posts with optional filtering
+ *
+ * @param request - Next.js request with query parameters
+ * @returns List of posts with author and community data
+ */
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/posts')
+
   try {
     const searchParams = request.nextUrl.searchParams
     const communityId = searchParams.get('community_id')
-    const limit = parseInt(searchParams.get('limit') || '20')
+    const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100) // Max 100
     const offset = parseInt(searchParams.get('offset') || '0')
+
+    logger.info('Fetching posts', { communityId, limit, offset })
 
     const supabase = await createClient()
 
@@ -32,29 +44,36 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: data || [],
+    logger.info('Posts fetched successfully', { count: data?.length || 0 })
+
+    return createSuccessResponse(data || [], {
+      count: data?.length || 0,
+      limit,
+      offset,
     })
   } catch (error) {
-    console.error('Fetch posts error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch posts',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'GET',
+      path: '/api/posts',
+    })
   }
-}
+})
 
-// POST /api/posts - Create a new post
-export async function POST(request: NextRequest) {
+/**
+ * POST /api/posts - Create a new post
+ *
+ * @param request - Next.js request with post data
+ * @returns Created post with full details
+ */
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/posts')
+
   try {
     const body = await request.json()
     const { community_id, title, body: postBody, image_url } = body
 
     if (!community_id || !title) {
-      return NextResponse.json({ error: 'community_id and title are required' }, { status: 400 })
+      throw APIErrors.badRequest('community_id and title are required')
     }
 
     const supabase = await createClient()
@@ -65,8 +84,14 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Creating post', {
+      userId: user.id,
+      communityId: community_id,
+      title: title.substring(0, 50),
+    })
 
     // Verify user is a member of the community
     const { data: membership } = await supabase
@@ -77,10 +102,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (!membership) {
-      return NextResponse.json(
-        { error: 'You must be a member of this community to post' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Get user's location from profile
@@ -106,18 +128,18 @@ export async function POST(request: NextRequest) {
 
     if (createError) throw createError
 
-    return NextResponse.json({
-      success: true,
+    logger.info('Post created successfully', {
+      postId: post.id,
+      userId: user.id,
+    })
+
+    return createSuccessResponse(post, {
       message: 'Post created successfully',
-      data: post,
     })
   } catch (error) {
-    console.error('Create post error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create post',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: '/api/posts',
+    })
   }
-}
+})

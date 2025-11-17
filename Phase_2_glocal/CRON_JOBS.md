@@ -94,12 +94,14 @@ RESEND_FROM_EMAIL=noreply@yourdomain.com
 ```
 
 **Email Service Setup:**
+
 1. Create account at [Resend](https://resend.com)
 2. Generate API key from dashboard
 3. Add and verify your domain (or use `onboarding@resend.dev` for testing)
 4. Add credentials to environment variables
 
 Generate a secure secret:
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
@@ -151,6 +153,7 @@ curl -X GET https://your-domain.com/api/cron/expire-subscriptions \
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -168,6 +171,7 @@ curl -X GET https://your-domain.com/api/cron/send-renewal-reminders \
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -182,6 +186,7 @@ curl -X GET https://your-domain.com/api/cron/send-renewal-reminders \
 ### Vercel Logs
 
 View cron job execution logs:
+
 1. Go to Vercel Dashboard → Your Project → Deployments
 2. Click on a deployment → Logs
 3. Filter by `/api/cron/expire-subscriptions`
@@ -192,19 +197,19 @@ Check subscription states:
 
 ```sql
 -- View subscription status distribution
-SELECT subscription_status, COUNT(*) 
-FROM artists 
+SELECT subscription_status, COUNT(*)
+FROM artists
 GROUP BY subscription_status;
 
 -- Find subscriptions expiring soon
-SELECT id, stage_name, subscription_end_date 
-FROM artists 
+SELECT id, stage_name, subscription_end_date
+FROM artists
 WHERE subscription_status IN ('trial', 'active')
   AND subscription_end_date < (CURRENT_DATE + INTERVAL '7 days');
 
 -- Find profiles in grace period
-SELECT id, stage_name, subscription_end_date 
-FROM artists 
+SELECT id, stage_name, subscription_end_date
+FROM artists
 WHERE subscription_status = 'expired'
   AND subscription_end_date >= (CURRENT_DATE - INTERVAL '15 days');
 ```
@@ -271,7 +276,7 @@ The system tracks when emails are sent to avoid duplicates:
 
 ```sql
 -- View reminder tracking
-SELECT 
+SELECT
   stage_name,
   subscription_end_date,
   renewal_reminder_sent_at,
@@ -293,4 +298,3 @@ ORDER BY subscription_end_date DESC;
 - [ ] Dashboard for subscription and email analytics
 - [ ] A/B testing for email templates
 - [ ] Personalized email recommendations
-

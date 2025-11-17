@@ -1,3 +1,4 @@
+import { logger } from '@/lib/utils/logger'
 /**
  * Location Utilities
  * Functions for handling geolocation, distance calculations, and privacy
@@ -63,7 +64,7 @@ export function roundCoordinatesForPrivacy(coordinates: Coordinates): Coordinate
  */
 export async function getCurrentLocation(): Promise<Coordinates | null> {
   if (!navigator.geolocation) {
-    console.error('Geolocation is not supported by this browser')
+    logger.error('Geolocation is not supported by this browser')
     return null
   }
 
@@ -76,7 +77,7 @@ export async function getCurrentLocation(): Promise<Coordinates | null> {
         })
       },
       (error) => {
-        console.error('Error getting location:', error.message)
+        logger.error('Error getting location:', error.message)
         resolve(null)
       },
       {
@@ -133,3 +134,40 @@ export const LOCATION_RADIUS_OPTIONS = [
   { value: 50, label: '50 km' },
   { value: 999999, label: 'City-wide' },
 ] as const
+
+/**
+ * Convert coordinates to PostGIS POINT format
+ * @param coordinates Latitude and longitude
+ * @returns PostGIS POINT string format: "POINT(longitude latitude)"
+ */
+export function convertCoordinatesToPostGIS(coordinates: Coordinates): string {
+  return `POINT(${coordinates.longitude} ${coordinates.latitude})`
+}
+
+/**
+ * Convert PostGIS POINT format to coordinates
+ * @param postgisPoint PostGIS POINT string format: "POINT(longitude latitude)" or "POINT(longitude, latitude)"
+ * @returns Coordinates object or null if invalid
+ */
+export function convertPostGISToCoordinates(
+  postgisPoint: string | null | undefined
+): Coordinates | null {
+  if (!postgisPoint || typeof postgisPoint !== 'string') {
+    return null
+  }
+
+  // Match POINT format: POINT(longitude latitude) or POINT(longitude, latitude)
+  const match = postgisPoint.match(/POINT\(([^ ]+)[,\s]+([^ ]+)\)/i)
+  if (!match) {
+    return null
+  }
+
+  const longitude = parseFloat(match[1] ?? '0')
+  const latitude = parseFloat(match[2] ?? '0')
+
+  if (isNaN(longitude) || isNaN(latitude)) {
+    return null
+  }
+
+  return { latitude, longitude }
+}

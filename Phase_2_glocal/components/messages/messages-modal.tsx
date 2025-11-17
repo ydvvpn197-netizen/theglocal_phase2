@@ -7,6 +7,7 @@ import { MessageThread } from './message-thread'
 import { UserSearchDialog } from './user-search-dialog'
 import { useConversationsRealtime } from '@/lib/hooks/use-conversations-realtime'
 import { useMessages } from '@/lib/context/messages-context'
+import { useAuth } from '@/lib/context/auth-context'
 import { Conversation } from '@/lib/types/messages.types'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
@@ -21,15 +22,22 @@ export function MessagesModal({ open, onOpenChange, initialConversationId }: Mes
   const [showSearch, setShowSearch] = useState(false)
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
   const { activeConversationId, openConversation, closeConversation } = useMessages()
-  const { conversations } = useConversationsRealtime()
+  const { user } = useAuth()
+  const { conversations } = useConversationsRealtime({
+    userId: user?.id ?? null,
+    enabled: !!user,
+  })
 
-  const handleSelectConversation = useCallback((conversationId: string) => {
-    const conversation = conversations.find(c => c.id === conversationId)
-    if (conversation) {
-      setSelectedConversation(conversation)
-      openConversation(conversationId)
-    }
-  }, [conversations, setSelectedConversation, openConversation])
+  const handleSelectConversation = useCallback(
+    (conversationId: string) => {
+      const conversation = conversations.find((c) => c.id === conversationId)
+      if (conversation) {
+        setSelectedConversation(conversation)
+        openConversation(conversationId)
+      }
+    },
+    [conversations, setSelectedConversation, openConversation]
+  )
 
   // Handle initial conversation selection
   useEffect(() => {
@@ -112,9 +120,9 @@ export function MessagesModal({ open, onOpenChange, initialConversationId }: Mes
                     </Button>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold truncate">
-                        {selectedConversation.participant_1?.anonymous_handle || 
-                         selectedConversation.participant_2?.anonymous_handle || 
-                         'Unknown User'}
+                        {selectedConversation.participant_1?.anonymous_handle ||
+                          selectedConversation.participant_2?.anonymous_handle ||
+                          'Unknown User'}
                       </h3>
                     </div>
                   </div>

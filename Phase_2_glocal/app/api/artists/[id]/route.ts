@@ -1,6 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 const updateArtistSchema = z.object({
   stage_name: z.string().min(1).max(100).optional(),
@@ -13,40 +16,41 @@ const updateArtistSchema = z.object({
 })
 
 // GET /api/artists/[id] - Get artist profile
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export const GET = withRateLimit(async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const logger = createAPILogger('GET', '/api/artists/[id]')
   try {
+    const { id } = await params
     const supabase = await createClient()
 
-    const { data: artist, error } = await supabase
-      .from('artists')
-      .select('*')
-      .eq('id', params.id)
-      .single()
+    const { data: artist, error } = await supabase.from('artists').select('*').eq('id', id).single()
 
     if (error) throw error
 
     if (!artist) {
-      return NextResponse.json({ error: 'Artist not found' }, { status: 404 })
+      throw APIErrors.notFound('Artist')
     }
 
-    return NextResponse.json({
-      success: true,
-      data: artist,
-    })
+    return createSuccessResponse(artist)
   } catch (error) {
-    console.error('Fetch artist error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch artist',
-      },
-      { status: 500 }
-    )
+    const { id: errorId } = await params
+    return handleAPIError(error, {
+      method: 'GET',
+      path: `/api/artists/${errorId}`,
+    })
   }
-}
+})
 
 // PUT /api/artists/[id] - Update artist profile
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export const PUT = withRateLimit(async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const logger = createAPILogger('PUT', '/api/artists/[id]')
   try {
+    const { id } = await params
     const supabase = await createClient()
 
     // Get current user
@@ -55,22 +59,22 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
     // Verify artist ownership
     const { data: artist, error: artistError } = await supabase
       .from('artists')
       .select('user_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (artistError || !artist) {
-      return NextResponse.json({ error: 'Artist not found' }, { status: 404 })
+      throw APIErrors.notFound('Artist')
     }
 
     if (artist.user_id !== user.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+      throw APIErrors.forbidden()
     }
 
     const body = await request.json()
@@ -83,31 +87,32 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         ...updates,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
     if (updateError) throw updateError
 
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse(updatedArtist, {
       message: 'Artist profile updated successfully',
-      data: updatedArtist,
     })
   } catch (error) {
-    console.error('Update artist error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to update artist',
-      },
-      { status: 500 }
-    )
+    const { id: errorId } = await params
+    return handleAPIError(error, {
+      method: 'PUT',
+      path: `/api/artists/${errorId}`,
+    })
   }
-}
+})
 
 // DELETE /api/artists/[id] - Delete artist profile (soft delete by setting subscription to cancelled)
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export const DELETE = withRateLimit(async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const logger = createAPILogger('DELETE', '/api/artists/[id]')
   try {
+    const { id } = await params
     const supabase = await createClient()
 
     // Get current user
@@ -116,22 +121,22 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
     // Verify artist ownership
     const { data: artist, error: artistError } = await supabase
       .from('artists')
       .select('user_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (artistError || !artist) {
-      return NextResponse.json({ error: 'Artist not found' }, { status: 404 })
+      throw APIErrors.notFound('Artist')
     }
 
     if (artist.user_id !== user.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+      throw APIErrors.forbidden()
     }
 
     // Soft delete by setting subscription to cancelled
@@ -142,22 +147,18 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
         subscription_cancelled_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (deleteError) throw deleteError
 
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse(null, {
       message: 'Artist profile deleted successfully',
     })
   } catch (error) {
-    console.error('Delete artist error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to delete artist',
-      },
-      { status: 500 }
-    )
+    const { id: errorId } = await params
+    return handleAPIError(error, {
+      method: 'DELETE',
+      path: `/api/artists/${errorId}`,
+    })
   }
-}
-
+})

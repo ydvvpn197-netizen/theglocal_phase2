@@ -95,9 +95,7 @@ export default function PrivacyMetricsPage() {
               <CardContent>
                 <div className="text-3xl font-bold mb-2">0</div>
                 <p className="text-sm text-muted-foreground">Processed: 0 (100%)</p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Average processing time: N/A
-                </p>
+                <p className="text-xs text-muted-foreground mt-2">Average processing time: N/A</p>
               </CardContent>
             </Card>
 
@@ -203,4 +201,3 @@ export const metadata = {
   title: 'Privacy Metrics - Theglocal',
   description: 'See how we protect user privacy and handle data',
 }
-

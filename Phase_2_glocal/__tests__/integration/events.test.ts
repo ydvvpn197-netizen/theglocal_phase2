@@ -2,7 +2,7 @@ import { describe, it, expect } from '@jest/globals'
 
 /**
  * Integration Tests for Artist Event Management
- * 
+ *
  * These tests cover the complete event lifecycle for artists:
  * 1. Artist with active/trial subscription creates event
  * 2. Event validation (future date, required fields)
@@ -10,14 +10,13 @@ import { describe, it, expect } from '@jest/globals'
  * 4. Artist deletes their own event
  * 5. Subscription validation for event creation
  * 6. Ownership validation for edit/delete
- * 
+ *
  * Note: These tests require a running Supabase instance
  */
 
 describe('Artist Event Management Integration Tests', () => {
   const testArtistId = 'test-artist-123'
   const testEventId = 'test-event-123'
-  const testUserId = 'test-user-123'
 
   describe('Event Creation', () => {
     it('should allow artist with active subscription to create event', () => {
@@ -58,8 +57,6 @@ describe('Artist Event Management Integration Tests', () => {
     })
 
     it('should reject event with past date', () => {
-      const pastDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-
       const mockError = {
         error: 'Event date must be in the future',
       }
@@ -68,11 +65,6 @@ describe('Artist Event Management Integration Tests', () => {
     })
 
     it('should require all mandatory fields', () => {
-      const incompleteData = {
-        title: 'Event',
-        // missing event_date, location_city, category
-      }
-
       const mockError = {
         error: 'title, event_date, location_city, and category are required',
       }
@@ -81,10 +73,6 @@ describe('Artist Event Management Integration Tests', () => {
     })
 
     it('should reject event creation for expired subscription', () => {
-      const mockArtist = {
-        subscription_status: 'expired',
-      }
-
       const mockError = {
         error: 'Active subscription required to create events',
         message:
@@ -96,10 +84,6 @@ describe('Artist Event Management Integration Tests', () => {
     })
 
     it('should reject event creation for cancelled subscription', () => {
-      const mockArtist = {
-        subscription_status: 'cancelled',
-      }
-
       const mockError = {
         error: 'Active subscription required to create events',
       }
@@ -192,12 +176,6 @@ describe('Artist Event Management Integration Tests', () => {
     })
 
     it('should reject update with past date', () => {
-      const pastDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-
-      const updateData = {
-        event_date: pastDate,
-      }
-
       const mockError = {
         error: 'Event date must be in the future',
       }
@@ -206,10 +184,6 @@ describe('Artist Event Management Integration Tests', () => {
     })
 
     it('should require active subscription for event update', () => {
-      const mockArtist = {
-        subscription_status: 'expired',
-      }
-
       const mockError = {
         error: 'Active subscription required to edit events',
       }
@@ -278,7 +252,9 @@ describe('Artist Event Management Integration Tests', () => {
       ]
 
       expect(mockEvents.length).toBe(2)
-      expect(new Date(mockEvents[0].event_date).getTime()).toBeGreaterThan(Date.now())
+      if (mockEvents[0]?.event_date) {
+        expect(new Date(mockEvents[0].event_date).getTime()).toBeGreaterThan(Date.now())
+      }
     })
 
     it('should not display past events', () => {
@@ -308,8 +284,8 @@ describe('Artist Event Management Integration Tests', () => {
         (a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime()
       )
 
-      expect(sorted[0].id).toBe('event2') // Earlier event
-      expect(sorted[1].id).toBe('event1') // Later event
+      expect(sorted[0]?.id).toBe('event2') // Earlier event
+      expect(sorted[1]?.id).toBe('event1') // Later event
     })
   })
 
@@ -362,10 +338,6 @@ describe('Artist Event Management Integration Tests', () => {
     })
 
     it('should prevent event updates when subscription expires', () => {
-      const mockArtist = {
-        subscription_status: 'expired',
-      }
-
       const mockError = {
         error: 'Active subscription required to edit events',
       }
@@ -375,10 +347,6 @@ describe('Artist Event Management Integration Tests', () => {
 
     it('should still allow event deletion even with expired subscription', () => {
       // Artists should be able to delete their events even if subscription expired
-      const mockArtist = {
-        subscription_status: 'expired',
-      }
-
       const mockResponse = {
         success: true,
         message: 'Event deleted successfully',

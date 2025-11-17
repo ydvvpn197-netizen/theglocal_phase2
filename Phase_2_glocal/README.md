@@ -1,12 +1,13 @@
 # Theglocal - Privacy-First Local Community Platform
 
-> *Your local community's digital town square*
+> _Your local community's digital town square_
 
 A privacy-first, hyper-local digital public square designed to connect communities, support local artists, and enable civic engagement - all while protecting user anonymity.
 
 ## ✨ Features
 
 ### 🏘️ **Community Platform**
+
 - Anonymous participation with auto-generated handles
 - Location-based community discovery
 - Posts, comments, and threaded discussions
@@ -14,6 +15,7 @@ A privacy-first, hyper-local digital public square designed to connect communiti
 - Community moderation tools
 
 ### 🎭 **Artist Ecosystem**
+
 - Artist profiles with portfolio showcase
 - Subscription-based visibility (₹500/month, 30-day free trial)
 - Event creation and management
@@ -21,18 +23,21 @@ A privacy-first, hyper-local digital public square designed to connect communiti
 - Payment integration via Razorpay
 
 ### 📊 **Civic Engagement**
+
 - Anonymous polls with 5 categories
 - Government authority tagging
 - Local issue discussions
 - Community decision-making
 
 ### 📰 **Content Discovery**
+
 - Google News integration for local news
 - Reddit post aggregation
 - BookMyShow event syncing
 - Share external content to communities
 
 ### 🛡️ **Moderation & Governance**
+
 - Content reporting with 6 categories
 - Community admin dashboards
 - Transparent public moderation logs
@@ -40,6 +45,7 @@ A privacy-first, hyper-local digital public square designed to connect communiti
 - Appeal process
 
 ### 🔒 **Privacy & Security**
+
 - Anonymous handles (no real names)
 - City-level location only (coordinates rounded to ~1km)
 - Row Level Security (RLS) on all tables
@@ -50,6 +56,7 @@ A privacy-first, hyper-local digital public square designed to connect communiti
 ## 🚀 Tech Stack
 
 ### **Frontend**
+
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript 5.x
 - **Styling:** TailwindCSS 3.x + shadcn/ui
@@ -58,6 +65,7 @@ A privacy-first, hyper-local digital public square designed to connect communiti
 - **Icons:** Lucide React
 
 ### **Backend & Infrastructure**
+
 - **Database:** Supabase (PostgreSQL + PostGIS)
 - **Authentication:** Supabase Auth (Email/Phone OTP)
 - **Storage:** Supabase Storage (images)
@@ -66,6 +74,7 @@ A privacy-first, hyper-local digital public square designed to connect communiti
 - **Hosting:** Vercel (with Cron Jobs)
 
 ### **External APIs**
+
 - Google News API (local news)
 - Reddit API (community content)
 - BookMyShow API (events)
@@ -218,24 +227,63 @@ This platform is built with privacy as a first-class feature:
 - Transparent moderation logs
 - GDPR/CCPA compliant
 
+## 🚀 Launch Readiness
+
+Before launching to production, ensure all items in the [Launch Checklist](docs/LAUNCH_CHECKLIST.md) are completed:
+
+- ✅ Code quality checks (TypeScript, linting, tests)
+- ✅ Security audit (RLS policies, rate limiting, input validation)
+- ✅ Performance verification (Lighthouse scores, load testing)
+- ✅ Monitoring setup (Sentry, analytics, alerts)
+- ✅ Documentation complete
+
+See [docs/LAUNCH_CHECKLIST.md](docs/LAUNCH_CHECKLIST.md) for the complete checklist.
+
+## 📊 Monitoring & Observability
+
+The platform includes comprehensive monitoring:
+
+- **Error Tracking:** [Sentry](https://sentry.io) for error tracking and performance monitoring
+- **Analytics:** Vercel Analytics for web vitals and user metrics
+- **Performance:** Core Web Vitals tracking and custom metrics
+- **Alerts:** Configured alerts for errors, performance degradation, and system health
+
+See [docs/MONITORING.md](docs/MONITORING.md) for complete monitoring setup and configuration.
+
 ## 📚 Documentation
 
+### **Quick Start Guides**
+
+- [User Guide](docs/USER_GUIDE.md) - Complete guide for end users
+- [Admin Guide](docs/ADMIN_GUIDE.md) - Guide for administrators and moderators
+- [API Documentation](./API.md) - Complete API reference
+
+### **Launch & Operations**
+
+- [Launch Checklist](docs/LAUNCH_CHECKLIST.md) - Pre-launch, launch day, and post-launch tasks
+- [Monitoring Guide](docs/MONITORING.md) - Error tracking, analytics, and performance monitoring
+- [Deployment Guide](./DEPLOYMENT.md) - Production deployment instructions
+
 ### **Setup Guides**
-- [ENV_SETUP.md](./ENV_SETUP.md) - Environment variables configuration
-- [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) - Database setup instructions
-- [APPLY_MIGRATIONS.md](./APPLY_MIGRATIONS.md) - How to apply database migrations
-- [TESTING.md](./TESTING.md) - Testing guide and best practices
+
+- [Environment Setup](docs/setup/ENV_SETUP.md) - Environment variables configuration
+- [Supabase Setup](docs/setup/SUPABASE_SETUP.md) - Database setup instructions
+- [Apply Migrations](docs/setup/APPLY_MIGRATIONS.md) - How to apply database migrations
+- [Testing Guide](docs/testing/README.md) - Testing guide and best practices
 - [CRON_JOBS.md](./CRON_JOBS.md) - Automated job configuration
 
 ### **Project Documentation**
+
 - [master_prd.md](./master_prd.md) - Product Requirements Document
 - [tasks/tasks-master-prd.md](./tasks/tasks-master-prd.md) - Development task list with progress
-- [PROGRESS_SUMMARY.md](./PROGRESS_SUMMARY.md) - Current implementation status
-- [PRE_6.0_STATUS.md](./PRE_6.0_STATUS.md) - Pre-launch readiness report
+- [Current Status](docs/CURRENT_STATUS.md) - Current implementation status
+- [Pre-Launch Status](docs/history/PRE_6.0_STATUS.md) - Pre-launch readiness report
+- [Architecture](./ARCHITECTURE.md) - System architecture overview
 
-### **Deployment**
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - Production deployment guide
+### **Development**
+
 - [CONTRIBUTING.md](./CONTRIBUTING.md) - Contribution guidelines
+- [Documentation Index](docs/README.md) - Complete documentation index
 
 ## 🤝 Contributing
 

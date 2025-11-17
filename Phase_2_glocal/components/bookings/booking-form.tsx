@@ -9,7 +9,7 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useAuth } from '@/lib/context/auth-context'
 import { Loader2, Calendar, MapPin, DollarSign } from 'lucide-react'
 
@@ -162,11 +162,7 @@ export function BookingForm({ artistId, artistName, onSuccess, onCancel }: Booki
           <MapPin className="h-4 w-4" />
           Event Location
         </label>
-        <Input
-          {...register('location')}
-          placeholder="Venue name and address"
-          maxLength={200}
-        />
+        <Input {...register('location')} placeholder="Venue name and address" maxLength={200} />
         {errors.location && (
           <p className="mt-1 text-sm text-destructive">{errors.location.message}</p>
         )}
@@ -235,4 +231,3 @@ export function BookingForm({ artistId, artistName, onSuccess, onCancel }: Booki
     </form>
   )
 }
-

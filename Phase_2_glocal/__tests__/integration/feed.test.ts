@@ -6,7 +6,6 @@
 describe('Location-Based Feed Integration Tests', () => {
   describe('Feed API Endpoint', () => {
     it('should fetch posts from joined communities', async () => {
-      const userId = 'user-123'
       const joinedCommunities = ['community-1', 'community-2', 'community-3']
 
       // Expected query: SELECT * FROM posts WHERE community_id IN (?)
@@ -81,7 +80,6 @@ describe('Location-Based Feed Integration Tests', () => {
     })
 
     it('should reverse geocode coordinates to city name', async () => {
-      const coords = { lat: 37.7749, lng: -122.4194 }
       const expectedCity = 'San Francisco'
 
       // Nominatim API would be called here
@@ -196,7 +194,6 @@ describe('Location-Based Feed Integration Tests', () => {
     })
 
     it('should use composite index for community + location filtering', async () => {
-      const indexName = 'idx_posts_location_community'
       const indexColumns = ['location_city', 'community_id', 'created_at DESC']
 
       expect(indexColumns).toContain('location_city')

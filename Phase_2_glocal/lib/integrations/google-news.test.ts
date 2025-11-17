@@ -50,9 +50,9 @@ describe('Google News API Client', () => {
       const articles = await fetchLocalNews('Mumbai', 10)
 
       expect(articles).toHaveLength(2)
-      expect(articles[0].title).toBe('Test Article 1')
-      expect(articles[0].source).toBe('Test Source')
-      expect(articles[1].imageUrl).toBeUndefined()
+      expect(articles[0]?.title).toBe('Test Article 1')
+      expect(articles[0]?.source).toBe('Test Source')
+      expect(articles[1]?.imageUrl).toBeUndefined()
     })
 
     it('should return empty array when API key is missing', async () => {
@@ -128,7 +128,7 @@ describe('Google News API Client', () => {
       const articles = await fetchTopHeadlines('in', 'general', 10)
 
       expect(articles).toHaveLength(1)
-      expect(articles[0].title).toBe('Breaking News')
+      expect(articles[0]?.title).toBe('Breaking News')
     })
 
     it('should use default parameters', async () => {

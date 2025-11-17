@@ -48,4 +48,3 @@ export const metadata = {
   title: 'Global Moderation Log - Theglocal',
   description: 'Transparent log of all moderation actions across the platform',
 }
-

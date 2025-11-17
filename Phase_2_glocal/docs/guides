@@ -1,0 +1,352 @@
+# Web Vitals Monitoring
+
+## Overview
+
+Theglocal implements comprehensive Web Vitals monitoring to track Core Web Vitals metrics and overall performance. This helps identify performance bottlenecks and ensure a fast, responsive user experience.
+
+## Core Web Vitals
+
+### What are Core Web Vitals?
+
+Core Web Vitals are a set of metrics that measure real-world user experience:
+
+1. **LCP (Largest Contentful Paint)** - Loading Performance
+   - Measures when the largest content element becomes visible
+   - **Good**: ≤ 2.5s | **Needs Improvement**: ≤ 4s | **Poor**: > 4s
+
+2. **INP (Interaction to Next Paint)** - Responsiveness
+   - Measures the time from user interaction to visual response
+   - **Good**: ≤ 200ms | **Needs Improvement**: ≤ 500ms | **Poor**: > 500ms
+
+3. **CLS (Cumulative Layout Shift)** - Visual Stability
+   - Measures unexpected layout shifts
+   - **Good**: ≤ 0.1 | **Needs Improvement**: ≤ 0.25 | **Poor**: > 0.25
+
+### Additional Metrics
+
+4. **FID (First Input Delay)** - _Deprecated, use INP_
+   - Measures time to first interaction
+   - **Good**: ≤ 100ms | **Needs Improvement**: ≤ 300ms | **Poor**: > 300ms
+
+5. **TTFB (Time to First Byte)** - Server Response
+   - Measures server response time
+   - **Good**: ≤ 800ms | **Needs Improvement**: ≤ 1800ms | **Poor**: > 1800ms
+
+6. **FCP (First Contentful Paint)** - Perceived Load Speed
+   - Measures when first content appears
+   - **Good**: ≤ 1.8s | **Needs Improvement**: ≤ 3s | **Poor**: > 3s
+
+## Implementation
+
+### Setup in Root Layout
+
+```typescript
+// app/layout.tsx
+import { WebVitalsInit } from '@/app/web-vitals-init'
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <WebVitalsInit />
+        {children}
+      </body>
+    </html>
+  )
+}
+```
+
+### Configuration Options
+
+```typescript
+import { initWebVitals } from '@/lib/monitoring/web-vitals'
+
+initWebVitals({
+  // Enable/disable monitoring
+  enabled: true,
+
+  // Debug mode (logs to console)
+  debug: process.env.NODE_ENV === 'development',
+
+  // API endpoint to send metrics to
+  analyticsEndpoint: '/api/analytics/web-vitals',
+
+  // Sample rate (0-1, default: 1 for 100%)
+  sampleRate: 0.1, // 10% of users
+
+  // Custom callback for each metric
+  onMetric: (metric) => {
+    console.log(metric.name, metric.value, metric.rating)
+  },
+})
+```
+
+### Custom Metrics
+
+Track custom performance metrics:
+
+```typescript
+import {
+  reportCustomMetric,
+  measureRenderTime,
+  measureAPICall,
+  measureDBQuery,
+} from '@/lib/monitoring/web-vitals'
+
+// Generic custom metric
+reportCustomMetric('custom_load_time', 1234, {
+  page: '/dashboard',
+  user_id: 'abc123',
+})
+
+// Component render time
+measureRenderTime('FeedComponent', 45)
+
+// API call duration
+measureAPICall('/api/posts', 250, 200)
+
+// Database query duration
+measureDBQuery('fetch_user_posts', 150)
+```
+
+## Data Storage
+
+### Database Schema (Optional)
+
+Create a table to store metrics:
+
+```sql
+CREATE TABLE web_vitals_metrics (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  metric_name TEXT NOT NULL,
+  metric_value NUMERIC NOT NULL,
+  metric_rating TEXT,
+  metric_delta NUMERIC,
+  metric_id TEXT,
+  navigation_type TEXT,
+  page_url TEXT,
+  page_pathname TEXT,
+  referrer TEXT,
+  user_agent TEXT,
+  viewport_width INTEGER,
+  viewport_height INTEGER,
+  connection_type TEXT,
+  connection_rtt INTEGER,
+  connection_downlink NUMERIC,
+  timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+
+  -- Indexes for querying
+  INDEX idx_metric_name (metric_name),
+  INDEX idx_timestamp (timestamp),
+  INDEX idx_page_pathname (page_pathname),
+  INDEX idx_metric_rating (metric_rating)
+);
+```
+
+### Enable Database Storage
+
+```bash
+# .env
+STORE_WEB_VITALS=true
+```
+
+## Integration with External Services
+
+### Google Analytics 4
+
+```typescript
+// app/web-vitals-init.tsx
+onMetric: (metric) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', metric.name, {
+      value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+      metric_id: metric.id,
+      metric_value: metric.value,
+      metric_delta: metric.delta,
+      metric_rating: metric.rating,
+    })
+  }
+}
+```
+
+### Sentry
+
+```typescript
+// app/web-vitals-init.tsx
+onMetric: (metric) => {
+  if (typeof window !== 'undefined' && window.Sentry) {
+    window.Sentry.addBreadcrumb({
+      category: 'web-vitals',
+      message: `${metric.name}: ${metric.value}`,
+      level: metric.rating === 'poor' ? 'warning' : 'info',
+      data: {
+        value: metric.value,
+        rating: metric.rating,
+        delta: metric.delta,
+      },
+    })
+  }
+}
+```
+
+### Vercel Analytics
+
+```typescript
+// app/api/analytics/web-vitals/route.ts
+await fetch('https://vitals.vercel-insights.com/v1/vitals', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    dsn: process.env.VERCEL_ANALYTICS_ID,
+    id: metric.id,
+    page: page.pathname,
+    href: page.url,
+    event_name: metric.name,
+    value: metric.value,
+  }),
+})
+```
+
+## Querying Metrics
+
+### Aggregate by Page
+
+```sql
+SELECT
+  page_pathname,
+  metric_name,
+  AVG(metric_value) as avg_value,
+  PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY metric_value) as p75,
+  PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY metric_value) as p95,
+  COUNT(*) as sample_count
+FROM web_vitals_metrics
+WHERE timestamp > NOW() - INTERVAL '7 days'
+GROUP BY page_pathname, metric_name
+ORDER BY page_pathname, metric_name;
+```
+
+### Poor Ratings Count
+
+```sql
+SELECT
+  metric_name,
+  COUNT(*) as poor_count,
+  COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (PARTITION BY metric_name) as poor_percentage
+FROM web_vitals_metrics
+WHERE
+  timestamp > NOW() - INTERVAL '24 hours'
+  AND metric_rating = 'poor'
+GROUP BY metric_name
+ORDER BY poor_count DESC;
+```
+
+### Device Breakdown
+
+```sql
+SELECT
+  CASE
+    WHEN viewport_width < 768 THEN 'mobile'
+    WHEN viewport_width < 1024 THEN 'tablet'
+    ELSE 'desktop'
+  END as device_type,
+  metric_name,
+  AVG(metric_value) as avg_value,
+  PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY metric_value) as p75
+FROM web_vitals_metrics
+WHERE timestamp > NOW() - INTERVAL '7 days'
+GROUP BY device_type, metric_name
+ORDER BY device_type, metric_name;
+```
+
+## Performance Dashboard
+
+Create a dashboard to visualize metrics:
+
+```typescript
+// app/admin/performance/page.tsx
+import { createClient } from '@/lib/supabase/server'
+
+export default async function PerformanceDashboard() {
+  const supabase = await createClient()
+
+  // Fetch metrics from last 7 days
+  const { data: metrics } = await supabase
+    .from('web_vitals_metrics')
+    .select('*')
+    .gte('timestamp', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+    .order('timestamp', { ascending: false })
+
+  // Aggregate metrics
+  const aggregated = aggregateMetrics(metrics)
+
+  return (
+    <div>
+      <h1>Performance Dashboard</h1>
+      <MetricsGrid metrics={aggregated} />
+      <MetricsChart data={metrics} />
+    </div>
+  )
+}
+```
+
+## Optimization Tips
+
+### Improving LCP
+
+- Optimize images (use next/image)
+- Reduce server response time (TTFB)
+- Preload critical resources
+- Remove render-blocking resources
+- Use lazy loading for below-fold content
+
+### Improving INP
+
+- Minimize JavaScript execution
+- Break up long tasks (use setTimeout for chunking)
+- Use Web Workers for heavy computations
+- Optimize event handlers
+- Debounce/throttle frequent events
+
+### Improving CLS
+
+- Always include size attributes on images and videos
+- Reserve space for dynamic content
+- Avoid inserting content above existing content
+- Prefer transform animations over layout-triggering properties
+- Use font-display: swap with fallback fonts
+
+### Reducing TTFB
+
+- Use CDN for static assets
+- Implement server-side caching
+- Optimize database queries
+- Use edge functions where possible
+- Enable HTTP/2 or HTTP/3
+
+## Monitoring Best Practices
+
+1. **Set up alerts** for poor metric ratings
+2. **Track trends** over time, not just absolute values
+3. **Segment by device type** (mobile vs desktop)
+4. **Monitor field data** (real users) in addition to lab data
+5. **Set performance budgets** and enforce them in CI
+6. **Regular audits** using Lighthouse and PageSpeed Insights
+7. **Test on real devices** and slow networks
+
+## Resources
+
+- [Web Vitals Official Documentation](https://web.dev/vitals/)
+- [web-vitals NPM Package](https://github.com/GoogleChrome/web-vitals)
+- [Lighthouse](https://developers.google.com/web/tools/lighthouse)
+- [PageSpeed Insights](https://pagespeed.web.dev/)
+- [Chrome DevTools Performance Tab](https://developer.chrome.com/docs/devtools/performance/)
+
+## Audit Trail
+
+- **2025-11-14**: Implemented Web Vitals monitoring with web-vitals package
+- **Features**: LCP, INP, CLS, FID, TTFB, FCP tracking
+- **Storage**: Optional database storage + external service integration
+- **Sampling**: Configurable sample rate for production
+- **Documentation**: Comprehensive monitoring guide created

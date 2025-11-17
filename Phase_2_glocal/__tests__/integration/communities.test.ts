@@ -83,9 +83,9 @@ describe('Community Integration Tests', () => {
 
       const sorted = [...communities].sort((a, b) => b.member_count - a.member_count)
 
-      expect(sorted[0].name).toBe('B') // 100 members
-      expect(sorted[1].name).toBe('C') // 50 members
-      expect(sorted[2].name).toBe('A') // 10 members
+      expect(sorted[0]?.name).toBe('B') // 100 members
+      expect(sorted[1]?.name).toBe('C') // 50 members
+      expect(sorted[2]?.name).toBe('A') // 10 members
     })
 
     it('filters by location', () => {

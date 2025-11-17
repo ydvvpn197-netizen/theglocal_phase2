@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { isSuperAdmin } from '@/lib/utils/permissions'
+import { NextRequest } from 'next/server'
+import { requireAdminOrThrow } from '@/lib/utils/require-admin'
 import { z } from 'zod'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 const banUserSchema = z.object({
   duration: z.enum(['temporary', 'permanent']),
@@ -9,24 +10,14 @@ const banUserSchema = z.object({
 })
 
 // PUT /api/admin/users/[id]/ban - Ban a user
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export const PUT = withRateLimit(async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const supabase = await createClient()
-
-    // Get current user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
-    }
-
-    // Verify super admin
-    const isAdmin = await isSuperAdmin(user.id)
-    if (!isAdmin) {
-      return NextResponse.json({ error: 'Super admin access required' }, { status: 403 })
-    }
+    const { id } = await params
+    // Require admin authentication
+    const { user, supabase } = await requireAdminOrThrow()
 
     const body = await request.json()
     const { duration, reason } = banUserSchema.parse(body)
@@ -48,7 +39,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         ban_reason: reason,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -59,22 +50,18 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       action: 'ban_user',
       actor_id: user.id,
       target_type: 'user',
-      target_id: params.id,
+      target_id: id,
       details: { duration, reason, ban_expires_at: banExpiresAt },
     })
 
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse(bannedUser, {
       message: `User ${duration === 'permanent' ? 'permanently' : 'temporarily'} banned`,
-      data: bannedUser,
     })
   } catch (error) {
-    console.error('Ban user error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to ban user',
-      },
-      { status: 500 }
-    )
+    const { id: errorId } = await params
+    return handleAPIError(error, {
+      method: 'PUT',
+      path: `/api/admin/users/${errorId}/ban`,
+    })
   }
-}
+})

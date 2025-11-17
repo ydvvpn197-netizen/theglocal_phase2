@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { verifyWebhookSignature, WebhookEvent } from '@/lib/integrations/razorpay'
+import { handleAPIError } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // POST /api/artists/subscription-webhook - Handle Razorpay webhooks
-export async function POST(request: NextRequest) {
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   try {
     const body = await request.text()
     const signature = request.headers.get('x-razorpay-signature')
 
     if (!signature) {
-      console.error('Webhook signature missing')
+      logger.error('Webhook signature missing')
       return NextResponse.json({ error: 'Missing signature' }, { status: 400 })
     }
 
@@ -17,14 +21,14 @@ export async function POST(request: NextRequest) {
     const isValidSignature = verifyWebhookSignature(body, signature)
 
     if (!isValidSignature) {
-      console.error('Invalid webhook signature')
+      logger.error('Invalid webhook signature')
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
     }
 
     const event: WebhookEvent = JSON.parse(body)
     const supabase = await createClient()
 
-    console.log('Processing webhook event:', event.event)
+    logger.info('Processing webhook event', { event: event.event })
 
     switch (event.event) {
       case 'payment.captured':
@@ -60,30 +64,23 @@ export async function POST(request: NextRequest) {
         break
 
       default:
-        console.log('Unhandled webhook event:', event.event)
+        logger.info('Unhandled webhook event', { event: event.event })
     }
 
     return NextResponse.json({ success: true, received: true })
   } catch (error) {
-    console.error('Webhook processing error:', error)
-    return NextResponse.json(
-      { 
-        error: 'Webhook processing failed',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      }, 
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'POST', path: '/api/artists/subscription-webhook' })
   }
-}
-
+})
 async function handlePaymentCaptured(
   event: WebhookEvent,
   supabase: Awaited<ReturnType<typeof createClient>>
 ) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   const payment = event.payload.payment
   if (!payment) return
 
-  console.log('Payment captured:', payment.id)
+  logger.info('Payment captured', { paymentId: payment.id })
 
   // Update subscription order status
   await supabase
@@ -96,11 +93,15 @@ async function handlePaymentCaptured(
     .eq('payment_id', payment.id)
 }
 
-async function handlePaymentFailed(event: WebhookEvent, supabase: any) {
+async function handlePaymentFailed(
+  event: WebhookEvent,
+  supabase: Awaited<ReturnType<typeof createClient>>
+) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   const payment = event.payload.payment
   if (!payment) return
 
-  console.log('Payment failed:', payment.id)
+  logger.info('Payment failed', { paymentId: payment.id })
 
   // Update subscription order status
   await supabase
@@ -112,11 +113,15 @@ async function handlePaymentFailed(event: WebhookEvent, supabase: any) {
     .eq('payment_id', payment.id)
 }
 
-async function handleSubscriptionActivated(event: WebhookEvent, supabase: any) {
+async function handleSubscriptionActivated(
+  event: WebhookEvent,
+  supabase: Awaited<ReturnType<typeof createClient>>
+) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   const subscription = event.payload.subscription
   if (!subscription) return
 
-  console.log('Subscription activated:', subscription.id)
+  logger.info('Subscription activated', { subscriptionId: subscription.id })
 
   // Find artist by subscription
   const { data: subscriptionRecord } = await supabase
@@ -142,10 +147,11 @@ async function handleSubscriptionCharged(
   event: WebhookEvent,
   supabase: Awaited<ReturnType<typeof createClient>>
 ) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   const subscription = event.payload.subscription
   if (!subscription) return
 
-  console.log('Subscription charged:', subscription.id)
+  logger.info('Subscription charged', { subscriptionId: subscription.id })
 
   // Update subscription record with new billing cycle
   await supabase
@@ -163,10 +169,11 @@ async function handleSubscriptionCompleted(
   event: WebhookEvent,
   supabase: Awaited<ReturnType<typeof createClient>>
 ) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   const subscription = event.payload.subscription
   if (!subscription) return
 
-  console.log('Subscription completed:', subscription.id)
+  logger.info('Subscription completed', { subscriptionId: subscription.id })
 
   // Update subscription status
   await supabase
@@ -182,10 +189,11 @@ async function handleSubscriptionCancelled(
   event: WebhookEvent,
   supabase: Awaited<ReturnType<typeof createClient>>
 ) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   const subscription = event.payload.subscription
   if (!subscription) return
 
-  console.log('Subscription cancelled:', subscription.id)
+  logger.info('Subscription cancelled', { subscriptionId: subscription.id })
 
   // Find artist by subscription
   const { data: subscriptionRecord } = await supabase
@@ -219,10 +227,11 @@ async function handleSubscriptionPaused(
   event: WebhookEvent,
   supabase: Awaited<ReturnType<typeof createClient>>
 ) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   const subscription = event.payload.subscription
   if (!subscription) return
 
-  console.log('Subscription paused:', subscription.id)
+  logger.info('Subscription paused', { subscriptionId: subscription.id })
 
   // Update subscription status
   await supabase
@@ -238,10 +247,11 @@ async function handleSubscriptionResumed(
   event: WebhookEvent,
   supabase: Awaited<ReturnType<typeof createClient>>
 ) {
+  const logger = createAPILogger('POST', '/api/artists/subscription-webhook')
   const subscription = event.payload.subscription
   if (!subscription) return
 
-  console.log('Subscription resumed:', subscription.id)
+  logger.info('Subscription resumed', { subscriptionId: subscription.id })
 
   // Update subscription status
   await supabase

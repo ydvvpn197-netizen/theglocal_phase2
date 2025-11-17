@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { syncBookMyShowEvents } from '@/lib/integrations/bookmyshow'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/events/sync-bookmyshow - Cron job to sync BookMyShow events
-export async function GET(_request: NextRequest) {
+export const GET = withRateLimit(async function GET(_request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/events/sync-bookmyshow')
   try {
     // Verify this is a cron job request (Vercel cron secret)
     const authHeader = _request.headers.get('authorization')
@@ -28,7 +32,7 @@ export async function GET(_request: NextRequest) {
     // Sync events
     const syncedCount = await syncBookMyShowEvents(cities)
 
-    // console.log(`Synced ${syncedCount} BookMyShow events across ${cities.length} cities`)
+    // logger.info(`Synced ${syncedCount} BookMyShow events across ${cities.length} cities`)
 
     return NextResponse.json({
       success: true,
@@ -39,12 +43,6 @@ export async function GET(_request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('BookMyShow sync error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to sync events',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/events/sync-bookmyshow' })
   }
-}
+})

@@ -87,7 +87,9 @@ function getIdentifier(req: NextRequest): string {
 
   // Fall back to IP address
   const forwardedFor = req.headers.get('x-forwarded-for')
-  const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : req.ip || 'unknown'
+  const ip = forwardedFor
+    ? (forwardedFor.split(',')[0]?.trim() ?? req.ip ?? 'unknown')
+    : req.ip || 'unknown'
 
   return `ip:${ip}`
 }
@@ -112,10 +114,10 @@ function cleanupExpiredEntries() {
  * Rate limit decorator for API routes
  */
 export function withRateLimit(
-  handler: (req: NextRequest, context: any) => Promise<NextResponse>,
+  handler: (req: NextRequest, context: { params?: unknown }) => Promise<NextResponse>,
   config?: RateLimitConfig
 ) {
-  return async (req: NextRequest, context: any) => {
+  return async (req: NextRequest, context: { params?: unknown }) => {
     // Check rate limit
     const rateLimitResponse = await rateLimit(req, config)
     if (rateLimitResponse) {
@@ -126,4 +128,3 @@ export function withRateLimit(
     return handler(req, context)
   }
 }
-

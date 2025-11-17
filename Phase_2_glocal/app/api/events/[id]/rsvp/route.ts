@@ -1,10 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function POST(_request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * POST /api/events/[id]/rsvp - RSVP to an event
+ *
+ * @param _request - Next.js request
+ * @param params - Route parameters with event ID
+ * @returns RSVP confirmation with count
+ */
+export const POST = withRateLimit(async function POST(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: eventId } = params
+  const logger = createAPILogger('POST', `/api/events/${eventId}/rsvp`)
+
   try {
-    const { id: eventId } = params
-
     const supabase = await createClient()
 
     // Get current user
@@ -13,8 +27,10 @@ export async function POST(_request: NextRequest, { params }: { params: { id: st
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Processing RSVP', { eventId, userId: user.id })
 
     // Check if event exists
     const { data: event } = await supabase
@@ -24,12 +40,12 @@ export async function POST(_request: NextRequest, { params }: { params: { id: st
       .single()
 
     if (!event) {
-      return NextResponse.json({ error: 'Event not found' }, { status: 404 })
+      throw APIErrors.notFound('Event')
     }
 
     // Check if event is in the future
     if (new Date(event.event_date) < new Date()) {
-      return NextResponse.json({ error: 'Cannot RSVP to past events' }, { status: 400 })
+      throw APIErrors.badRequest('Cannot RSVP to past events')
     }
 
     // Check if user already RSVP'd
@@ -41,7 +57,7 @@ export async function POST(_request: NextRequest, { params }: { params: { id: st
       .single()
 
     if (existingRsvp) {
-      return NextResponse.json({ error: "You have already RSVP'd to this event" }, { status: 400 })
+      throw APIErrors.badRequest("You have already RSVP'd to this event")
     }
 
     // Create RSVP
@@ -58,20 +74,24 @@ export async function POST(_request: NextRequest, { params }: { params: { id: st
       .select('*', { count: 'exact', head: true })
       .eq('event_id', eventId)
 
-    return NextResponse.json({
-      success: true,
-      message: 'RSVP confirmed',
-      data: {
+    logger.info('RSVP confirmed successfully', {
+      eventId,
+      userId: user.id,
+      rsvpCount: count || 1,
+    })
+
+    return createSuccessResponse(
+      {
         rsvp_count: count || 1,
       },
-    })
-  } catch (error) {
-    console.error('RSVP error:', error)
-    return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : 'Failed to RSVP',
-      },
-      { status: 500 }
+        message: 'RSVP confirmed',
+      }
     )
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'POST',
+      path: `/api/events/${eventId}/rsvp`,
+    })
   }
-}
+})

@@ -1,9 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { fetchBookMyShowEvents } from '@/lib/integrations/bookmyshow'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// GET /api/events - List events (BookMyShow + Artist events)
-export async function GET(request: NextRequest) {
+/**
+ * GET /api/events - List events (BookMyShow + Artist events)
+ *
+ * @param request - Next.js request with query parameters
+ * @returns List of events with metadata
+ */
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/events')
+
   try {
     const searchParams = request.nextUrl.searchParams
     const city = searchParams.get('city') || 'Mumbai'
@@ -50,6 +60,8 @@ export async function GET(request: NextRequest) {
       dbQuery = dbQuery.lte('event_date', endOfMonth.toISOString())
     }
 
+    logger.info('Fetching events', { city, category, dateFilter, limit })
+
     const { data: dbEvents } = await dbQuery
 
     // Fetch BookMyShow events (cached for 6 hours)
@@ -80,32 +92,38 @@ export async function GET(request: NextRequest) {
       return new Date(a.event_date).getTime() - new Date(b.event_date).getTime()
     })
 
-    return NextResponse.json({
-      success: true,
-      data: allEvents.slice(0, limit),
-      meta: {
-        city,
-        category,
-        dateFilter,
-        sources: {
-          bookmyshow: transformedBmsEvents.length,
-          database: transformedDbEvents.length,
-        },
+    logger.info('Events fetched successfully', {
+      totalCount: allEvents.length,
+      bmsCount: transformedBmsEvents.length,
+      dbCount: transformedDbEvents.length,
+    })
+
+    return createSuccessResponse(allEvents.slice(0, limit), {
+      city,
+      category,
+      dateFilter,
+      sources: {
+        bookmyshow: transformedBmsEvents.length,
+        database: transformedDbEvents.length,
       },
     })
   } catch (error) {
-    console.error('Fetch events error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch events',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'GET',
+      path: '/api/events',
+    })
   }
-}
+})
 
-// POST /api/events - Create event (for artists with active/trial subscription)
-export async function POST(request: NextRequest) {
+/**
+ * POST /api/events - Create event (for artists with active/trial subscription)
+ *
+ * @param request - Next.js request with event data
+ * @returns Created event
+ */
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/events')
+
   try {
     const body = await request.json()
     const {
@@ -119,10 +137,7 @@ export async function POST(request: NextRequest) {
     } = body
 
     if (!title || !event_date || !location_city || !category) {
-      return NextResponse.json(
-        { error: 'title, event_date, location_city, and category are required' },
-        { status: 400 }
-      )
+      throw APIErrors.badRequest('title, event_date, location_city, and category are required')
     }
 
     const supabase = await createClient()
@@ -133,8 +148,15 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Creating event', {
+      userId: user.id,
+      title: title.substring(0, 50),
+      location_city,
+      category,
+    })
 
     // Verify user is an artist with active or trial subscription
     const { data: artist, error: artistError } = await supabase
@@ -144,28 +166,18 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (artistError || !artist) {
-      return NextResponse.json(
-        { error: 'Artist profile required. Please register as an artist first.' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Validate subscription status: must be trial or active
     if (!['trial', 'active'].includes(artist.subscription_status)) {
-      return NextResponse.json(
-        {
-          error: 'Active subscription required to create events',
-          message:
-            'Your subscription has expired. Please renew your subscription to continue creating events.',
-        },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Validate event date is in the future
     const eventDate = new Date(event_date)
     if (eventDate <= new Date()) {
-      return NextResponse.json({ error: 'Event date must be in the future' }, { status: 400 })
+      throw APIErrors.badRequest('Event date must be in the future')
     }
 
     // Create event
@@ -185,25 +197,22 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError) {
-      console.error('Database error creating event:', createError)
       throw createError
     }
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Event created successfully',
-        data: event,
-      },
-      { status: 201 }
-    )
+    logger.info('Event created successfully', {
+      eventId: event.id,
+      userId: user.id,
+      artistId: artist.id,
+    })
+
+    return createSuccessResponse(event, {
+      message: 'Event created successfully',
+    })
   } catch (error) {
-    console.error('Create event error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create event',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: '/api/events',
+    })
   }
-}
+})

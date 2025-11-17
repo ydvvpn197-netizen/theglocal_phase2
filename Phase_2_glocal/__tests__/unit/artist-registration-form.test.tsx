@@ -3,6 +3,7 @@ import { ArtistRegistrationForm } from '@/components/artists/artist-registration
 import { useAuth } from '@/lib/context/auth-context'
 import { useRouter } from 'next/navigation'
 import '@testing-library/jest-dom'
+import { createMockRouter, createMockAuthContext } from '@/__tests__/types/mock-types'
 
 // Mock dependencies
 jest.mock('@/lib/context/auth-context')
@@ -19,8 +20,14 @@ describe('ArtistRegistrationForm', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    mockUseRouter.mockReturnValue({ push: mockPush } as any)
-    mockUseAuth.mockReturnValue({ user: mockUser } as any)
+    const mockRouter = createMockRouter({ push: mockPush })
+    mockUseRouter.mockReturnValue(mockRouter as unknown as ReturnType<typeof useRouter>)
+    const mockAuth = createMockAuthContext({
+      user: { ...mockUser, id: mockUser.id, email: mockUser.email } as unknown as ReturnType<
+        typeof createMockAuthContext
+      >['user'],
+    })
+    mockUseAuth.mockReturnValue(mockAuth as unknown as ReturnType<typeof useAuth>)
     global.fetch = jest.fn()
   })
 
@@ -67,10 +74,11 @@ describe('ArtistRegistrationForm', () => {
   })
 
   it('requires authentication', () => {
-    mockUseAuth.mockReturnValue({ user: null } as any)
-    
+    const mockAuth = createMockAuthContext({ user: null })
+    mockUseAuth.mockReturnValue(mockAuth as unknown as ReturnType<typeof useAuth>)
+
     render(<ArtistRegistrationForm />)
-    
+
     const submitButton = screen.getByText(/continue to payment/i)
     fireEvent.click(submitButton)
 
@@ -121,4 +129,3 @@ describe('ArtistRegistrationForm', () => {
     expect(limitText).toBeInTheDocument()
   })
 })
-

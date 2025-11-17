@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { Users, MessageSquare, MapPin, Shield, Loader2 } from 'lucide-react'
 import { useAuth } from '@/lib/context/auth-context'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 
 interface Community {

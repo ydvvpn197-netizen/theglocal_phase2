@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { UserPlus, UserCheck } from 'lucide-react'
 import { useAuth } from '@/lib/context/auth-context'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 interface RsvpButtonProps {
   eventId: string

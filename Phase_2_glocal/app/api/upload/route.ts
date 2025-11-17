@@ -1,8 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { validateImageFile } from '@/lib/utils/validation'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function POST(request: NextRequest) {
+/**
+ * POST /api/upload - Upload a file
+ *
+ * @param request - Next.js request with form data containing file
+ * @returns Uploaded file URL and path
+ */
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/upload')
+
   try {
     const supabase = await createClient()
 
@@ -12,7 +23,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
     const formData = await request.formData()
@@ -20,14 +31,20 @@ export async function POST(request: NextRequest) {
     const folder = (formData.get('folder') as string) || 'uploads'
 
     if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+      throw APIErrors.badRequest('No file provided')
     }
 
     // Validate file
     const validation = validateImageFile(file)
     if (!validation.valid) {
-      return NextResponse.json({ error: validation.error }, { status: 400 })
+      throw APIErrors.badRequest(validation.error || 'Invalid file')
     }
+
+    logger.info('Uploading file', {
+      userId: user.id,
+      fileName: file.name,
+      folder,
+    })
 
     // Generate unique filename
     const timestamp = Date.now()
@@ -49,20 +66,19 @@ export async function POST(request: NextRequest) {
       data: { publicUrl },
     } = supabase.storage.from('theglocal-uploads').getPublicUrl(filepath)
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        url: publicUrl,
-        path: filepath,
-      },
+    logger.info('File uploaded successfully', {
+      userId: user.id,
+      filepath,
+    })
+
+    return createSuccessResponse({
+      url: publicUrl,
+      path: filepath,
     })
   } catch (error) {
-    console.error('Upload error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to upload file',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: '/api/upload',
+    })
   }
-}
+})

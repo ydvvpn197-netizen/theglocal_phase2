@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useAuth } from '@/lib/context/auth-context'
 
 interface PostActionsProps {
@@ -144,17 +144,34 @@ export function PostActions({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <MoreVertical className="h-4 w-4" />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            aria-label="Post actions menu"
+            aria-haspopup="true"
+          >
+            <MoreVertical className="h-4 w-4" aria-hidden="true" />
+            <span className="sr-only">More options</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => setIsEditOpen(true)} disabled={!canEdit()}>
-            <Edit className="mr-2 h-4 w-4" />
+        <DropdownMenuContent align="end" role="menu" aria-label="Post actions">
+          <DropdownMenuItem
+            onClick={() => setIsEditOpen(true)}
+            disabled={!canEdit()}
+            role="menuitem"
+            aria-label={canEdit() ? 'Edit post' : 'Edit post (expired)'}
+          >
+            <Edit className="mr-2 h-4 w-4" aria-hidden="true" />
             Edit {!canEdit() && '(expired)'}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleDelete} disabled={isDeleting}>
-            <Trash2 className="mr-2 h-4 w-4" />
+          <DropdownMenuItem
+            onClick={handleDelete}
+            disabled={isDeleting}
+            role="menuitem"
+            aria-label="Delete post"
+          >
+            <Trash2 className="mr-2 h-4 w-4" aria-hidden="true" />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -168,24 +185,39 @@ export function PostActions({
 
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium">Title</label>
+              <label htmlFor="edit-post-title" className="text-sm font-medium">
+                Title
+              </label>
               <Input
+                id="edit-post-title"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
                 placeholder="Post title"
                 maxLength={300}
+                aria-required="true"
+                aria-describedby="edit-post-title-help"
               />
+              <span id="edit-post-title-help" className="sr-only">
+                Maximum 300 characters
+              </span>
             </div>
 
             <div>
-              <label className="text-sm font-medium">Body</label>
+              <label htmlFor="edit-post-body" className="text-sm font-medium">
+                Body
+              </label>
               <Textarea
+                id="edit-post-body"
                 value={editBody}
                 onChange={(e) => setEditBody(e.target.value)}
                 placeholder="What's on your mind?"
                 rows={6}
                 maxLength={5000}
+                aria-describedby="edit-post-body-help"
               />
+              <span id="edit-post-body-help" className="sr-only">
+                Maximum 5000 characters
+              </span>
             </div>
           </div>
 

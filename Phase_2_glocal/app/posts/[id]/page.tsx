@@ -1,3 +1,4 @@
+import { logger } from '@/lib/utils/logger'
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
@@ -6,37 +7,36 @@ import { CommentThread } from '@/components/posts/comment-thread'
 import { CommentForm } from '@/components/posts/comment-form'
 import { Card } from '@/components/ui/card'
 import { ErrorBoundary } from '@/components/error-boundary'
-import { getUserCommunityRole } from '@/lib/utils/permissions'
 
 interface PostDetailPageProps {
   params: { id: string }
 }
 
 async function PostDetailContent({ postId }: { postId: string }) {
-  console.log('PostDetailContent: Fetching post', postId);
-  
+  logger.info('PostDetailContent: Fetching post', postId)
+
   try {
     // Validate environment variables
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      console.error('PostDetailContent: Missing Supabase environment variables');
+      logger.error('PostDetailContent: Missing Supabase environment variables')
       notFound()
     }
 
     const supabase = await createClient()
-    console.log('PostDetailContent: Supabase client created successfully');
+    logger.info('PostDetailContent: Supabase client created successfully')
 
     // Get current user
     const {
       data: { user },
-      error: authError
+      error: authError,
     } = await supabase.auth.getUser()
-    
+
     if (authError) {
-      console.error('PostDetailContent: Auth error', authError.message);
+      logger.error('PostDetailContent: Auth error', authError.message)
       notFound()
     }
-    
-    console.log('PostDetailContent: User auth status', user ? 'authenticated' : 'not authenticated');
+
+    logger.info('PostDetailContent: User auth status', user ? 'authenticated' : 'not authenticated')
 
     // Fetch post
     const { data: post, error: postError } = await supabase
@@ -51,15 +51,15 @@ async function PostDetailContent({ postId }: { postId: string }) {
       .eq('id', postId)
       .single()
 
-    console.log('PostDetailContent: Post fetch result', { post: !!post, error: postError?.message });
+    logger.info('PostDetailContent: Post fetch result', { post: !!post, error: postError?.message })
 
     if (postError) {
-      console.error('PostDetailContent: Post fetch error', postError.message);
+      logger.error('PostDetailContent: Post fetch error', postError.message)
       notFound()
     }
 
     if (!post) {
-      console.log('PostDetailContent: Post not found');
+      logger.info('PostDetailContent: Post not found')
       notFound()
     }
 
@@ -74,13 +74,14 @@ async function PostDetailContent({ postId }: { postId: string }) {
           .eq('content_id', postId)
           .single()
 
-        if (voteError && voteError.code !== 'PGRST116') { // PGRST116 = no rows returned
-          console.error('PostDetailContent: Vote fetch error', voteError.message);
+        if (voteError && voteError.code !== 'PGRST116') {
+          // PGRST116 = no rows returned
+          logger.error('PostDetailContent: Vote fetch error', voteError.message)
         } else {
           post.user_vote = userVote?.vote_type || null
         }
       } catch (error) {
-        console.error('PostDetailContent: Vote fetch exception', error);
+        logger.error('PostDetailContent: Vote fetch exception', error)
       }
     }
 
@@ -104,18 +105,24 @@ async function PostDetailContent({ postId }: { postId: string }) {
         .order('created_at', { ascending: true })
 
       if (commentsError) {
-        console.error('PostDetailContent: Comments fetch error', commentsError.message);
+        logger.error('PostDetailContent: Comments fetch error', commentsError.message)
       } else {
         comments = commentsData || []
-        
+
         // Fetch user votes for comments if user is authenticated
         if (user && comments.length > 0) {
           // Collect all comment IDs (including replies)
           const commentIds: string[] = []
-          comments.forEach((comment: any) => {
-            commentIds.push(comment.id)
-            if (comment.replies) {
-              comment.replies.forEach((reply: any) => commentIds.push(reply.id))
+          comments.forEach((comment: unknown) => {
+            if (!comment || typeof comment !== 'object') return
+            const commentRecord = comment as { id?: string; replies?: unknown[] }
+            if (commentRecord.id) commentIds.push(commentRecord.id)
+            if (Array.isArray(commentRecord.replies)) {
+              commentRecord.replies.forEach((reply: unknown) => {
+                if (reply && typeof reply === 'object' && 'id' in reply) {
+                  commentIds.push(String((reply as { id: unknown }).id))
+                }
+              })
             }
           })
 
@@ -126,39 +133,46 @@ async function PostDetailContent({ postId }: { postId: string }) {
             .eq('content_type', 'comment')
             .in('content_id', commentIds)
 
-          const votesMap = new Map(userVotes?.map(v => [v.content_id, v.vote_type]) || [])
-          
-          comments = comments.map((comment: any) => ({
-            ...comment,
-            user_vote: votesMap.get(comment.id) || null,
-            replies: comment.replies?.map((reply: any) => ({
-              ...reply,
-              user_vote: votesMap.get(reply.id) || null,
-            })) || [],
-          }))
+          const votesMap = new Map(userVotes?.map((v) => [v.content_id, v.vote_type]) || [])
+
+          comments = comments.map((comment: unknown) => {
+            if (!comment || typeof comment !== 'object') return comment
+            const commentRecord = comment as {
+              id?: string
+              replies?: unknown[]
+              [key: string]: unknown
+            }
+            return {
+              ...commentRecord,
+              user_vote: commentRecord.id ? votesMap.get(commentRecord.id) || null : null,
+              replies: Array.isArray(commentRecord.replies)
+                ? commentRecord.replies.map((reply: unknown) => {
+                    if (!reply || typeof reply !== 'object') return reply
+                    const replyRecord = reply as { id?: string; [key: string]: unknown }
+                    return {
+                      ...replyRecord,
+                      user_vote: replyRecord.id ? votesMap.get(replyRecord.id) || null : null,
+                    }
+                  })
+                : [],
+            }
+          })
         }
       }
     } catch (error) {
-      console.error('PostDetailContent: Comments fetch exception', error);
-    }
-
-    // Get user's role in the community
-    let currentUserRole: 'admin' | 'moderator' | 'member' | null = null
-    if (user && post.community_id) {
-      try {
-        currentUserRole = await getUserCommunityRole(user.id, post.community_id)
-      } catch (error) {
-        console.error('PostDetailContent: Error fetching user role', error);
-      }
+      logger.error('PostDetailContent: Comments fetch exception', error)
     }
 
     // Count all comments including replies
-    const countAllComments = (comments: any[]): number => {
+    const countAllComments = (comments: unknown[]): number => {
       let total = 0
-      comments.forEach(comment => {
+      comments.forEach((comment) => {
         total += 1 // Count the comment itself
-        if (comment.replies && comment.replies.length > 0) {
-          total += countAllComments(comment.replies) // Recursively count replies
+        if (comment && typeof comment === 'object' && 'replies' in comment) {
+          const commentRecord = comment as { replies?: unknown[] }
+          if (Array.isArray(commentRecord.replies) && commentRecord.replies.length > 0) {
+            total += countAllComments(commentRecord.replies) // Recursively count replies
+          }
         }
       })
       return total
@@ -169,7 +183,7 @@ async function PostDetailContent({ postId }: { postId: string }) {
     return (
       <div className="container mx-auto max-w-3xl px-4 py-8">
         {/* Post Card */}
-        <PostCard post={post} showCommunity={true} variant="detail" />
+        <PostCard post={post} showCommunity={true} />
 
         {/* Comments Section */}
         <div className="mt-8 space-y-6">
@@ -184,18 +198,13 @@ async function PostDetailContent({ postId }: { postId: string }) {
 
           {/* Comment Thread */}
           <Suspense fallback={<div>Loading comments...</div>}>
-            <CommentThread 
-              comments={comments} 
-              postId={postId} 
-              currentUserRole={currentUserRole}
-              communityId={post.community_id}
-            />
+            <CommentThread comments={comments} postId={postId} />
           </Suspense>
         </div>
       </div>
     )
   } catch (error) {
-    console.error('PostDetailContent: Unexpected error', error);
+    logger.error('PostDetailContent: Unexpected error', error)
     notFound()
   }
 }
@@ -203,7 +212,7 @@ async function PostDetailContent({ postId }: { postId: string }) {
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
   // Destructure id from params (Next.js 15 async params)
   const { id } = await params
-  
+
   return (
     <ErrorBoundary>
       <Suspense fallback={<div>Loading post...</div>}>
@@ -216,14 +225,10 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 export async function generateMetadata({ params }: PostDetailPageProps) {
   // Destructure id from params (Next.js 14 synchronous params)
   const { id } = params
-  
+
   const supabase = await createClient()
 
-  const { data: post } = await supabase
-    .from('posts')
-    .select('title, body')
-    .eq('id', id)
-    .single()
+  const { data: post } = await supabase.from('posts').select('title, body').eq('id', id).single()
 
   if (!post) {
     return {

@@ -94,18 +94,37 @@ export function DiscoveryFeed() {
     <div className="space-y-4">
       {items.map((item) => {
         switch (item.type) {
-          case 'news':
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return <NewsCard key={item.id} item={item as any} />
-          case 'reddit':
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return <RedditCard key={item.id} item={item as any} />
+          case 'news': {
+            interface NewsItem {
+              id: string
+              type: 'news'
+              title: string
+              description?: string
+              url?: string
+              source?: string
+              author?: string
+              publishedAt?: string
+              imageUrl?: string
+            }
+            return <NewsCard key={item.id} item={item as NewsItem} />
+          }
+          case 'reddit': {
+            interface RedditItem {
+              id: string
+              type: 'reddit'
+              title: string
+              description?: string
+              url?: string
+              subreddit?: string
+              upvotes?: number
+              comments?: number
+            }
+            return <RedditCard key={item.id} item={item as RedditItem} />
+          }
           case 'event':
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return <FeedItem key={item.id} item={item as any} />
+            return <FeedItem key={item.id} item={item} />
           default:
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return <FeedItem key={item.id} item={item as any} />
+            return <FeedItem key={item.id} item={item} />
         }
       })}
     </div>

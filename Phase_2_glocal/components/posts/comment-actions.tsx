@@ -17,15 +17,17 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useAuth } from '@/lib/context/auth-context'
 
 interface CommentActionsProps {
   commentId: string
   authorId: string
   text: string
-  createdAt: string
+  createdAt?: string
   onUpdate?: () => void
+  currentUserRole?: 'admin' | 'moderator' | 'member' | null
+  communityId?: string
 }
 
 export function CommentActions({
@@ -44,6 +46,7 @@ export function CommentActions({
 
   // Check if user can edit (within 10 minutes)
   const canEdit = () => {
+    if (!createdAt) return false
     const createdDate = new Date(createdAt)
     const now = new Date()
     const diffMinutes = (now.getTime() - createdDate.getTime()) / (1000 * 60)

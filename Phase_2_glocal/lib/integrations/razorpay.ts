@@ -1,3 +1,4 @@
+import { logger } from '@/lib/utils/logger'
 import Razorpay from 'razorpay'
 import crypto from 'crypto'
 
@@ -13,7 +14,7 @@ try {
     })
   }
 } catch (error) {
-  console.warn('Razorpay client not initialized:', error)
+  logger.warn('Razorpay client not initialized:', error)
 }
 
 export interface RazorpayOrder {
@@ -108,7 +109,7 @@ export async function createOrder(params: CreateOrderParams): Promise<RazorpayOr
 
     return order as unknown as RazorpayOrder
   } catch (error) {
-    console.error('Error creating Razorpay order:', error)
+    logger.error('Error creating Razorpay order:', error)
     throw new Error('Failed to create payment order')
   }
 }
@@ -134,7 +135,7 @@ export async function createSubscription(
 
     return subscription as unknown as RazorpaySubscription
   } catch (error) {
-    console.error('Error creating Razorpay subscription:', error)
+    logger.error('Error creating Razorpay subscription:', error)
     throw new Error('Failed to create subscription')
   }
 }
@@ -174,7 +175,7 @@ export async function getSubscription(subscriptionId: string): Promise<RazorpayS
     const subscription = await razorpay.subscriptions.fetch(subscriptionId)
     return subscription as unknown as RazorpaySubscription
   } catch (error) {
-    console.error('Error fetching subscription:', error)
+    logger.error('Error fetching subscription:', error)
     throw new Error('Failed to fetch subscription details')
   }
 }
@@ -189,7 +190,7 @@ export async function cancelSubscription(subscriptionId: string): Promise<Razorp
     const subscription = await razorpay.subscriptions.cancel(subscriptionId)
     return subscription as unknown as RazorpaySubscription
   } catch (error) {
-    console.error('Error cancelling subscription:', error)
+    logger.error('Error cancelling subscription:', error)
     throw new Error('Failed to cancel subscription')
   }
 }
@@ -209,7 +210,7 @@ export async function pauseSubscription(
     })
     return subscription as unknown as RazorpaySubscription
   } catch (error) {
-    console.error('Error pausing subscription:', error)
+    logger.error('Error pausing subscription:', error)
     throw new Error('Failed to pause subscription')
   }
 }
@@ -224,7 +225,7 @@ export async function resumeSubscription(subscriptionId: string): Promise<Razorp
     const subscription = await razorpay.subscriptions.resume(subscriptionId)
     return subscription as unknown as RazorpaySubscription
   } catch (error) {
-    console.error('Error resuming subscription:', error)
+    logger.error('Error resuming subscription:', error)
     throw new Error('Failed to resume subscription')
   }
 }
@@ -239,7 +240,7 @@ export async function getPayment(paymentId: string): Promise<RazorpayPayment> {
     const payment = await razorpay.payments.fetch(paymentId)
     return payment as RazorpayPayment
   } catch (error) {
-    console.error('Error fetching payment:', error)
+    logger.error('Error fetching payment:', error)
     throw new Error('Failed to fetch payment details')
   }
 }
@@ -278,7 +279,7 @@ export async function createPlan(
       item: { name: string; amount: number; currency: string }
     }
   } catch (error) {
-    console.error('Error creating plan:', error)
+    logger.error('Error creating plan:', error)
     throw new Error('Failed to create subscription plan')
   }
 }
@@ -305,7 +306,7 @@ export async function getPlans(): Promise<
       item: { name: string; amount: number; currency: string }
     }[]
   } catch (error) {
-    console.error('Error fetching plans:', error)
+    logger.error('Error fetching plans:', error)
     throw new Error('Failed to fetch subscription plans')
   }
 }

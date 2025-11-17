@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/transparency/stats - Get public platform statistics
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(_request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/transparency/stats')
   try {
     const supabase = await createClient()
 
@@ -43,8 +47,14 @@ export async function GET(request: NextRequest) {
     // Get content from last 24 hours
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     const [{ count: posts24h }, { count: comments24h }] = await Promise.all([
-      supabase.from('posts').select('*', { count: 'exact', head: true }).gte('created_at', oneDayAgo),
-      supabase.from('comments').select('*', { count: 'exact', head: true }).gte('created_at', oneDayAgo),
+      supabase
+        .from('posts')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', oneDayAgo),
+      supabase
+        .from('comments')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', oneDayAgo),
     ])
 
     const stats = {
@@ -58,19 +68,8 @@ export async function GET(request: NextRequest) {
       comments_24h: comments24h || 0,
     }
 
-    return NextResponse.json({
-      success: true,
-      data: stats,
-      generated_at: new Date().toISOString(),
-    })
+    return createSuccessResponse(stats, { generated_at: new Date().toISOString() })
   } catch (error) {
-    console.error('Fetch transparency stats error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch stats',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/transparency/stats' })
   }
-}
-
+})

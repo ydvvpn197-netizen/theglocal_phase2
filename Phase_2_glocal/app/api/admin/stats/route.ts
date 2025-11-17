@@ -1,26 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { isSuperAdmin } from '@/lib/utils/permissions'
+import { NextRequest } from 'next/server'
+import { requireAdminOrThrow } from '@/lib/utils/require-admin'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/admin/stats - Get admin platform statistics
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(_request: NextRequest) {
   try {
-    const supabase = await createClient()
-
-    // Get current user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
-    }
-
-    // Verify super admin
-    const isAdmin = await isSuperAdmin(user.id)
-    if (!isAdmin) {
-      return NextResponse.json({ error: 'Super admin access required' }, { status: 403 })
-    }
+    // Require admin authentication
+    const { supabase } = await requireAdminOrThrow()
 
     // Get comprehensive stats
     const [
@@ -38,9 +25,18 @@ export async function GET(request: NextRequest) {
       supabase.from('posts').select('*', { count: 'exact', head: true }).eq('is_deleted', false),
       supabase.from('comments').select('*', { count: 'exact', head: true }).eq('is_deleted', false),
       supabase.from('artists').select('*', { count: 'exact', head: true }),
-      supabase.from('artists').select('*', { count: 'exact', head: true }).in('subscription_status', ['trial', 'active']),
-      supabase.from('artists').select('*', { count: 'exact', head: true }).eq('subscription_status', 'trial'),
-      supabase.from('artists').select('*', { count: 'exact', head: true }).eq('subscription_status', 'active'),
+      supabase
+        .from('artists')
+        .select('*', { count: 'exact', head: true })
+        .in('subscription_status', ['trial', 'active']),
+      supabase
+        .from('artists')
+        .select('*', { count: 'exact', head: true })
+        .eq('subscription_status', 'trial'),
+      supabase
+        .from('artists')
+        .select('*', { count: 'exact', head: true })
+        .eq('subscription_status', 'active'),
     ])
 
     // Get active users
@@ -69,8 +65,14 @@ export async function GET(request: NextRequest) {
     // Get recent content
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     const [{ count: posts24h }, { count: comments24h }] = await Promise.all([
-      supabase.from('posts').select('*', { count: 'exact', head: true }).gte('created_at', oneDayAgo),
-      supabase.from('comments').select('*', { count: 'exact', head: true }).gte('created_at', oneDayAgo),
+      supabase
+        .from('posts')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', oneDayAgo),
+      supabase
+        .from('comments')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', oneDayAgo),
     ])
 
     // Calculate revenue (₹500/month per active subscription)
@@ -93,18 +95,8 @@ export async function GET(request: NextRequest) {
       total_revenue_monthly: monthlyRevenue,
     }
 
-    return NextResponse.json({
-      success: true,
-      data: stats,
-      generated_at: new Date().toISOString(),
-    })
+    return createSuccessResponse(stats, { generated_at: new Date().toISOString() })
   } catch (error) {
-    console.error('Fetch admin stats error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch stats',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/admin/stats' })
   }
-}
+})

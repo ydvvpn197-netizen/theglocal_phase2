@@ -1,5 +1,6 @@
 'use client'
 
+import { logger } from '@/lib/utils/logger'
 import { useState, useEffect, useCallback } from 'react'
 import { User, Conversation } from '@/lib/types/messages.types'
 import { getAvatarUrl } from '@/lib/utils/message-helpers'
@@ -9,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Search, MessageCircle, Loader2 } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useMessages } from '@/lib/context/messages-context'
 
 interface UserSearchDialogProps {
@@ -27,37 +28,40 @@ export function UserSearchDialog({ open, onOpenChange, onUserSelect }: UserSearc
   const { createConversation } = useMessages()
 
   // Debounced search
-  const searchUsers = useCallback(async (searchQuery: string) => {
-    if (searchQuery.trim().length < 2) {
-      setUsers([])
-      setHasSearched(false)
-      return
-    }
-
-    try {
-      setIsLoading(true)
-      setHasSearched(true)
-
-      const response = await fetch(`/api/messages/search?q=${encodeURIComponent(searchQuery)}`)
-      const result = await response.json()
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to search users')
+  const searchUsers = useCallback(
+    async (searchQuery: string) => {
+      if (searchQuery.trim().length < 2) {
+        setUsers([])
+        setHasSearched(false)
+        return
       }
 
-      setUsers(result.data || [])
-    } catch (error) {
-      console.error('Error searching users:', error)
-      toast({
-        title: 'Search failed',
-        description: error instanceof Error ? error.message : 'Failed to search users',
-        variant: 'destructive'
-      })
-      setUsers([])
-    } finally {
-      setIsLoading(false)
-    }
-  }, [toast])
+      try {
+        setIsLoading(true)
+        setHasSearched(true)
+
+        const response = await fetch(`/api/messages/search?q=${encodeURIComponent(searchQuery)}`)
+        const result = await response.json()
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to search users')
+        }
+
+        setUsers(result.data || [])
+      } catch (error) {
+        logger.error('Error searching users:', error)
+        toast({
+          title: 'Search failed',
+          description: error instanceof Error ? error.message : 'Failed to search users',
+          variant: 'destructive',
+        })
+        setUsers([])
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [toast]
+  )
 
   // Debounce search input
   useEffect(() => {
@@ -77,11 +81,11 @@ export function UserSearchDialog({ open, onOpenChange, onUserSelect }: UserSearc
       setUsers([])
       setHasSearched(false)
     } catch (error) {
-      console.error('Error creating conversation:', error)
+      logger.error('Error creating conversation:', error)
       toast({
         title: 'Error',
         description: 'Failed to start conversation',
-        variant: 'destructive'
+        variant: 'destructive',
       })
     }
   }
@@ -123,9 +127,7 @@ export function UserSearchDialog({ open, onOpenChange, onUserSelect }: UserSearc
                 <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-3 mx-auto">
                   <Search className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <p className="text-muted-foreground">
-                  No users found for "{query}"
-                </p>
+                <p className="text-muted-foreground">No users found for "{query}"</p>
               </div>
             ) : users.length > 0 ? (
               <div className="space-y-2">
@@ -171,9 +173,7 @@ export function UserSearchDialog({ open, onOpenChange, onUserSelect }: UserSearc
                 <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-3 mx-auto">
                   <MessageCircle className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <p className="text-muted-foreground">
-                  Search for users to start a conversation
-                </p>
+                <p className="text-muted-foreground">Search for users to start a conversation</p>
               </div>
             )}
           </div>

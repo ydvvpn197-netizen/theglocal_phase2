@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { logger } from '@/lib/utils/logger'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Loader2, CheckCircle, AlertCircle, XCircle, RefreshCw } from 'lucide-react'
+import type { ApiResponse } from '@/lib/types/api.types'
 
 interface ApiHealth {
   service: string
@@ -19,17 +21,13 @@ export default function AdminHealthPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  useEffect(() => {
-    fetchHealth()
-  }, [])
-
-  const fetchHealth = async () => {
+  const fetchHealth = useCallback(async () => {
     setIsLoading(true)
     setIsRefreshing(true)
 
     try {
       const response = await fetch('/api/admin/health')
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<ApiHealth[]>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch health')
@@ -37,12 +35,16 @@ export default function AdminHealthPage() {
 
       setHealthData(result.data || [])
     } catch (error) {
-      console.error('Error fetching health:', error)
+      logger.error('Error fetching health:', error)
     } finally {
       setIsLoading(false)
       setIsRefreshing(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchHealth()
+  }, [fetchHealth])
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -60,9 +62,17 @@ export default function AdminHealthPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'healthy':
-        return <Badge variant="default" className="bg-green-600">Healthy</Badge>
+        return (
+          <Badge variant="default" className="bg-green-600">
+            Healthy
+          </Badge>
+        )
       case 'degraded':
-        return <Badge variant="secondary" className="bg-yellow-600">Degraded</Badge>
+        return (
+          <Badge variant="secondary" className="bg-yellow-600">
+            Degraded
+          </Badge>
+        )
       case 'down':
         return <Badge variant="destructive">Down</Badge>
       default:

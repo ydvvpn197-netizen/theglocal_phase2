@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useAuth } from '@/lib/context/auth-context'
 import { ARTIST_CATEGORIES } from '@/lib/utils/constants'
 import { Upload, X, Loader2 } from 'lucide-react'
@@ -204,6 +204,7 @@ export function ArtistRegistrationForm() {
           <label className="text-sm font-medium">Minimum Rate (₹)</label>
           <Input
             type="number"
+            inputMode="numeric"
             {...register('rate_min', { valueAsNumber: true })}
             placeholder="5000"
             min={0}
@@ -217,6 +218,7 @@ export function ArtistRegistrationForm() {
           <label className="text-sm font-medium">Maximum Rate (₹)</label>
           <Input
             type="number"
+            inputMode="numeric"
             {...register('rate_max', { valueAsNumber: true })}
             placeholder="25000"
             min={0}
@@ -255,7 +257,15 @@ export function ArtistRegistrationForm() {
           <div className="mt-4 grid grid-cols-3 gap-4 md:grid-cols-5">
             {portfolioImages.map((url, index) => (
               <div key={index} className="group relative aspect-square overflow-hidden rounded-lg">
-                <Image src={url} alt={`Portfolio ${index + 1}`} fill className="object-cover" />
+                <Image
+                  src={url}
+                  alt={`Portfolio ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 33vw, 20vw"
+                  loading="lazy"
+                  quality={80}
+                />
                 <button
                   type="button"
                   onClick={() => removeImage(index)}

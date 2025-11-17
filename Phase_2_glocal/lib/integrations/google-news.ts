@@ -1,3 +1,4 @@
+import { logger } from '@/lib/utils/logger'
 /**
  * Google News API Integration
  * Uses NewsAPI.org for fetching local news articles
@@ -41,7 +42,7 @@ export async function fetchLocalNews(location: string, limit: number = 10): Prom
   const apiKey = process.env.GOOGLE_NEWS_API_KEY
 
   if (!apiKey) {
-    console.warn('Google News API key not configured')
+    logger.warn('Google News API key not configured')
     return []
   }
 
@@ -79,7 +80,7 @@ export async function fetchLocalNews(location: string, limit: number = 10): Prom
         content: article.content || undefined,
       }))
   } catch (error) {
-    console.error('Google News API error:', error)
+    logger.error('Google News API error:', error)
     return []
   }
 }
@@ -98,7 +99,7 @@ export async function fetchTopHeadlines(
   const apiKey = process.env.GOOGLE_NEWS_API_KEY
 
   if (!apiKey) {
-    console.warn('Google News API key not configured')
+    logger.warn('Google News API key not configured')
     return []
   }
 
@@ -132,7 +133,7 @@ export async function fetchTopHeadlines(
         author: article.author || undefined,
       }))
   } catch (error) {
-    console.error('Google News API error:', error)
+    logger.error('Google News API error:', error)
     return []
   }
 }

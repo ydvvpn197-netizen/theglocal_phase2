@@ -1,5 +1,6 @@
 'use client'
 
+import { logger } from '@/lib/utils/logger'
 import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -85,7 +86,7 @@ export function ModerationLogTable({ communityId }: ModerationLogTableProps) {
       link.click()
       document.body.removeChild(link)
     } catch (error) {
-      console.error('Error exporting CSV:', error)
+      logger.error('Error exporting CSV:', error)
     } finally {
       setIsExporting(false)
     }
@@ -219,9 +220,7 @@ export function ModerationLogTable({ communityId }: ModerationLogTableProps) {
                 Previous
               </Button>
 
-              <span className="text-sm text-muted-foreground">
-                Page {page + 1}
-              </span>
+              <span className="text-sm text-muted-foreground">Page {page + 1}</span>
 
               <Button
                 variant="outline"
@@ -237,4 +236,3 @@ export function ModerationLogTable({ communityId }: ModerationLogTableProps) {
     </Card>
   )
 }
-

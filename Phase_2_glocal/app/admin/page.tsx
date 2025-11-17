@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { isSuperAdmin } from '@/lib/utils/permissions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
   Shield,
@@ -74,9 +73,7 @@ export default async function SuperAdminDashboardPage() {
             <Badge variant="destructive">Super Admin</Badge>
           </div>
           <h1 className="text-3xl font-bold">Platform Administration</h1>
-          <p className="mt-2 text-muted-foreground">
-            Platform-wide management and monitoring
-          </p>
+          <p className="mt-2 text-muted-foreground">Platform-wide management and monitoring</p>
         </div>
 
         {/* Quick Stats */}
@@ -143,9 +140,7 @@ export default async function SuperAdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Detailed analytics and metrics
-                </p>
+                <p className="text-sm text-muted-foreground">Detailed analytics and metrics</p>
               </CardContent>
             </Card>
           </Link>
@@ -162,9 +157,7 @@ export default async function SuperAdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Review and manage reports
-                </p>
+                <p className="text-sm text-muted-foreground">Review and manage reports</p>
               </CardContent>
             </Card>
           </Link>
@@ -178,9 +171,7 @@ export default async function SuperAdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Manage users and bans
-                </p>
+                <p className="text-sm text-muted-foreground">Manage users and bans</p>
               </CardContent>
             </Card>
           </Link>
@@ -194,9 +185,7 @@ export default async function SuperAdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Manage artist subscriptions
-                </p>
+                <p className="text-sm text-muted-foreground">Manage artist subscriptions</p>
               </CardContent>
             </Card>
           </Link>
@@ -210,9 +199,7 @@ export default async function SuperAdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Feature and manage communities
-                </p>
+                <p className="text-sm text-muted-foreground">Feature and manage communities</p>
               </CardContent>
             </Card>
           </Link>
@@ -226,9 +213,7 @@ export default async function SuperAdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Monitor external APIs
-                </p>
+                <p className="text-sm text-muted-foreground">Monitor external APIs</p>
               </CardContent>
             </Card>
           </Link>

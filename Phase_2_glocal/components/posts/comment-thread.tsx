@@ -10,6 +10,7 @@ import { VoteButtons } from './vote-buttons'
 import { CommentForm } from './comment-form'
 import { CommentActions } from './comment-actions'
 import { generateGeometricAvatar } from '@/lib/utils/avatar-generator'
+import { createSafeSVG } from '@/lib/security/sanitize'
 
 interface Author {
   anonymous_handle: string
@@ -119,13 +120,14 @@ function CommentCard({
   onReplySuccess,
 }: CommentCardProps) {
   const avatarSvg = generateGeometricAvatar(comment.author.avatar_seed)
+  const safeSvg = createSafeSVG(avatarSvg)
 
   return (
     <Card className="p-4">
       <div className="flex gap-3">
         {/* Avatar */}
         <Avatar className="h-8 w-8 flex-shrink-0">
-          <div dangerouslySetInnerHTML={{ __html: avatarSvg }} />
+          <div dangerouslySetInnerHTML={safeSvg} />
         </Avatar>
 
         <div className="flex-1 space-y-2">

@@ -1,14 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createOrder } from '@/lib/integrations/razorpay'
 import { z } from 'zod'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 const subscribeSchema = z.object({
   plan: z.enum(['monthly', 'yearly']),
 })
 
 // POST /api/artists/[id]/subscribe - Create subscription order
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export const POST = withRateLimit(async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const logger = createAPILogger('POST', '/api/artists/[id]/subscribe')
   try {
     const supabase = await createClient()
 
@@ -18,7 +25,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
     // Get artist profile
@@ -30,12 +37,12 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       .single()
 
     if (artistError || !artist) {
-      return NextResponse.json({ error: 'Artist profile not found' }, { status: 404 })
+      throw APIErrors.notFound('Artist profile')
     }
 
     // Check if already subscribed
     if (artist.subscription_status === 'active') {
-      return NextResponse.json({ error: 'Already subscribed' }, { status: 400 })
+      throw APIErrors.conflict('Already subscribed')
     }
 
     const body = await request.json()
@@ -70,27 +77,21 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     })
 
     if (orderError) {
-      console.error('Error storing order:', orderError)
+      logger.error('Error storing order:', orderError)
       // Continue anyway, order is created in Razorpay
     }
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        order_id: order.id,
-        amount: order.amount,
-        currency: order.currency,
-        customer_name: artist.stage_name,
-        customer_email: user.email,
-      },
+    return createSuccessResponse({
+      order_id: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      customer_name: artist.stage_name,
+      customer_email: user.email,
     })
   } catch (error) {
-    console.error('Subscription creation error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create subscription',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: `/api/artists/${params.id}/subscribe`,
+    })
   }
-}
+})

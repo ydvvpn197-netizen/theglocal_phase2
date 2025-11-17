@@ -1,90 +1,163 @@
 /**
- * Performance Monitoring Utilities
- * Track and optimize Core Web Vitals
+ * Performance optimization utilities
+ * Helper functions for image optimization, lazy loading, and performance monitoring
  */
 
-// Report Web Vitals to analytics
-export function reportWebVitals(metric: any) {
-  // Log to console in development
-  if (process.env.NODE_ENV === 'development') {
-    console.log(metric)
-  }
+import { logger } from '@/lib/utils/logger'
 
-  // Send to analytics in production
-  if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
-    // Could send to Vercel Analytics, Google Analytics, or custom endpoint
-    const body = JSON.stringify(metric)
+/**
+ * Calculate responsive image sizes based on viewport
+ * Returns a sizes string for Next.js Image component
+ */
+export function getImageSizes(
+  breakpoints: {
+    mobile?: string
+    tablet?: string
+    desktop?: string
+    large?: string
+  } = {}
+): string {
+  const { mobile = '100vw', tablet = '50vw', desktop = '33vw', large = '25vw' } = breakpoints
 
-    // Use sendBeacon if available, fallback to fetch
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon('/api/analytics/vitals', body)
-    } else {
-      fetch('/api/analytics/vitals', {
-        body,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        keepalive: true,
-      })
-    }
-  }
+  return `(max-width: 640px) ${mobile}, (max-width: 1024px) ${tablet}, (max-width: 1280px) ${desktop}, ${large}`
 }
 
-// Measure component render time
-export function measureComponentRender(componentName: string, callback: () => void) {
-  if (typeof window === 'undefined') return callback()
+/**
+ * Get optimal image size for different contexts
+ */
+export const IMAGE_SIZES = {
+  // Hero images (above fold)
+  hero: getImageSizes({
+    mobile: '100vw',
+    tablet: '100vw',
+    desktop: '1200px',
+    large: '1920px',
+  }),
 
-  const startTime = performance.now()
-  callback()
-  const endTime = performance.now()
-  const renderTime = endTime - startTime
+  // Card images
+  card: getImageSizes({
+    mobile: '100vw',
+    tablet: '50vw',
+    desktop: '33vw',
+    large: '400px',
+  }),
 
-  if (renderTime > 16) {
-    // More than 1 frame (60fps)
-    console.warn(`Slow render: ${componentName} took ${renderTime.toFixed(2)}ms`)
-  }
+  // Thumbnail images
+  thumbnail: getImageSizes({
+    mobile: '100px',
+    tablet: '150px',
+    desktop: '200px',
+    large: '250px',
+  }),
+
+  // Avatar images
+  avatar: getImageSizes({
+    mobile: '40px',
+    tablet: '48px',
+    desktop: '56px',
+    large: '64px',
+  }),
+
+  // Gallery images
+  gallery: getImageSizes({
+    mobile: '100vw',
+    tablet: '50vw',
+    desktop: '33vw',
+    large: '25vw',
+  }),
+
+  // Full width images
+  fullWidth: '100vw',
+} as const
+
+/**
+ * Generate a blur placeholder data URL
+ * Creates a tiny 1x1 pixel image for blur placeholder
+ */
+export function generateBlurPlaceholder(width = 10, height = 10): string {
+  // Base64 encoded 1x1 transparent pixel
+  return `data:image/svg+xml;base64,${Buffer.from(
+    `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#f3f4f6"/></svg>`
+  ).toString('base64')}`
 }
 
-// Lazy load images with Intersection Observer
-export function lazyLoadImage(imageElement: HTMLImageElement) {
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const image = entry.target as HTMLImageElement
-          const src = image.dataset.src
-
-          if (src) {
-            image.src = src
-            image.removeAttribute('data-src')
-            imageObserver.unobserve(image)
-          }
-        }
-      })
-    })
-
-    imageObserver.observe(imageElement)
-  } else {
-    // Fallback for browsers without IntersectionObserver
-    const src = imageElement.dataset.src
-    if (src) {
-      imageElement.src = src
-    }
-  }
+/**
+ * Check if image should be loaded with priority
+ * Priority should be used for above-fold images (LCP candidates)
+ */
+export function shouldUsePriority(isAboveFold: boolean, isLCPCandidate: boolean = false): boolean {
+  return isAboveFold || isLCPCandidate
 }
 
-// Debounce function for performance
-export function debounce<T extends (...args: any[]) => any>(
+/**
+ * Check if image should be lazy loaded
+ * Lazy load all below-fold images
+ */
+export function shouldLazyLoad(isAboveFold: boolean): 'lazy' | 'eager' {
+  return isAboveFold ? 'eager' : 'lazy'
+}
+
+/**
+ * Get optimal image quality based on context
+ * Lower quality for thumbnails, higher for hero images
+ */
+export function getImageQuality(
+  context: 'hero' | 'card' | 'thumbnail' | 'gallery' = 'card'
+): number {
+  const qualityMap = {
+    hero: 90,
+    card: 85,
+    gallery: 80,
+    thumbnail: 75,
+  }
+  return qualityMap[context]
+}
+
+/**
+ * Performance monitoring utilities
+ */
+
+/**
+ * Measure time taken for an async operation
+ */
+export async function measureAsync<T>(label: string, fn: () => Promise<T>): Promise<T> {
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    const start = performance.now()
+    const result = await fn()
+    const end = performance.now()
+    logger.debug(`[Performance] ${label}: ${(end - start).toFixed(2)}ms`)
+    return result
+  }
+  return fn()
+}
+
+/**
+ * Measure time taken for a sync operation
+ */
+export function measureSync<T>(label: string, fn: () => T): T {
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    const start = performance.now()
+    const result = fn()
+    const end = performance.now()
+    logger.debug(`[Performance] ${label}: ${(end - start).toFixed(2)}ms`)
+    return result
+  }
+  return fn()
+}
+
+/**
+ * Debounce function for performance optimization
+ */
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null
-
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
       timeout = null
       func(...args)
     }
-
     if (timeout) {
       clearTimeout(timeout)
     }
@@ -92,13 +165,14 @@ export function debounce<T extends (...args: any[]) => any>(
   }
 }
 
-// Throttle function for performance
-export function throttle<T extends (...args: any[]) => any>(
+/**
+ * Throttle function for performance optimization
+ */
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean
-
   return function executedFunction(...args: Parameters<T>) {
     if (!inThrottle) {
       func(...args)
@@ -108,28 +182,108 @@ export function throttle<T extends (...args: any[]) => any>(
   }
 }
 
-// Check if user is on slow connection
+/**
+ * Check if user is on a slow connection
+ */
 export function isSlowConnection(): boolean {
-  if (typeof navigator === 'undefined') return false
+  if (typeof window === 'undefined' || !('connection' in navigator)) {
+    return false
+  }
 
-  const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection
+  const connection = (navigator as Navigator & { connection?: { effectiveType?: string } })
+    .connection
+  if (!connection || !connection.effectiveType) {
+    return false
+  }
 
-  if (!connection) return false
-
-  return (
-    connection.effectiveType === 'slow-2g' ||
-    connection.effectiveType === '2g' ||
-    connection.saveData === true
-  )
+  // 2g or slow-2g
+  return connection.effectiveType === '2g' || connection.effectiveType === 'slow-2g'
 }
 
-// Prefetch link on hover (for better perceived performance)
-export function prefetchOnHover(href: string) {
-  if (typeof window === 'undefined') return
+/**
+ * Check if user has data saver enabled
+ */
+export function isDataSaverEnabled(): boolean {
+  if (typeof window === 'undefined' || !('connection' in navigator)) {
+    return false
+  }
+
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+  return connection?.saveData === true
+}
+
+/**
+ * Get optimal image loading strategy based on connection
+ */
+export function getImageLoadingStrategy(): {
+  quality: number
+  priority: boolean
+  loading: 'lazy' | 'eager'
+} {
+  const slowConnection = isSlowConnection()
+  const dataSaver = isDataSaverEnabled()
+
+  if (slowConnection || dataSaver) {
+    return {
+      quality: 70, // Lower quality for slow connections
+      priority: false, // Don't prioritize on slow connections
+      loading: 'lazy', // Always lazy load on slow connections
+    }
+  }
+
+  return {
+    quality: 85,
+    priority: false,
+    loading: 'lazy',
+  }
+}
+
+/**
+ * Bundle size tracking utilities
+ */
+
+/**
+ * Log bundle size information (for development)
+ */
+export function logBundleSize(label: string, size: number): void {
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    const sizeKB = (size / 1024).toFixed(2)
+    const sizeMB = (size / (1024 * 1024)).toFixed(2)
+    const message = `[Bundle Size] ${label}: ${sizeKB}KB (${sizeMB}MB) ${
+      size > 250 * 1024 ? '⚠️ Large bundle!' : '✓'
+    }`
+    if (size > 250 * 1024) {
+      logger.warn(message)
+    } else {
+      logger.debug(message)
+    }
+  }
+}
+
+/**
+ * Preload critical resources
+ */
+export function preloadResource(href: string, as: string, type?: string): void {
+  if (typeof document === 'undefined') return
+
+  const link = document.createElement('link')
+  link.rel = 'preload'
+  link.href = href
+  link.as = as
+  if (type) {
+    link.type = type
+  }
+  document.head.appendChild(link)
+}
+
+/**
+ * Prefetch resource for faster navigation
+ */
+export function prefetchResource(href: string): void {
+  if (typeof document === 'undefined') return
 
   const link = document.createElement('link')
   link.rel = 'prefetch'
   link.href = href
   document.head.appendChild(link)
 }
-

@@ -1,10 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// GET /api/posts/[id]/comments - List comments for a post
-export async function GET(_request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * GET /api/posts/[id]/comments - List comments for a post
+ *
+ * @param _request - Next.js request
+ * @param params - Route parameters with post ID
+ * @returns List of comments with replies
+ */
+export const GET = withRateLimit(async function GET(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: postId } = params
+  const logger = createAPILogger('GET', `/api/posts/${postId}/comments`)
+
   try {
-    const { id: postId } = params
+    logger.info('Fetching comments', { postId })
+
     const supabase = await createClient()
 
     // Fetch top-level comments (parent_id is null)
@@ -27,30 +43,40 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: comments || [],
+    logger.info('Comments fetched successfully', {
+      postId,
+      count: comments?.length || 0,
     })
-  } catch (error) {
-    console.error('Fetch comments error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch comments',
-      },
-      { status: 500 }
-    )
-  }
-}
 
-// POST /api/posts/[id]/comments - Create a new comment
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+    return createSuccessResponse(comments || [])
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'GET',
+      path: `/api/posts/${postId}/comments`,
+    })
+  }
+})
+
+/**
+ * POST /api/posts/[id]/comments - Create a new comment
+ *
+ * @param request - Next.js request with comment data
+ * @param params - Route parameters with post ID
+ * @returns Created comment
+ */
+export const POST = withRateLimit(async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: postId } = params
+  const logger = createAPILogger('POST', `/api/posts/${postId}/comments`)
+
   try {
-    const { id: postId } = params
     const body = await request.json()
     const { text, parent_id } = body
 
     if (!text || text.trim().length === 0) {
-      return NextResponse.json({ error: 'Comment text is required' }, { status: 400 })
+      throw APIErrors.badRequest('Comment text is required')
     }
 
     const supabase = await createClient()
@@ -61,8 +87,14 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Creating comment', {
+      postId,
+      userId: user.id,
+      hasParent: !!parent_id,
+    })
 
     // Verify post exists and is not deleted
     const { data: post } = await supabase
@@ -72,7 +104,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       .single()
 
     if (!post || post.is_deleted) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+      throw APIErrors.notFound('Post')
     }
 
     // Verify user is a member of the community
@@ -84,10 +116,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       .single()
 
     if (!membership) {
-      return NextResponse.json(
-        { error: 'You must be a member of this community to comment' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // If parent_id provided, verify it exists and enforce max 2-level nesting
@@ -99,15 +128,12 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
         .single()
 
       if (!parentComment) {
-        return NextResponse.json({ error: 'Parent comment not found' }, { status: 404 })
+        throw APIErrors.notFound('Parent comment')
       }
 
       // Disallow nested replies (max 2 levels: comment -> reply, no reply -> reply -> reply)
       if (parentComment.parent_id) {
-        return NextResponse.json(
-          { error: 'Cannot reply to a reply. Maximum 2 levels of nesting allowed.' },
-          { status: 400 }
-        )
+        throw APIErrors.badRequest('Cannot reply to a reply. Maximum 2 levels of nesting allowed.')
       }
     }
 
@@ -130,18 +156,19 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
     if (createError) throw createError
 
-    return NextResponse.json({
-      success: true,
+    logger.info('Comment created successfully', {
+      commentId: comment.id,
+      postId,
+      userId: user.id,
+    })
+
+    return createSuccessResponse(comment, {
       message: 'Comment created successfully',
-      data: comment,
     })
   } catch (error) {
-    console.error('Create comment error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create comment',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: `/api/posts/${postId}/comments`,
+    })
   }
-}
+})

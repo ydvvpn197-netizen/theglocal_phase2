@@ -6,11 +6,7 @@ const CACHE_NAME = 'theglocal-v1'
 const OFFLINE_URL = '/offline'
 
 // Assets to cache on install
-const PRECACHE_ASSETS = [
-  '/',
-  '/offline',
-  '/manifest.json',
-]
+const PRECACHE_ASSETS = ['/', '/offline', '/manifest.json']
 
 // Install event - cache essential assets
 self.addEventListener('install', (event) => {
@@ -86,4 +82,3 @@ self.addEventListener('fetch', (event) => {
       })
   )
 })
-

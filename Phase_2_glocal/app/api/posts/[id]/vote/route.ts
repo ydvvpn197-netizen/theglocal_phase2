@@ -1,13 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * POST /api/posts/[id]/vote - Vote on a post
+ *
+ * @param request - Next.js request with vote_type
+ * @param params - Route parameters with post ID
+ * @returns Updated vote counts and user vote status
+ */
+export const POST = withRateLimit(async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: postId } = params
+  const logger = createAPILogger('POST', `/api/posts/${postId}/vote`)
+
   try {
-    const { id: postId } = params
     const { vote_type } = await request.json()
 
     if (!vote_type || !['upvote', 'downvote'].includes(vote_type)) {
-      return NextResponse.json({ error: 'Invalid vote_type' }, { status: 400 })
+      throw APIErrors.badRequest('Invalid vote_type')
     }
 
     const supabase = await createClient()
@@ -18,8 +33,14 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Processing vote', {
+      postId,
+      userId: user.id,
+      voteType: vote_type,
+    })
 
     // Check for existing vote
     const { data: existingVote } = await supabase
@@ -88,21 +109,22 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       .eq('user_id', user.id)
       .single()
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        upvotes: updatedPost?.upvotes || 0,
-        downvotes: updatedPost?.downvotes || 0,
-        userVote: currentVote?.vote_type || null,
-      },
+    logger.info('Vote processed successfully', {
+      postId,
+      userId: user.id,
+      upvotes: updatedPost?.upvotes || 0,
+      downvotes: updatedPost?.downvotes || 0,
+    })
+
+    return createSuccessResponse({
+      upvotes: updatedPost?.upvotes || 0,
+      downvotes: updatedPost?.downvotes || 0,
+      userVote: currentVote?.vote_type || null,
     })
   } catch (error) {
-    console.error('Vote error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to process vote',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: `/api/posts/${postId}/vote`,
+    })
   }
-}
+})

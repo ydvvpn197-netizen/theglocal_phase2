@@ -1,21 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import {
   sendSubscriptionRenewalReminder,
   sendSubscriptionExpiredNotification,
 } from '@/lib/integrations/resend'
 import { PRICING } from '@/lib/utils/constants'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
+import { protectCronRoute } from '@/lib/utils/cron-auth'
 
 // GET /api/cron/send-renewal-reminders - Cron job to send subscription renewal reminders
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/cron/send-renewal-reminders')
   try {
-    // Verify cron secret to prevent unauthorized access
-    const authHeader = request.headers.get('authorization')
-    const cronSecret = process.env.CRON_SECRET
-
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    // Verify cron authentication
+    const authError = protectCronRoute(request)
+    if (authError) return authError
 
     const supabase = await createClient()
 
@@ -32,10 +33,10 @@ export async function GET(request: NextRequest) {
     )
 
     if (renewalError) {
-      console.error('Error fetching artists needing renewal reminders:', renewalError)
+      logger.error('Error fetching artists needing renewal reminders:', renewalError)
       errors.push(`Renewal query error: ${renewalError.message}`)
     } else if (artistsNeedingReminders && artistsNeedingReminders.length > 0) {
-      console.log(`Found ${artistsNeedingReminders.length} artists needing renewal reminders`)
+      logger.info(`Found ${artistsNeedingReminders.length} artists needing renewal reminders`)
 
       for (const artist of artistsNeedingReminders) {
         try {
@@ -63,17 +64,12 @@ export async function GET(request: NextRequest) {
           })
 
           renewalRemindersSent++
-          console.log(
-            `Sent renewal reminder to ${artist.stage_name} (${artist.artist_email})`
-          )
+          logger.info(`Sent renewal reminder to ${artist.stage_name} (${artist.artist_email})`)
         } catch (error) {
-          console.error(
-            `Error sending renewal reminder to ${artist.artist_email}:`,
-            error
-          )
           errors.push(
-            `Failed to send to ${artist.artist_email}: ${error instanceof Error ? error.message : 'Unknown error'}`
+            `Failed to send renewal reminder to ${artist.stage_name}: ${error instanceof Error ? error.message : 'Unknown error'}`
           )
+          logger.warn('Error sending renewal reminder', { artistId: artist.artist_id, error })
         }
       }
     }
@@ -87,10 +83,10 @@ export async function GET(request: NextRequest) {
     )
 
     if (expiryError) {
-      console.error('Error fetching artists needing expiry notifications:', expiryError)
+      logger.error('Error fetching artists needing expiry notifications:', expiryError)
       errors.push(`Expiry query error: ${expiryError.message}`)
     } else if (artistsNeedingExpiry && artistsNeedingExpiry.length > 0) {
-      console.log(`Found ${artistsNeedingExpiry.length} artists needing expiry notifications`)
+      logger.info(`Found ${artistsNeedingExpiry.length} artists needing expiry notifications`)
 
       for (const artist of artistsNeedingExpiry) {
         try {
@@ -111,41 +107,30 @@ export async function GET(request: NextRequest) {
           })
 
           expiryNotificationsSent++
-          console.log(
-            `Sent expiry notification to ${artist.stage_name} (${artist.artist_email})`
-          )
+          logger.info(`Sent expiry notification to ${artist.stage_name} (${artist.artist_email})`)
         } catch (error) {
-          console.error(
-            `Error sending expiry notification to ${artist.artist_email}:`,
-            error
-          )
           errors.push(
-            `Failed to send expiry to ${artist.artist_email}: ${error instanceof Error ? error.message : 'Unknown error'}`
+            `Failed to send expiry notification to ${artist.stage_name}: ${error instanceof Error ? error.message : 'Unknown error'}`
           )
+          logger.warn('Error sending expiry notification', { artistId: artist.artist_id, error })
         }
       }
     }
 
-    console.log(
-      `Renewal reminders cron completed: ${renewalRemindersSent} reminders sent, ${expiryNotificationsSent} expiry notifications sent`
-    )
-
-    return NextResponse.json({
-      success: true,
-      renewal_reminders_sent: renewalRemindersSent,
-      expiry_notifications_sent: expiryNotificationsSent,
-      errors: errors.length > 0 ? errors : undefined,
-      message: 'Renewal reminders cron job completed successfully',
-    })
-  } catch (error) {
-    console.error('Renewal reminders cron job error:', error)
-    return NextResponse.json(
+    return createSuccessResponse(
       {
-        error: 'Cron job failed',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        renewalRemindersSent,
+        expiryNotificationsSent,
+        errors: errors.length > 0 ? errors : undefined,
       },
-      { status: 500 }
+      {
+        message: 'Renewal reminders and expiry notifications processed',
+      }
     )
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'GET',
+      path: '/api/cron/send-renewal-reminders',
+    })
   }
-}
-
+}) // Cron jobs use CRON preset automatically

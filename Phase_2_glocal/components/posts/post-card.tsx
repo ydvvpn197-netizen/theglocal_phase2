@@ -62,7 +62,7 @@ export function PostCard({ post, showCommunity = true, onUpdate }: PostCardProps
           <div className="flex items-center gap-3 flex-1 min-w-0">
             {avatarDataUrl && (
               <Avatar className="h-10 w-10">
-                <Image src={avatarDataUrl} alt="" width={40} height={40} />
+                <Image src={avatarDataUrl} alt="" width={40} height={40} aria-hidden="true" />
               </Avatar>
             )}
             <div className="flex-1 min-w-0">
@@ -115,10 +115,10 @@ export function PostCard({ post, showCommunity = true, onUpdate }: PostCardProps
       </CardHeader>
 
       <CardContent className="space-y-3">
-        <Link href={`/posts/${post.id}`}>
-          <h3 className="text-lg font-semibold hover:text-brand-primary transition-colors">
+        <Link href={`/posts/${post.id}`} aria-label={`Read post: ${post.title}`}>
+          <h2 className="text-lg font-semibold hover:text-brand-primary transition-colors">
             {post.title}
-          </h3>
+          </h2>
         </Link>
 
         {post.body && (
@@ -144,8 +144,9 @@ export function PostCard({ post, showCommunity = true, onUpdate }: PostCardProps
           <Link
             href={`/posts/${post.id}`}
             className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            aria-label={`View ${post.comment_count} comments on this post`}
           >
-            <MessageSquare className="h-4 w-4" />
+            <MessageSquare className="h-4 w-4" aria-hidden="true" />
             <span>{post.comment_count} comments</span>
           </Link>
         </div>

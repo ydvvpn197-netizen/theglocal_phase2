@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { BookingMessages } from '@/components/bookings/booking-messages'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { Loader2, Calendar, MapPin, User, DollarSign, MessageSquare, ArrowLeft } from 'lucide-react'
 
 interface Booking {
@@ -209,9 +209,7 @@ export default function BookingDetailPage({ params }: { params: { id: string } }
             <div className="flex items-center gap-2">
               <User className="h-5 w-5 text-muted-foreground" />
               <div>
-                <div className="font-medium">
-                  {isArtist ? 'Requested by' : 'Artist'}
-                </div>
+                <div className="font-medium">{isArtist ? 'Requested by' : 'Artist'}</div>
                 <div className="text-sm text-muted-foreground">
                   {isArtist
                     ? booking.users?.anonymous_handle
@@ -297,9 +295,7 @@ export default function BookingDetailPage({ params }: { params: { id: string } }
                       onClick={() => handleStatusUpdate(action.value)}
                       disabled={isUpdating}
                     >
-                      {isUpdating ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      ) : null}
+                      {isUpdating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                       {action.label}
                     </Button>
                   )
@@ -316,11 +312,7 @@ export default function BookingDetailPage({ params }: { params: { id: string } }
               <CardTitle>Actions</CardTitle>
             </CardHeader>
             <CardContent>
-              <Button
-                variant="destructive"
-                onClick={handleCancelBooking}
-                disabled={isUpdating}
-              >
+              <Button variant="destructive" onClick={handleCancelBooking} disabled={isUpdating}>
                 {isUpdating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                 Cancel Booking Request
               </Button>
@@ -334,4 +326,3 @@ export default function BookingDetailPage({ params }: { params: { id: string } }
     </div>
   )
 }
-

@@ -2,7 +2,7 @@ import { describe, it, expect } from '@jest/globals'
 
 /**
  * Integration Tests for Content Reporting System
- * 
+ *
  * These tests cover:
  * 1. Report submission
  * 2. Report validation and rate limiting
@@ -11,7 +11,7 @@ import { describe, it, expect } from '@jest/globals'
  * 5. Report resolution
  * 6. Moderation actions
  * 7. Moderation logging
- * 
+ *
  * Note: These tests require a running Supabase instance
  */
 
@@ -48,12 +48,6 @@ describe('Content Reporting System Integration Tests', () => {
     })
 
     it('should create report for comment', () => {
-      const reportData = {
-        content_type: 'comment',
-        content_id: 'comment-123',
-        reason: 'Harassment',
-      }
-
       const mockResponse = {
         success: true,
         data: {
@@ -66,12 +60,6 @@ describe('Content Reporting System Integration Tests', () => {
     })
 
     it('should create report for poll', () => {
-      const reportData = {
-        content_type: 'poll',
-        content_id: 'poll-123',
-        reason: 'Misinformation',
-      }
-
       const mockResponse = {
         success: true,
         data: {
@@ -123,8 +111,6 @@ describe('Content Reporting System Integration Tests', () => {
 
   describe('Rate Limiting', () => {
     it('should enforce daily report limit', () => {
-      const reportsToday = 20 // RATE_LIMITS.REPORTS_PER_DAY
-
       const mockError = {
         error: 'Rate limit exceeded',
         message: 'You can only submit 20 reports per day',
@@ -241,7 +227,7 @@ describe('Content Reporting System Integration Tests', () => {
 
     it('should accept valid status values', () => {
       const validStatuses = ['pending', 'reviewed', 'dismissed', 'actioned']
-      
+
       validStatuses.forEach((status) => {
         expect(['pending', 'reviewed', 'dismissed', 'actioned']).toContain(status)
       })
@@ -274,9 +260,6 @@ describe('Content Reporting System Integration Tests', () => {
 
   describe('Moderation Actions', () => {
     it('should remove post content', () => {
-      const action = 'removed'
-      const contentType = 'post'
-
       const mockResponse = {
         success: true,
         message: 'Moderation action completed successfully',
@@ -404,7 +387,7 @@ describe('Content Reporting System Integration Tests', () => {
         (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       )
 
-      expect(sorted[0].id).toBe('2') // Most recent first
+      expect(sorted[0]?.id).toBe('2') // Most recent first
     })
   })
 
@@ -541,7 +524,7 @@ describe('Content Reporting System Integration Tests', () => {
 
     it('should track final status', () => {
       const finalStatuses = ['dismissed', 'actioned']
-      
+
       expect(finalStatuses).toContain('dismissed')
       expect(finalStatuses).toContain('actioned')
     })
@@ -549,10 +532,7 @@ describe('Content Reporting System Integration Tests', () => {
 
   describe('Community Moderator Permissions', () => {
     it('should allow community admin to view community reports', () => {
-      const mockReports = [
-        { community_id: testCommunityId },
-        { community_id: testCommunityId },
-      ]
+      const mockReports = [{ community_id: testCommunityId }, { community_id: testCommunityId }]
 
       const allSameCommunity = mockReports.every((r) => r.community_id === testCommunityId)
       expect(allSameCommunity).toBe(true)
@@ -560,10 +540,8 @@ describe('Content Reporting System Integration Tests', () => {
 
     it('should restrict reports to community scope for community moderators', () => {
       const otherCommunityId = 'other-community-123'
-      
-      const mockReports = [
-        { community_id: testCommunityId },
-      ]
+
+      const mockReports = [{ community_id: testCommunityId }]
 
       const hasOtherCommunity = mockReports.some((r) => r.community_id === otherCommunityId)
       expect(hasOtherCommunity).toBe(false)
@@ -615,4 +593,3 @@ describe('Content Reporting System Integration Tests', () => {
     })
   })
 })
-

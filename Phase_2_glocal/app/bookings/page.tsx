@@ -2,11 +2,13 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { BookingCard } from '@/components/bookings/booking-card'
+import { BookingCalendar } from '@/components/bookings/booking-calendar'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Loader2, Inbox } from 'lucide-react'
+import { Loader2, Inbox, List, Calendar as CalendarIcon } from 'lucide-react'
 import { useAuth } from '@/lib/context/auth-context'
 import { useRouter } from 'next/navigation'
+import type { BookingStatus } from '@/lib/utils/constants'
 
 interface Booking {
   id: string
@@ -16,7 +18,7 @@ interface Booking {
   event_type: string
   location: string
   budget_range?: string
-  status: string
+  status: BookingStatus
   created_at: string
   artists?: {
     stage_name: string
@@ -36,6 +38,8 @@ const STATUS_FILTERS = [
   { label: 'Completed', value: 'completed' },
 ]
 
+type ViewMode = 'list' | 'calendar'
+
 export default function BookingsPage() {
   const { user } = useAuth()
   const router = useRouter()
@@ -44,6 +48,7 @@ export default function BookingsPage() {
   const [error, setError] = useState<string | null>(null)
   const [isArtist, setIsArtist] = useState(false)
   const [statusFilter, setStatusFilter] = useState('all')
+  const [viewMode, setViewMode] = useState<ViewMode>('list')
 
   const fetchBookings = useCallback(async () => {
     if (!user) {
@@ -87,9 +92,7 @@ export default function BookingsPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold">
-            {isArtist ? 'Booking Requests' : 'My Bookings'}
-          </h1>
+          <h1 className="text-3xl font-bold">{isArtist ? 'Booking Requests' : 'My Bookings'}</h1>
           <p className="mt-2 text-muted-foreground">
             {isArtist
               ? 'Manage booking requests from clients'
@@ -97,20 +100,45 @@ export default function BookingsPage() {
           </p>
         </div>
 
-        {/* Status Filters */}
+        {/* View Toggle and Status Filters */}
         <Card>
           <CardContent className="p-4">
-            <div className="flex flex-wrap gap-2">
-              {STATUS_FILTERS.map((filter) => (
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+              {/* View Toggle */}
+              <div className="flex items-center gap-2">
                 <Button
-                  key={filter.value}
-                  variant={statusFilter === filter.value ? 'default' : 'outline'}
+                  variant={viewMode === 'list' ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => setStatusFilter(filter.value)}
+                  onClick={() => setViewMode('list')}
+                  aria-label="List view"
                 >
-                  {filter.label}
+                  <List className="h-4 w-4 mr-2" />
+                  List
                 </Button>
-              ))}
+                <Button
+                  variant={viewMode === 'calendar' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('calendar')}
+                  aria-label="Calendar view"
+                >
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  Calendar
+                </Button>
+              </div>
+
+              {/* Status Filters */}
+              <div className="flex flex-wrap gap-2">
+                {STATUS_FILTERS.map((filter) => (
+                  <Button
+                    key={filter.value}
+                    variant={statusFilter === filter.value ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setStatusFilter(filter.value)}
+                  >
+                    {filter.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -156,16 +184,25 @@ export default function BookingsPage() {
           </Card>
         )}
 
-        {/* Bookings List */}
+        {/* Bookings List or Calendar */}
         {!isLoading && !error && bookings.length > 0 && (
-          <div className="space-y-4">
-            {bookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking} isArtist={isArtist} />
-            ))}
-          </div>
+          <>
+            {viewMode === 'list' ? (
+              <div className="space-y-4">
+                {bookings.map((booking) => (
+                  <BookingCard key={booking.id} booking={booking} isArtist={isArtist} />
+                ))}
+              </div>
+            ) : (
+              <BookingCalendar
+                bookings={bookings}
+                isArtist={isArtist}
+                statusFilter={statusFilter}
+              />
+            )}
+          </>
         )}
       </div>
     </div>
   )
 }
-

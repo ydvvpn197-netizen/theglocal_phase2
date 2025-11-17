@@ -1,3 +1,4 @@
+import { logger } from '@/lib/utils/logger'
 import { Resend } from 'resend'
 
 // Initialize Resend client
@@ -8,7 +9,7 @@ try {
     resend = new Resend(process.env.RESEND_API_KEY)
   }
 } catch (error) {
-  console.warn('Resend client not initialized:', error)
+  logger.warn('Resend client not initialized:', error)
 }
 
 export interface SendEmailParams {
@@ -31,7 +32,9 @@ export interface EmailResponse {
  */
 export async function sendEmail(params: SendEmailParams): Promise<EmailResponse> {
   if (!resend) {
-    throw new Error('Resend client not initialized. Please check RESEND_API_KEY environment variable.')
+    throw new Error(
+      'Resend client not initialized. Please check RESEND_API_KEY environment variable.'
+    )
   }
 
   const { to, subject, html, from, replyTo } = params
@@ -42,12 +45,12 @@ export async function sendEmail(params: SendEmailParams): Promise<EmailResponse>
       to: Array.isArray(to) ? to : [to],
       subject,
       html,
-      reply_to: replyTo,
+      replyTo: replyTo,
     })
 
     return data as unknown as EmailResponse
   } catch (error) {
-    console.error('Error sending email:', error)
+    logger.error('Error sending email:', error)
     throw new Error('Failed to send email')
   }
 }
@@ -62,7 +65,7 @@ export async function sendSubscriptionRenewalReminder(
   amount: number
 ): Promise<EmailResponse> {
   const subject = 'Your Theglocal Artist Subscription is Renewing Soon'
-  
+
   const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -148,7 +151,7 @@ export async function sendSubscriptionExpiredNotification(
   gracePeriodEndDate: string
 ): Promise<EmailResponse> {
   const subject = 'Your Theglocal Artist Subscription Has Expired'
-  
+
   const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -216,4 +219,3 @@ export async function sendSubscriptionExpiredNotification(
 }
 
 export default resend
-

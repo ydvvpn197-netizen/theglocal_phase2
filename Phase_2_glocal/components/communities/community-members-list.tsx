@@ -20,7 +20,10 @@ interface CommunityMembersListProps {
   isAdmin?: boolean
 }
 
-export function CommunityMembersList({ communityId, isAdmin = false }: CommunityMembersListProps) {
+export function CommunityMembersList({
+  communityId,
+  isAdmin: _isAdmin = false,
+}: CommunityMembersListProps) {
   const [members, setMembers] = useState<Member[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -109,7 +112,10 @@ export function CommunityMembersList({ communityId, isAdmin = false }: Community
                 </div>
               </div>
 
-              <Badge variant={member.role === 'admin' ? 'default' : 'secondary'} className="capitalize">
+              <Badge
+                variant={member.role === 'admin' ? 'default' : 'secondary'}
+                className="capitalize"
+              >
                 {member.role}
               </Badge>
             </div>
@@ -119,4 +125,3 @@ export function CommunityMembersList({ communityId, isAdmin = false }: Community
     </Card>
   )
 }
-

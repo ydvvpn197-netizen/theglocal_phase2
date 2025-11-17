@@ -56,5 +56,570 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Prevent horizontal scrolling */
+    overflow-x: hidden;
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
+    /* Touch optimization */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    touch-action: manipulation;
+  }
+
+  /* Safe area insets for iOS notched devices */
+  :root {
+    --safe-area-inset-top: env(safe-area-inset-top, 0px);
+    --safe-area-inset-right: env(safe-area-inset-right, 0px);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-inset-left: env(safe-area-inset-left, 0px);
+  }
+
+  /* Prevent horizontal scroll on all elements */
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* iOS bounce scroll handling */
+  @supports (-webkit-overflow-scrolling: touch) {
+    body {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  /* Optimize scroll performance */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ============================================
+     ACCESSIBILITY: Focus Styles & Keyboard Navigation
+     ============================================ */
+
+  /* Skip to main content link - WCAG 2.1 AA compliant */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 100;
+    border-radius: 0 0 4px 0;
+    font-weight: 600;
+    transition: top 0.2s ease;
+  }
+
+  .skip-link:focus {
+    top: 0;
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* High contrast focus indicators for all interactive elements */
+  /* WCAG 2.1 AA: Focus indicators must have at least 3:1 contrast ratio */
+  *:focus-visible {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Remove default outline only when focus-visible is supported */
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Enhanced focus styles for specific elements */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [role='button']:focus-visible,
+  [role='link']:focus-visible,
+  [role='tab']:focus-visible,
+  [role='menuitem']:focus-visible {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 2px;
+    box-shadow:
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--ring));
+  }
+
+  /* Focus styles for disabled elements */
+  button:disabled:focus-visible,
+  input:disabled:focus-visible,
+  select:disabled:focus-visible,
+  textarea:disabled:focus-visible,
+  [aria-disabled='true']:focus-visible {
+    outline: 2px dashed hsl(var(--muted-foreground));
+    outline-offset: 2px;
+  }
+
+  /* Focus trap container for modals */
+  [data-focus-trap] {
+    position: relative;
+  }
+
+  /* Ensure focusable elements are visible when focused */
+  [tabindex='-1']:focus {
+    outline: none;
+  }
+
+  /* Focus styles for custom interactive elements */
+  [role='button']:not([aria-disabled='true']):focus-visible,
+  [role='link']:not([aria-disabled='true']):focus-visible {
+    cursor: pointer;
+  }
+
+  /* Ensure links have visible focus indicators */
+  a:focus-visible {
+    text-decoration: underline;
+  }
+
+  /* Focus styles for form elements */
+  input[type='checkbox']:focus-visible,
+  input[type='radio']:focus-visible {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Focus styles for select elements */
+  select:focus-visible {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Ensure focus is visible in dark mode */
+  .dark *:focus-visible {
+    outline-color: hsl(var(--ring));
+    box-shadow:
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--ring));
+  }
+
+  /* Focus indicator for custom components */
+  [data-focus-visible] {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Remove focus outline for mouse users (only show for keyboard) */
+  @media (hover: hover) and (pointer: fine) {
+    *:focus:not(:focus-visible) {
+      outline: none;
+    }
+  }
+
+  /* Ensure keyboard users always see focus */
+  @media (prefers-reduced-motion: no-preference) {
+    *:focus-visible {
+      transition: outline-offset 0.1s ease;
+    }
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *:focus-visible {
+      transition: none;
+    }
+  }
+}
+
+@layer utilities {
+  /* Safe area inset utilities */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .pl-safe {
+    padding-left: env(safe-area-inset-left);
+  }
+  .pr-safe {
+    padding-right: env(safe-area-inset-right);
+  }
+  .px-safe {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .py-safe {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Touch target utilities */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Touch feedback */
+  .touch-feedback {
+    transition:
+      transform 0.15s ease,
+      opacity 0.15s ease;
+  }
+  .touch-feedback:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+
+  /* Prevent text selection on touch devices for better UX */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Overscroll behavior */
+  .overscroll-contain {
+    overscroll-behavior: contain;
+  }
+  .overscroll-none {
+    overscroll-behavior: none;
+  }
+
+  /* ============================================
+     ACCESSIBILITY: Screen Reader Utilities
+     ============================================ */
+
+  /* Visually hidden but accessible to screen readers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Show element when focused (for skip links) */
+  .sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* ============================================
+     ACCESSIBILITY: Focus Trap Utilities
+     ============================================ */
+
+  /* Focus trap container */
+  .focus-trap {
+    position: relative;
+  }
+
+  /* Focus trap boundary */
+  .focus-trap-boundary {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  /* ============================================
+     ACCESSIBILITY: ARIA Live Regions
+     ============================================ */
+
+  /* Live region for announcements */
+  [role='status'],
+  [role='alert'],
+  [aria-live] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* ============================================
+     ACCESSIBILITY: Required Field Indicators
+     ============================================ */
+
+  /* Visual indicator for required fields */
+  [aria-required='true']::after,
+  .required::after {
+    content: ' *';
+    color: hsl(var(--destructive));
+    font-weight: bold;
+    margin-left: 2px;
+  }
+
+  /* ============================================
+     ACCESSIBILITY: Error States
+     ============================================ */
+
+  /* Error state styling */
+  [aria-invalid='true'] {
+    border-color: hsl(var(--destructive));
+    border-width: 2px;
+  }
+
+  [aria-invalid='true']:focus-visible {
+    outline-color: hsl(var(--destructive));
+    box-shadow:
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--destructive));
+  }
+
+  /* Error message styling */
+  [role='alert'],
+  .error-message {
+    color: hsl(var(--destructive));
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  /* ============================================
+     CALENDAR: React Big Calendar Customization
+     ============================================ */
+
+  /* Calendar container */
+  .rbc-calendar {
+    font-family: inherit;
+    font-size: 0.875rem;
+    color: hsl(var(--foreground));
+    background: hsl(var(--card));
+    border-radius: var(--radius);
+  }
+
+  /* Calendar header */
+  .rbc-header {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid hsl(var(--border));
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    background: hsl(var(--card));
+  }
+
+  /* Calendar toolbar */
+  .rbc-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: hsl(var(--card));
+    border-radius: var(--radius);
+  }
+
+  .rbc-toolbar button {
+    padding: 0.5rem 1rem;
+    min-height: 44px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .rbc-toolbar button:hover {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+
+  .rbc-toolbar button:active {
+    transform: scale(0.98);
+  }
+
+  .rbc-toolbar button.rbc-active {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: hsl(var(--primary));
+  }
+
+  /* Calendar month view */
+  .rbc-month-view {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .rbc-month-row {
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .rbc-day-bg {
+    border-right: 1px solid hsl(var(--border));
+  }
+
+  .rbc-day-bg.rbc-off-range-bg {
+    background: hsl(var(--muted) / 0.3);
+  }
+
+  .rbc-day-bg.rbc-today {
+    background: hsl(var(--accent) / 0.1);
+  }
+
+  /* Calendar week/day view */
+  .rbc-time-view {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .rbc-time-header {
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .rbc-time-content {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .rbc-time-slot {
+    border-top: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .rbc-time-slot.rbc-now {
+    background: hsl(var(--accent) / 0.05);
+  }
+
+  /* Calendar events */
+  .rbc-event {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    transition: all 0.2s ease;
+    border: none !important;
+  }
+
+  .rbc-event:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .rbc-event:focus {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  .rbc-event-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Calendar event labels */
+  .rbc-event-label {
+    font-size: 0.7rem;
+    opacity: 0.9;
+  }
+
+  /* Calendar popup */
+  .rbc-overlay {
+    background: hsl(var(--popover));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    z-index: 1000;
+  }
+
+  .rbc-overlay-header {
+    border-bottom: 1px solid hsl(var(--border));
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .rbc-calendar {
+      font-size: 0.75rem;
+    }
+
+    .rbc-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .rbc-toolbar button {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .rbc-header {
+      padding: 0.5rem 0.25rem;
+      font-size: 0.75rem;
+    }
+
+    .rbc-event {
+      font-size: 0.7rem;
+      padding: 0.125rem 0.25rem;
+    }
+
+    .rbc-event-content {
+      font-size: 0.65rem;
+    }
+
+    .rbc-day-slot .rbc-event {
+      min-height: 20px;
+    }
+
+    .rbc-time-view .rbc-event {
+      min-height: 24px;
+    }
+  }
+
+  /* Dark mode support */
+  .dark .rbc-calendar {
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+  }
+
+  .dark .rbc-header {
+    background: hsl(var(--card));
+    border-color: hsl(var(--border));
+  }
+
+  .dark .rbc-toolbar button {
+    background: hsl(var(--background));
+    border-color: hsl(var(--border));
+    color: hsl(var(--foreground));
+  }
+
+  .dark .rbc-toolbar button:hover {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+
+  .dark .rbc-day-bg.rbc-off-range-bg {
+    background: hsl(var(--muted) / 0.2);
+  }
+
+  .dark .rbc-day-bg.rbc-today {
+    background: hsl(var(--accent) / 0.15);
+  }
+
+  .dark .rbc-time-slot.rbc-now {
+    background: hsl(var(--accent) / 0.1);
   }
 }

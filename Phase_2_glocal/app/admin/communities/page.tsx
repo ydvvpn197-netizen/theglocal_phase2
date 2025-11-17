@@ -1,35 +1,22 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { logger } from '@/lib/utils/logger'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, Star, Eye, Flag, Trash2 } from 'lucide-react'
+import { Loader2, Star, Eye, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-
-interface Community {
-  id: string
-  name: string
-  slug: string
-  description: string
-  location_city: string
-  member_count: number
-  is_featured: boolean
-  created_at: string
-}
+import type { ApiResponse, AdminCommunity } from '@/lib/types/api.types'
 
 export default function AdminCommunitiesPage() {
-  const [communities, setCommunities] = useState<Community[]>([])
+  const [communities, setCommunities] = useState<AdminCommunity[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    fetchCommunities()
-  }, [])
-
-  const fetchCommunities = async () => {
+  const fetchCommunities = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/communities')
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<AdminCommunity[]>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch communities')
@@ -37,11 +24,15 @@ export default function AdminCommunitiesPage() {
 
       setCommunities(result.data || [])
     } catch (error) {
-      console.error('Error fetching communities:', error)
+      logger.error('Error fetching communities:', error)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchCommunities()
+  }, [fetchCommunities])
 
   const handleToggleFeatured = async (communityId: string, currentStatus: boolean) => {
     try {
@@ -51,7 +42,7 @@ export default function AdminCommunitiesPage() {
         body: JSON.stringify({ is_featured: !currentStatus }),
       })
 
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<unknown>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to update community')
@@ -64,7 +55,11 @@ export default function AdminCommunitiesPage() {
   }
 
   const handleRemoveCommunity = async (communityId: string, name: string) => {
-    if (!confirm(`Are you sure you want to remove the community "${name}"? This action cannot be undone.`)) {
+    if (
+      !confirm(
+        `Are you sure you want to remove the community "${name}"? This action cannot be undone.`
+      )
+    ) {
       return
     }
 
@@ -73,7 +68,7 @@ export default function AdminCommunitiesPage() {
         method: 'DELETE',
       })
 
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<unknown>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to remove community')

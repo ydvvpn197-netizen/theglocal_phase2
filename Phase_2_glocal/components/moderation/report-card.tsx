@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/hooks/use-toast'
-import { Flag, User, Clock, MessageSquare, Trash2, Eye, Loader2 } from 'lucide-react'
+import { useToast } from '@/lib/hooks/use-toast'
+import { User, Clock, MessageSquare, Trash2, Eye, Loader2 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 
 interface Report {
@@ -155,15 +155,15 @@ export function ReportCard({ report, onActionComplete }: ReportCardProps) {
 
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="h-4 w-4" />
-                <span>
-                  {formatDistanceToNow(new Date(report.created_at), { addSuffix: true })}
-                </span>
+                <span>{formatDistanceToNow(new Date(report.created_at), { addSuffix: true })}</span>
               </div>
 
               {report.additional_context && (
                 <div className="flex items-start gap-2 text-sm">
                   <MessageSquare className="h-4 w-4 text-muted-foreground mt-0.5" />
-                  <p className="text-muted-foreground italic">&quot;{report.additional_context}&quot;</p>
+                  <p className="text-muted-foreground italic">
+                    &quot;{report.additional_context}&quot;
+                  </p>
                 </div>
               )}
             </div>
@@ -206,4 +206,3 @@ export function ReportCard({ report, onActionComplete }: ReportCardProps) {
     </Card>
   )
 }
-

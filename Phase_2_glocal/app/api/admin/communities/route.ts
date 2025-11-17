@@ -1,26 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { isSuperAdmin } from '@/lib/utils/permissions'
+import { NextRequest } from 'next/server'
+import { requireAdminOrThrow } from '@/lib/utils/require-admin'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/admin/communities - List all communities
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(_request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/admin/communities')
+
   try {
-    const supabase = await createClient()
+    // Require admin authentication
+    const { user, supabase } = await requireAdminOrThrow()
 
-    // Get current user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
-    }
-
-    // Verify super admin
-    const isAdmin = await isSuperAdmin(user.id)
-    if (!isAdmin) {
-      return NextResponse.json({ error: 'Super admin access required' }, { status: 403 })
-    }
+    logger.info('Fetching all communities', { userId: user.id })
 
     // Fetch all communities
     const { data: communities, error } = await supabase
@@ -30,17 +22,13 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: communities,
-    })
+    logger.info('Communities fetched successfully', { count: communities?.length || 0 })
+
+    return createSuccessResponse(communities)
   } catch (error) {
-    console.error('Fetch communities error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch communities',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'GET',
+      path: '/api/admin/communities',
+    })
   }
-}
+})

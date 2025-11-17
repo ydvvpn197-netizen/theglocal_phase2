@@ -6,6 +6,9 @@
 import { z } from 'zod'
 import { CONTENT_LIMITS, ARTIST_CATEGORIES, POLL_CATEGORIES, REPORT_REASONS } from './constants'
 
+// Re-export safeArrayAccess from validation/common
+export { safeArrayAccess } from '@/lib/validation/common'
+
 // ============================================
 // USER VALIDATION
 // ============================================
@@ -17,6 +20,48 @@ export const signupSchema = z.object({
     .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
     .optional(),
 })
+
+/**
+ * Validate contact (email or phone) and return normalized format
+ */
+export function validateContact(contact: string): {
+  valid: boolean
+  error?: string
+  normalized?: string
+  type?: 'email' | 'phone'
+} {
+  if (!contact || typeof contact !== 'string') {
+    return { valid: false, error: 'Contact is required' }
+  }
+
+  const trimmed = contact.trim().toLowerCase()
+
+  // Check if it's an email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (emailRegex.test(trimmed)) {
+    return {
+      valid: true,
+      normalized: trimmed,
+      type: 'email',
+    }
+  }
+
+  // Check if it's a phone number (with or without +)
+  const phoneRegex = /^\+?[1-9]\d{1,14}$/
+  const digitsOnly = trimmed.replace(/\D/g, '')
+  if (phoneRegex.test(digitsOnly)) {
+    return {
+      valid: true,
+      normalized: digitsOnly.startsWith('+') ? digitsOnly : `+${digitsOnly}`,
+      type: 'phone',
+    }
+  }
+
+  return {
+    valid: false,
+    error: 'Invalid email or phone number format',
+  }
+}
 
 export const otpSchema = z.object({
   otp: z.string().length(6, 'OTP must be 6 digits').regex(/^\d+$/, 'OTP must be numeric'),
@@ -44,6 +89,22 @@ export const createCommunitySchema = z.object({
 // POST VALIDATION
 // ============================================
 
+// Media item schema for validation
+const mediaItemSchema = z.object({
+  id: z.string().uuid().optional(),
+  owner_type: z.enum(['post', 'comment', 'poll_comment']).optional(),
+  owner_id: z.string().uuid().optional(),
+  media_type: z.enum(['image', 'video', 'gif']),
+  url: z.string().url(),
+  variants: z.record(z.string(), z.unknown()).nullable().optional(),
+  display_order: z.number().int().min(0).optional(),
+  duration: z.number().int().positive().nullable().optional(),
+  thumbnail_url: z.string().url().nullable().optional(),
+  file_size: z.number().int().positive().nullable().optional(),
+  mime_type: z.string().nullable().optional(),
+  alt_text: z.string().nullable().optional(),
+})
+
 export const createPostSchema = z.object({
   community_id: z.string().uuid('Invalid community ID'),
   title: z
@@ -52,6 +113,8 @@ export const createPostSchema = z.object({
     .max(CONTENT_LIMITS.POST_TITLE_MAX, 'Title too long'),
   body: z.string().max(CONTENT_LIMITS.POST_BODY_MAX, 'Post body too long').optional(),
   image_url: z.string().url('Invalid image URL').optional(),
+  external_url: z.string().url('Invalid external URL').optional(),
+  media_items: z.array(mediaItemSchema).optional(),
 })
 
 export const updatePostSchema = createPostSchema.partial().omit({ community_id: true })
@@ -169,7 +232,25 @@ export function validateImageFile(file: File): { valid: boolean; error?: string 
   if (file.size > maxSize) {
     return {
       valid: false,
-      error: `File too large. Maximum size is ${CONTENT_LIMITS.IMAGE_MAX_SIZE_MB}MB`,
+      error: `Image size exceeds maximum allowed size of ${CONTENT_LIMITS.IMAGE_MAX_SIZE_MB}MB`,
+    }
+  }
+
+  return { valid: true }
+}
+
+export function validateVideoFile(file: File): { valid: boolean; error?: string } {
+  const maxSize = CONTENT_LIMITS.VIDEO_MAX_SIZE_MB * 1024 * 1024 // Convert to bytes
+  const allowedTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime']
+
+  if (!allowedTypes.includes(file.type)) {
+    return { valid: false, error: 'Invalid file type. Please upload a video.' }
+  }
+
+  if (file.size > maxSize) {
+    return {
+      valid: false,
+      error: `Video size exceeds maximum allowed size of ${CONTENT_LIMITS.VIDEO_MAX_SIZE_MB}MB`,
     }
   }
 

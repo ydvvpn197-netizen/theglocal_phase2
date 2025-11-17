@@ -121,8 +121,8 @@ export default function CommunityGuidelinesPage() {
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <h4 className="font-semibold text-red-800 mb-2">Violence & Illegal Activity</h4>
                   <p className="text-sm text-red-700">
-                    Threats of violence, promotion of illegal activities, graphic violent content, or
-                    organized harm.
+                    Threats of violence, promotion of illegal activities, graphic violent content,
+                    or organized harm.
                   </p>
                   <p className="text-xs text-red-600 mt-2">
                     Example: Organizing vigilante action or sharing graphic injury photos
@@ -132,8 +132,8 @@ export default function CommunityGuidelinesPage() {
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <h4 className="font-semibold text-red-800 mb-2">Adult & NSFW Content</h4>
                   <p className="text-sm text-red-700">
-                    Pornography, sexual content, or inappropriate material. This is a family-friendly
-                    platform.
+                    Pornography, sexual content, or inappropriate material. This is a
+                    family-friendly platform.
                   </p>
                   <p className="text-xs text-red-600 mt-2">
                     Example: Posting sexually explicit images or content
@@ -295,4 +295,3 @@ export const metadata = {
   title: 'Community Guidelines - Theglocal',
   description: 'Community standards and content policy for Theglocal platform',
 }
-

@@ -108,11 +108,7 @@ export function ReportQueue({ communityId }: ReportQueueProps) {
         ) : (
           <div className="space-y-4">
             {reports.map((report) => (
-              <ReportCard
-                key={report.id}
-                report={report}
-                onActionComplete={fetchReports}
-              />
+              <ReportCard key={report.id} report={report} onActionComplete={fetchReports} />
             ))}
           </div>
         )}
@@ -120,4 +116,3 @@ export function ReportQueue({ communityId }: ReportQueueProps) {
     </Card>
   )
 }
-

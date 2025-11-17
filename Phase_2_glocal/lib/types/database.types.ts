@@ -22,7 +22,7 @@ export interface Database {
           anonymous_handle: string
           avatar_seed: string
           location_city: string | null
-          location_coordinates: unknown | null
+          location_coordinates: string | null
           join_date: string
           is_banned: boolean
           ban_reason: string | null
@@ -37,7 +37,7 @@ export interface Database {
           anonymous_handle: string
           avatar_seed: string
           location_city?: string | null
-          location_coordinates?: unknown | null
+          location_coordinates?: string | null
           join_date?: string
           is_banned?: boolean
           ban_reason?: string | null
@@ -52,7 +52,7 @@ export interface Database {
           anonymous_handle?: string
           avatar_seed?: string
           location_city?: string | null
-          location_coordinates?: unknown | null
+          location_coordinates?: string | null
           join_date?: string
           is_banned?: boolean
           ban_reason?: string | null
@@ -69,7 +69,7 @@ export interface Database {
           description: string | null
           rules: string | null
           location_city: string
-          location_coordinates: unknown | null
+          location_coordinates: string | null
           created_by: string
           member_count: number
           post_count: number
@@ -85,7 +85,7 @@ export interface Database {
           description?: string | null
           rules?: string | null
           location_city: string
-          location_coordinates?: unknown | null
+          location_coordinates?: string | null
           created_by: string
           member_count?: number
           post_count?: number
@@ -101,7 +101,7 @@ export interface Database {
           description?: string | null
           rules?: string | null
           location_city?: string
-          location_coordinates?: unknown | null
+          location_coordinates?: string | null
           created_by?: string
           member_count?: number
           post_count?: number
@@ -120,7 +120,7 @@ export interface Database {
           body: string | null
           image_url: string | null
           location_city: string | null
-          location_coordinates: unknown | null
+          location_coordinates: string | null
           upvotes: number
           downvotes: number
           comment_count: number
@@ -137,7 +137,7 @@ export interface Database {
           body?: string | null
           image_url?: string | null
           location_city?: string | null
-          location_coordinates?: unknown | null
+          location_coordinates?: string | null
           upvotes?: number
           downvotes?: number
           comment_count?: number
@@ -154,7 +154,7 @@ export interface Database {
           body?: string | null
           image_url?: string | null
           location_city?: string | null
-          location_coordinates?: unknown | null
+          location_coordinates?: string | null
           upvotes?: number
           downvotes?: number
           comment_count?: number
@@ -172,7 +172,7 @@ export interface Database {
           description: string | null
           portfolio_images: string[] | null
           location_city: string
-          location_coordinates: unknown | null
+          location_coordinates: string | null
           rate_min: number | null
           rate_max: number | null
           subscription_status: string
@@ -195,7 +195,7 @@ export interface Database {
           description?: string | null
           portfolio_images?: string[] | null
           location_city: string
-          location_coordinates?: unknown | null
+          location_coordinates?: string | null
           rate_min?: number | null
           rate_max?: number | null
           subscription_status?: string
@@ -218,7 +218,7 @@ export interface Database {
           description?: string | null
           portfolio_images?: string[] | null
           location_city?: string
-          location_coordinates?: unknown | null
+          location_coordinates?: string | null
           rate_min?: number | null
           rate_max?: number | null
           subscription_status?: string
@@ -231,6 +231,56 @@ export interface Database {
           profile_views?: number
           rating_avg?: number
           rating_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      media_items: {
+        Row: {
+          id: string
+          owner_type: 'post' | 'comment' | 'poll_comment'
+          owner_id: string
+          media_type: 'image' | 'video' | 'gif'
+          url: string
+          variants: Json | null
+          display_order: number
+          duration: number | null
+          thumbnail_url: string | null
+          file_size: number | null
+          mime_type: string | null
+          alt_text: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          owner_type: 'post' | 'comment' | 'poll_comment'
+          owner_id: string
+          media_type: 'image' | 'video' | 'gif'
+          url: string
+          variants?: Json | null
+          display_order?: number
+          duration?: number | null
+          thumbnail_url?: string | null
+          file_size?: number | null
+          mime_type?: string | null
+          alt_text?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          owner_type?: 'post' | 'comment' | 'poll_comment'
+          owner_id?: string
+          media_type?: 'image' | 'video' | 'gif'
+          url?: string
+          variants?: Json | null
+          display_order?: number
+          duration?: number | null
+          thumbnail_url?: string | null
+          file_size?: number | null
+          mime_type?: string | null
+          alt_text?: string | null
           created_at?: string
           updated_at?: string
         }

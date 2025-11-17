@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Loader2, Users, Building2, FileText, Palette, TrendingUp, MessageSquare } from 'lucide-react'
+import { Loader2, Users, Building2, FileText, Palette, MessageSquare } from 'lucide-react'
+import type { ApiResponse } from '@/lib/types/api.types'
 
 interface AdminStats {
   total_users: number
@@ -26,26 +27,26 @@ export default function AdminStatsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchStats()
-  }, [])
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/stats')
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<AdminStats>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch stats')
       }
 
-      setStats(result.data)
+      setStats(result.data || null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load stats')
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchStats()
+  }, [fetchStats])
 
   if (isLoading) {
     return (
@@ -73,9 +74,7 @@ export default function AdminStatsPage() {
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold">Platform Statistics</h1>
-          <p className="mt-2 text-muted-foreground">
-            Comprehensive metrics and analytics
-          </p>
+          <p className="mt-2 text-muted-foreground">Comprehensive metrics and analytics</p>
         </div>
 
         {/* Overall Metrics */}
@@ -86,7 +85,9 @@ export default function AdminStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <Users className="h-8 w-8 text-brand-primary" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.total_users?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.total_users?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Total Users</div>
                 </div>
               </CardContent>
@@ -96,7 +97,9 @@ export default function AdminStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <Building2 className="h-8 w-8 text-brand-secondary" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.total_communities?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.total_communities?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Communities</div>
                 </div>
               </CardContent>
@@ -106,7 +109,9 @@ export default function AdminStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <FileText className="h-8 w-8 text-brand-accent" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.total_posts?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.total_posts?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Posts</div>
                 </div>
               </CardContent>
@@ -116,7 +121,9 @@ export default function AdminStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <Palette className="h-8 w-8 text-purple-600" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.total_artists?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.total_artists?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Artists</div>
                 </div>
               </CardContent>

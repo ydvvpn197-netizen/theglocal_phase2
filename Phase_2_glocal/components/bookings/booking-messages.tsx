@@ -1,10 +1,11 @@
 'use client'
 
+import { logger } from '@/lib/utils/logger'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { Loader2, Send } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -41,7 +42,7 @@ export function BookingMessages({ bookingId, isArtist }: BookingMessagesProps) {
 
       setMessages(result.data || [])
     } catch (error) {
-      console.error('Error fetching messages:', error)
+      logger.error('Error fetching messages:', error)
     } finally {
       setIsLoading(false)
     }
@@ -180,4 +181,3 @@ export function BookingMessages({ bookingId, isArtist }: BookingMessagesProps) {
     </Card>
   )
 }
-

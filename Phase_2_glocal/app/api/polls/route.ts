@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/polls - List polls with optional filtering
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/polls')
   try {
     const searchParams = request.nextUrl.searchParams
     const communityId = searchParams.get('community_id')
@@ -42,23 +46,14 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: data || [],
-    })
+    return createSuccessResponse(data || [])
   } catch (error) {
-    console.error('Fetch polls error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch polls',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/polls' })
   }
-}
-
+})
 // POST /api/polls - Create a new poll
-export async function POST(request: NextRequest) {
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/polls')
   try {
     const body = await request.json()
     const { community_id, question, options, category, expires_at, tagged_authority } = body
@@ -148,12 +143,6 @@ export async function POST(request: NextRequest) {
       data: poll,
     })
   } catch (error) {
-    console.error('Create poll error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create poll',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'POST', path: '/api/polls' })
   }
-}
+})

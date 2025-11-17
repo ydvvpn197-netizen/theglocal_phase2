@@ -3,6 +3,8 @@
  * Input sanitization, CSRF protection, and security helpers
  */
 
+import { randomBytes } from 'crypto'
+
 /**
  * Sanitize user input to prevent XSS attacks
  * Removes potentially dangerous HTML/script tags
@@ -25,7 +27,7 @@ export function sanitizeInput(input: string): string {
 export function sanitizeHTML(html: string): string {
   if (!html) return ''
 
-  const allowedTags = ['p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'blockquote']
+  // const allowedTags = ['p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'blockquote'] // Reserved for future use
   const dangerous = /<script|<iframe|javascript:|on\w+=/gi
 
   if (dangerous.test(html)) {
@@ -92,8 +94,7 @@ export function hasSQLInjection(input: string): boolean {
 export function generateCSRFToken(): string {
   if (typeof window === 'undefined') {
     // Server-side: use crypto
-    const crypto = require('crypto')
-    return crypto.randomBytes(32).toString('hex')
+    return randomBytes(32).toString('hex')
   } else {
     // Client-side: use Web Crypto API
     const array = new Uint8Array(32)
@@ -114,7 +115,7 @@ export function verifyCSRFToken(token: string, expectedToken: string): boolean {
  * Rate limit check (simplified version)
  * Full implementation in lib/middleware/rate-limit.ts
  */
-export function checkRateLimit(identifier: string, limit: number, windowMs: number): boolean {
+export function checkRateLimit(_identifier: string, _limit: number, _windowMs: number): boolean {
   // This is a placeholder - actual implementation in middleware
   return true
 }
@@ -153,10 +154,13 @@ export function isSafeString(input: string): boolean {
 /**
  * Validate file upload
  */
-export function validateFileUpload(file: File, options: {
-  maxSize?: number
-  allowedTypes?: string[]
-}): { valid: boolean; error?: string } {
+export function validateFileUpload(
+  file: File,
+  options: {
+    maxSize?: number
+    allowedTypes?: string[]
+  }
+): { valid: boolean; error?: string } {
   const {
     maxSize = 5 * 1024 * 1024, // 5MB default
     allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'],
@@ -194,4 +198,3 @@ export function secureCompare(a: string, b: string): boolean {
 
   return result === 0
 }
-

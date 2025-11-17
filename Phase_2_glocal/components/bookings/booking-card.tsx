@@ -38,14 +38,6 @@ const STATUS_VARIANTS: Record<string, 'default' | 'secondary' | 'destructive' | 
   completed: 'default',
 }
 
-const STATUS_COLORS: Record<string, string> = {
-  pending: 'text-yellow-600',
-  accepted: 'text-green-600',
-  declined: 'text-red-600',
-  info_requested: 'text-blue-600',
-  completed: 'text-gray-600',
-}
-
 export function BookingCard({ booking, isArtist = false }: BookingCardProps) {
   const eventDate = new Date(booking.event_date)
   const isPastEvent = eventDate < new Date()
@@ -104,9 +96,7 @@ export function BookingCard({ booking, isArtist = false }: BookingCardProps) {
 
               {/* Budget */}
               {booking.budget_range && (
-                <div className="text-sm text-muted-foreground">
-                  Budget: {booking.budget_range}
-                </div>
+                <div className="text-sm text-muted-foreground">Budget: {booking.budget_range}</div>
               )}
             </div>
 
@@ -120,4 +110,3 @@ export function BookingCard({ booking, isArtist = false }: BookingCardProps) {
     </Link>
   )
 }
-

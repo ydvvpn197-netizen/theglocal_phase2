@@ -10,8 +10,8 @@ export default function TransparencyDashboardPage() {
         <div className="text-center max-w-3xl mx-auto">
           <h1 className="text-4xl font-bold mb-4">Platform Transparency</h1>
           <p className="text-lg text-muted-foreground">
-            We believe in complete transparency. Explore our platform metrics, moderation
-            decisions, and privacy practices.
+            We believe in complete transparency. Explore our platform metrics, moderation decisions,
+            and privacy practices.
           </p>
         </div>
 
@@ -31,9 +31,7 @@ export default function TransparencyDashboardPage() {
                   View real-time metrics about users, communities, posts, and engagement across the
                   platform.
                 </p>
-                <div className="mt-4 text-xs text-brand-primary font-medium">
-                  View Statistics →
-                </div>
+                <div className="mt-4 text-xs text-brand-primary font-medium">View Statistics →</div>
               </CardContent>
             </Card>
           </Link>
@@ -92,9 +90,7 @@ export default function TransparencyDashboardPage() {
                 <p className="text-sm text-muted-foreground">
                   Read our content policy, community standards, and moderation guidelines.
                 </p>
-                <div className="mt-4 text-xs text-brand-primary font-medium">
-                  View Guidelines →
-                </div>
+                <div className="mt-4 text-xs text-brand-primary font-medium">View Guidelines →</div>
               </CardContent>
             </Card>
           </Link>
@@ -184,7 +180,5 @@ export default function TransparencyDashboardPage() {
 
 export const metadata = {
   title: 'Platform Transparency - Theglocal',
-  description:
-    'Explore platform metrics, moderation decisions, and privacy practices at Theglocal',
+  description: 'Explore platform metrics, moderation decisions, and privacy practices at Theglocal',
 }
-

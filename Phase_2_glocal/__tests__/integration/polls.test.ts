@@ -43,14 +43,12 @@ describe('Polls Integration Tests', () => {
         position: index,
       }))
 
-      expect(pollOptions[0].position).toBe(0)
-      expect(pollOptions[1].position).toBe(1)
-      expect(pollOptions[2].position).toBe(2)
+      expect(pollOptions[0]?.position).toBe(0)
+      expect(pollOptions[1]?.position).toBe(1)
+      expect(pollOptions[2]?.position).toBe(2)
     })
 
     it('should validate community membership before creation', async () => {
-      const userId = 'user-123'
-      const communityId = 'community-456'
       const isMember = true
 
       if (!isMember) {
@@ -77,10 +75,6 @@ describe('Polls Integration Tests', () => {
 
   describe('Anonymous Voting System', () => {
     it('should generate unique voting hash per user-poll combination', async () => {
-      const userId = 'user-abc'
-      const pollId = 'poll-xyz'
-      const secret = 'server-secret'
-
       // generateVotingHash(userId, pollId, secret) would create unique hash
       const mockHash = 'a1b2c3d4...'
       expect(mockHash).toBeTruthy()
@@ -334,9 +328,13 @@ describe('Polls Integration Tests', () => {
         (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       )
 
-      expect(new Date(sorted[0].created_at).getTime()).toBeGreaterThan(
-        new Date(sorted[1].created_at).getTime()
-      )
+      expect(sorted[0]?.created_at).toBeDefined()
+      expect(sorted[1]?.created_at).toBeDefined()
+      if (sorted[0]?.created_at && sorted[1]?.created_at) {
+        expect(new Date(sorted[0].created_at).getTime()).toBeGreaterThan(
+          new Date(sorted[1].created_at).getTime()
+        )
+      }
     })
   })
 })

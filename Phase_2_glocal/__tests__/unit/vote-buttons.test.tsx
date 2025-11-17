@@ -9,7 +9,7 @@ jest.mock('@/lib/context/auth-context', () => ({
 
 // Mock useToast
 const mockToast = jest.fn()
-jest.mock('@/hooks/use-toast', () => ({
+jest.mock('@/lib/hooks/use-toast', () => ({
   useToast: () => ({ toast: mockToast }),
 }))
 
@@ -39,7 +39,9 @@ describe('VoteButtons', () => {
 
     render(<VoteButtons contentId="post-1" contentType="post" upvotes={10} downvotes={2} />)
 
-    const upvoteButton = screen.getAllByRole('button')[0]
+    const buttons = screen.getAllByRole('button')
+    const upvoteButton = buttons[0]
+    if (!upvoteButton) throw new Error('Upvote button not found')
     fireEvent.click(upvoteButton)
 
     await waitFor(() => {
@@ -62,7 +64,9 @@ describe('VoteButtons', () => {
 
     render(<VoteButtons contentId="post-1" contentType="post" upvotes={10} downvotes={2} />)
 
-    const downvoteButton = screen.getAllByRole('button')[1]
+    const buttons = screen.getAllByRole('button')
+    const downvoteButton = buttons[1]
+    if (!downvoteButton) throw new Error('Downvote button not found')
     fireEvent.click(downvoteButton)
 
     await waitFor(() => {
@@ -85,7 +89,9 @@ describe('VoteButtons', () => {
 
     render(<VoteButtons contentId="comment-1" contentType="comment" upvotes={10} downvotes={2} />)
 
-    const upvoteButton = screen.getAllByRole('button')[0]
+    const buttons = screen.getAllByRole('button')
+    const upvoteButton = buttons[0]
+    if (!upvoteButton) throw new Error('Upvote button not found')
     fireEvent.click(upvoteButton)
 
     await waitFor(() => {
@@ -105,7 +111,9 @@ describe('VoteButtons', () => {
 
     render(<VoteButtons contentId="post-1" contentType="post" upvotes={10} downvotes={2} />)
 
-    const upvoteButton = screen.getAllByRole('button')[0]
+    const buttons = screen.getAllByRole('button')
+    const upvoteButton = buttons[0]
+    if (!upvoteButton) throw new Error('Upvote button not found')
     fireEvent.click(upvoteButton)
 
     await waitFor(() => {
@@ -137,7 +145,9 @@ describe('VoteButtons', () => {
 
     render(<VoteButtons contentId="post-1" contentType="post" upvotes={10} downvotes={2} />)
 
-    const upvoteButton = screen.getAllByRole('button')[0]
+    const buttons = screen.getAllByRole('button')
+    const upvoteButton = buttons[0]
+    if (!upvoteButton) throw new Error('Upvote button not found')
     fireEvent.click(upvoteButton)
 
     // Check that UI updates immediately (optimistic)

@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Calendar, MapPin, ExternalLink, UserPlus } from 'lucide-react'
 import { useAuth } from '@/lib/context/auth-context'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 interface Event {
   id: string
@@ -95,7 +95,15 @@ export function EventCard({ event }: EventCardProps) {
       {/* Event Image */}
       {event.image_url && (
         <div className="relative aspect-video w-full overflow-hidden bg-muted">
-          <Image src={event.image_url} alt={event.title} fill className="object-cover" />
+          <Image
+            src={event.image_url}
+            alt={event.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            loading="lazy"
+            quality={85}
+          />
 
           {/* Source Badge */}
           <div className="absolute left-3 top-3">

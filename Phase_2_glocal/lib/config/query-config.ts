@@ -118,10 +118,14 @@ export function createQueryClient() {
 
         // Error handling
         throwOnError: false,
+
+        // Network mode - use cache first, then network
+        networkMode: 'online',
       },
       mutations: {
         retry: 0,
         throwOnError: false,
+        networkMode: 'online',
       },
     },
   })
@@ -130,7 +134,7 @@ export function createQueryClient() {
 // Prefetch helpers
 export const prefetchStrategies = {
   // Prefetch next page for infinite scroll
-  prefetchNextPage: (queryClient: QueryClient, queryKey: any[], nextOffset: number) => {
+  prefetchNextPage: (queryClient: QueryClient, queryKey: unknown[], nextOffset: number) => {
     queryClient.prefetchQuery({
       queryKey: [...queryKey, { offset: nextOffset }],
       staleTime: STALE_TIMES.FEED,
@@ -138,7 +142,10 @@ export const prefetchStrategies = {
   },
 
   // Prefetch related data
-  prefetchRelated: (queryClient: QueryClient, queries: Array<{ queryKey: any[]; queryFn: () => Promise<any> }>) => {
+  prefetchRelated: (
+    queryClient: QueryClient,
+    queries: Array<{ queryKey: unknown[]; queryFn: () => Promise<unknown> }>
+  ) => {
     queries.forEach(({ queryKey, queryFn }) => {
       queryClient.prefetchQuery({
         queryKey,
@@ -174,4 +181,3 @@ export const invalidateCache = {
     queryClient.invalidateQueries({ queryKey: ['artists'] })
   },
 }
-

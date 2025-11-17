@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { fetchLocalNews } from '@/lib/integrations/google-news'
 import { fetchLocalRedditPosts } from '@/lib/integrations/reddit'
+import { handleAPIError } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/discover')
   try {
     const searchParams = request.nextUrl.searchParams
     const city = searchParams.get('city') || 'India'
@@ -50,16 +54,9 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('Discovery API error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch discovery content',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/discover' })
   }
-}
-
+})
 /**
  * Remove duplicate items with similar titles
  */

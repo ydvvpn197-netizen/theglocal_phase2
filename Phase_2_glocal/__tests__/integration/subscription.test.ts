@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from '@jest/globals'
 
 /**
  * Integration Tests for Artist Subscription Flow
- * 
+ *
  * These tests cover the complete subscription lifecycle:
  * 1. Artist registration
  * 2. Subscription creation (trial)
@@ -12,18 +12,16 @@ import { describe, it, expect, beforeEach, afterEach } from '@jest/globals'
  * 6. Subscription expiry
  * 7. Grace period
  * 8. Profile hiding
- * 
+ *
  * Note: These tests require a running Supabase instance and Razorpay test credentials
  */
 
 describe('Artist Subscription Flow Integration Tests', () => {
   let testArtistId: string
-  let testUserId: string
   let testOrderId: string
 
   beforeEach(() => {
     // Setup test data
-    testUserId = `test-user-${Date.now()}`
     testArtistId = `test-artist-${Date.now()}`
     testOrderId = `order_${Date.now()}`
   })
@@ -72,7 +70,7 @@ describe('Artist Subscription Flow Integration Tests', () => {
     it('should prevent duplicate artist profiles for same user', async () => {
       // Test duplicate prevention logic
       // In a real test, you'd try to create two profiles for the same user
-      
+
       const mockError = {
         error: 'You already have an artist profile',
       }
@@ -84,10 +82,6 @@ describe('Artist Subscription Flow Integration Tests', () => {
   describe('Subscription Order Creation', () => {
     it('should create Razorpay order for subscription', async () => {
       // Test subscription order creation
-      const subscriptionData = {
-        plan: 'monthly',
-      }
-
       // Mock Razorpay order response
       const mockOrderResponse = {
         success: true,
@@ -133,11 +127,6 @@ describe('Artist Subscription Flow Integration Tests', () => {
   describe('Payment Verification and Activation', () => {
     it('should verify valid payment signature', async () => {
       // Test payment signature verification
-      const paymentData = {
-        razorpay_order_id: testOrderId,
-        razorpay_payment_id: 'pay_123',
-        razorpay_signature: 'valid_signature',
-      }
 
       // Mock verification response
       const mockVerificationResponse = {
@@ -197,28 +186,24 @@ describe('Artist Subscription Flow Integration Tests', () => {
   describe('Profile Visibility', () => {
     it('should show trial artists in public listings', async () => {
       // Test that trial artists are visible
-      const mockArtistsList = [
-        { id: testArtistId, subscription_status: 'trial' },
-      ]
+      const mockArtistsList = [{ id: testArtistId, subscription_status: 'trial' }]
 
       // RLS policy should allow SELECT for trial artists
       expect(mockArtistsList.length).toBeGreaterThan(0)
-      expect(mockArtistsList[0].subscription_status).toBe('trial')
+      expect(mockArtistsList[0]?.subscription_status).toBe('trial')
     })
 
     it('should show active artists in public listings', async () => {
       // Test that active artists are visible
-      const mockArtistsList = [
-        { id: testArtistId, subscription_status: 'active' },
-      ]
+      const mockArtistsList = [{ id: testArtistId, subscription_status: 'active' }]
 
       expect(mockArtistsList.length).toBeGreaterThan(0)
-      expect(mockArtistsList[0].subscription_status).toBe('active')
+      expect(mockArtistsList[0]?.subscription_status).toBe('active')
     })
 
     it('should hide expired artists past grace period', async () => {
       // Test that cancelled artists are hidden
-      const mockArtistsList: any[] = []
+      const mockArtistsList: Array<Record<string, unknown>> = []
 
       // Artists with status 'cancelled' should not appear
       expect(mockArtistsList.length).toBe(0)
@@ -243,18 +228,6 @@ describe('Artist Subscription Flow Integration Tests', () => {
   describe('Webhook Event Handling', () => {
     it('should handle payment.captured event', async () => {
       // Test webhook processing for captured payment
-      const webhookEvent = {
-        event: 'payment.captured',
-        payload: {
-          payment: {
-            id: 'pay_123',
-            order_id: testOrderId,
-            amount: 50000,
-            status: 'captured',
-          },
-        },
-      }
-
       // Mock webhook response
       const mockResponse = { success: true, received: true }
 
@@ -263,16 +236,6 @@ describe('Artist Subscription Flow Integration Tests', () => {
 
     it('should handle payment.failed event', async () => {
       // Test webhook processing for failed payment
-      const webhookEvent = {
-        event: 'payment.failed',
-        payload: {
-          payment: {
-            id: 'pay_123',
-            status: 'failed',
-          },
-        },
-      }
-
       // Should update order status to 'failed'
       const mockResponse = { success: true }
       expect(mockResponse.success).toBe(true)
@@ -280,18 +243,6 @@ describe('Artist Subscription Flow Integration Tests', () => {
 
     it('should handle subscription.activated event', async () => {
       // Test webhook processing for activated subscription
-      const webhookEvent = {
-        event: 'subscription.activated',
-        payload: {
-          subscription: {
-            id: 'sub_123',
-            status: 'active',
-            current_start: Date.now(),
-            current_end: Date.now() + 30 * 24 * 60 * 60 * 1000,
-          },
-        },
-      }
-
       // Should update artist status to 'active'
       const mockResponse = { success: true }
       expect(mockResponse.success).toBe(true)
@@ -299,16 +250,6 @@ describe('Artist Subscription Flow Integration Tests', () => {
 
     it('should handle subscription.cancelled event', async () => {
       // Test webhook processing for cancelled subscription
-      const webhookEvent = {
-        event: 'subscription.cancelled',
-        payload: {
-          subscription: {
-            id: 'sub_123',
-            status: 'cancelled',
-          },
-        },
-      }
-
       // Should update artist status to 'cancelled'
       const mockResponse = { success: true }
       expect(mockResponse.success).toBe(true)
@@ -330,11 +271,6 @@ describe('Artist Subscription Flow Integration Tests', () => {
       // Mock subscription past end date
       const pastDate = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
 
-      const mockArtist = {
-        subscription_status: 'active',
-        subscription_end_date: pastDate,
-      }
-
       // After running update_expired_subscriptions()
       const mockUpdatedArtist = {
         subscription_status: 'expired',
@@ -347,11 +283,6 @@ describe('Artist Subscription Flow Integration Tests', () => {
     it('should hide profiles after 15-day grace period', async () => {
       // Test cron job hiding logic
       const expiredDate = new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString()
-
-      const mockArtist = {
-        subscription_status: 'expired',
-        subscription_end_date: expiredDate,
-      }
 
       // After running hide_expired_artist_profiles()
       const mockUpdatedArtist = {
@@ -457,7 +388,9 @@ describe('Subscription Helper Functions', () => {
     expectedEndDate.setDate(expectedEndDate.getDate() + 30)
 
     // Allow 1 second margin for test execution time
-    const timeDiff = Math.abs(expectedEndDate.getTime() - startDate.getTime() - 30 * 24 * 60 * 60 * 1000)
+    const timeDiff = Math.abs(
+      expectedEndDate.getTime() - startDate.getTime() - 30 * 24 * 60 * 60 * 1000
+    )
     expect(timeDiff).toBeLessThan(1000)
   })
 
@@ -466,7 +399,9 @@ describe('Subscription Helper Functions', () => {
     const gracePeriodEnd = new Date(expiryDate)
     gracePeriodEnd.setDate(gracePeriodEnd.getDate() + 15)
 
-    const timeDiff = Math.abs(gracePeriodEnd.getTime() - expiryDate.getTime() - 15 * 24 * 60 * 60 * 1000)
+    const timeDiff = Math.abs(
+      gracePeriodEnd.getTime() - expiryDate.getTime() - 15 * 24 * 60 * 60 * 1000
+    )
     expect(timeDiff).toBeLessThan(1000)
   })
 

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ArrowUp, ArrowDown } from 'lucide-react'
 import { useAuth } from '@/lib/context/auth-context'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
@@ -115,19 +115,27 @@ export function VoteButtons({
 
   const score = upvotes - downvotes
 
+  const voteLabel = contentType === 'post' ? 'post' : 'comment'
+  const upvoteLabel =
+    userVote === 'upvote' ? `Remove upvote from ${voteLabel}` : `Upvote ${voteLabel}`
+  const downvoteLabel =
+    userVote === 'downvote' ? `Remove downvote from ${voteLabel}` : `Downvote ${voteLabel}`
+
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1" role="group" aria-label={`Vote on this ${voteLabel}`}>
       <Button
         variant="ghost"
         size="sm"
         onClick={() => handleVote('upvote')}
         disabled={isVoting}
+        aria-label={upvoteLabel}
+        aria-pressed={userVote === 'upvote'}
         className={cn(
           'h-8 w-8 p-0',
           userVote === 'upvote' && 'text-brand-accent bg-brand-accent/10'
         )}
       >
-        <ArrowUp className="h-4 w-4" />
+        <ArrowUp className="h-4 w-4" aria-hidden="true" />
       </Button>
 
       <span
@@ -136,6 +144,7 @@ export function VoteButtons({
           score > 0 && 'text-brand-accent',
           score < 0 && 'text-destructive'
         )}
+        aria-label={`Score: ${score > 0 ? `+${score}` : score}`}
       >
         {score > 0 ? `+${score}` : score}
       </span>
@@ -145,12 +154,14 @@ export function VoteButtons({
         size="sm"
         onClick={() => handleVote('downvote')}
         disabled={isVoting}
+        aria-label={downvoteLabel}
+        aria-pressed={userVote === 'downvote'}
         className={cn(
           'h-8 w-8 p-0',
           userVote === 'downvote' && 'text-destructive bg-destructive/10'
         )}
       >
-        <ArrowDown className="h-4 w-4" />
+        <ArrowDown className="h-4 w-4" aria-hidden="true" />
       </Button>
     </div>
   )

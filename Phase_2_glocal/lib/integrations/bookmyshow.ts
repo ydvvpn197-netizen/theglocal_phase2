@@ -1,3 +1,4 @@
+import { logger } from '@/lib/utils/logger'
 /**
  * BookMyShow API Integration
  * Fetches events and shows from BookMyShow for local discovery
@@ -40,18 +41,18 @@ export async function fetchBookMyShowEvents(
   const apiKey = process.env.BOOKMYSHOW_API_KEY
 
   if (!apiKey) {
-    console.warn('BookMyShow API key not configured. Using mock data.')
+    logger.warn('BookMyShow API key not configured. Using mock data.')
     return generateMockEvents(city, category, limit)
   }
 
   try {
     // In production, this would call the actual BookMyShow API
     // For now, returning mock data
-    // console.log(`Fetching BookMyShow events for ${city}, category: ${category}`)
+    // logger.info(`Fetching BookMyShow events for ${city}, category: ${category}`)
 
     return generateMockEvents(city, category, limit)
   } catch {
-    // console.error('BookMyShow API error:', error)
+    // logger.error('BookMyShow API error:', error)
     return []
   }
 }
@@ -109,17 +110,17 @@ export async function fetchEventById(_eventId: string): Promise<BookMyShowEvent 
   const apiKey = process.env.BOOKMYSHOW_API_KEY
 
   if (!apiKey) {
-    console.warn('BookMyShow API key not configured')
+    logger.warn('BookMyShow API key not configured')
     return null
   }
 
   try {
     // In production: API call to BookMyShow
     // For now: return null or mock data
-    // console.log(`Fetching event ${eventId}`)
+    // logger.info(`Fetching event ${eventId}`)
     return null
   } catch {
-    // console.error('BookMyShow API error:', error)
+    // logger.error('BookMyShow API error:', error)
     return null
   }
 }
@@ -141,9 +142,9 @@ export async function syncBookMyShowEvents(cities: string[]): Promise<number> {
       // with deduplication logic (check if event already exists)
       syncedCount += events.length
 
-      // console.log(`Synced ${events.length} events for ${city}`)
+      // logger.info(`Synced ${events.length} events for ${city}`)
     } catch {
-      // console.error(`Failed to sync events for ${city}:`, error)
+      // logger.error(`Failed to sync events for ${city}:`, error)
     }
   }
 

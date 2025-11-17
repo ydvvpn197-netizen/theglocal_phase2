@@ -120,9 +120,9 @@ describe('Poll Anonymity Utilities', () => {
 
       const results = calculatePollResults(options)
 
-      expect(results[0].percentage).toBe(30) // 30/100 = 30%
-      expect(results[1].percentage).toBe(50) // 50/100 = 50%
-      expect(results[2].percentage).toBe(20) // 20/100 = 20%
+      expect(results[0]?.percentage).toBe(30) // 30/100 = 30%
+      expect(results[1]?.percentage).toBe(50) // 50/100 = 50%
+      expect(results[2]?.percentage).toBe(20) // 20/100 = 20%
     })
 
     it('should handle zero votes', () => {
@@ -133,8 +133,8 @@ describe('Poll Anonymity Utilities', () => {
 
       const results = calculatePollResults(options)
 
-      expect(results[0].percentage).toBe(0)
-      expect(results[1].percentage).toBe(0)
+      expect(results[0]?.percentage).toBe(0)
+      expect(results[1]?.percentage).toBe(0)
     })
 
     it('should round percentages', () => {
@@ -147,8 +147,8 @@ describe('Poll Anonymity Utilities', () => {
 
       // 1/3 = 33.33% -> rounds to 33
       // 2/3 = 66.66% -> rounds to 67
-      expect(results[0].percentage).toBe(33)
-      expect(results[1].percentage).toBe(67)
+      expect(results[0]?.percentage).toBe(33)
+      expect(results[1]?.percentage).toBe(67)
     })
 
     it('should preserve original vote counts', () => {
@@ -159,8 +159,8 @@ describe('Poll Anonymity Utilities', () => {
 
       const results = calculatePollResults(options)
 
-      expect(results[0].vote_count).toBe(100)
-      expect(results[1].vote_count).toBe(200)
+      expect(results[0]?.vote_count).toBe(100)
+      expect(results[1]?.vote_count).toBe(200)
     })
   })
 })

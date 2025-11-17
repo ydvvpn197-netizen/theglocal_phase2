@@ -2,7 +2,7 @@ import { describe, it, expect } from '@jest/globals'
 
 /**
  * Integration Tests for Booking System
- * 
+ *
  * These tests cover the complete booking lifecycle:
  * 1. User requests booking from artist
  * 2. Artist receives booking request
@@ -10,7 +10,7 @@ import { describe, it, expect } from '@jest/globals'
  * 4. Both parties exchange messages
  * 5. Booking completion
  * 6. Booking history and statistics
- * 
+ *
  * Note: These tests require a running Supabase instance
  */
 
@@ -55,8 +55,6 @@ describe('Booking System Integration Tests', () => {
     })
 
     it('should reject booking with past date', () => {
-      const pastDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-
       const mockError = {
         error: 'Event date must be in the future',
       }
@@ -251,10 +249,6 @@ describe('Booking System Integration Tests', () => {
 
   describe('Booking Cancellation', () => {
     it('should allow user to cancel pending booking', () => {
-      const mockBooking = {
-        status: 'pending',
-      }
-
       const mockResponse = {
         success: true,
         message: 'Booking cancelled successfully',
@@ -264,10 +258,6 @@ describe('Booking System Integration Tests', () => {
     })
 
     it('should allow user to cancel info_requested booking', () => {
-      const mockBooking = {
-        status: 'info_requested',
-      }
-
       const mockResponse = {
         success: true,
         message: 'Booking cancelled successfully',
@@ -412,11 +402,7 @@ describe('Booking System Integration Tests', () => {
     })
 
     it('should calculate pending bookings count', () => {
-      const mockBookings = [
-        { status: 'pending' },
-        { status: 'pending' },
-        { status: 'accepted' },
-      ]
+      const mockBookings = [{ status: 'pending' }, { status: 'pending' }, { status: 'accepted' }]
 
       const pendingCount = mockBookings.filter((b) => b.status === 'pending').length
       expect(pendingCount).toBe(2)
@@ -482,8 +468,7 @@ describe('Booking System Integration Tests', () => {
 
       const thirdPartyUserId = 'other-user-123'
       const hasAccess =
-        mockBooking.user_id === thirdPartyUserId ||
-        mockBooking.artists.user_id === thirdPartyUserId
+        mockBooking.user_id === thirdPartyUserId || mockBooking.artists.user_id === thirdPartyUserId
 
       expect(hasAccess).toBe(false)
     })
@@ -541,8 +526,8 @@ describe('Booking System Integration Tests', () => {
         (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       )
 
-      expect(sorted[0].message).toBe('First')
-      expect(sorted[2].message).toBe('Third')
+      expect(sorted[0]?.message).toBe('First')
+      expect(sorted[2]?.message).toBe('Third')
     })
 
     it('should identify messages from artist vs user', () => {
@@ -632,4 +617,3 @@ describe('Booking System Integration Tests', () => {
     })
   })
 })
-

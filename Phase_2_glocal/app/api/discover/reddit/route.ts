@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { fetchLocalRedditPosts } from '@/lib/integrations/reddit'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/discover/reddit')
   try {
     const searchParams = request.nextUrl.searchParams
     const city = searchParams.get('city') || 'all'
@@ -9,20 +13,13 @@ export async function GET(request: NextRequest) {
 
     const posts = await fetchLocalRedditPosts(city, limit)
 
-    return NextResponse.json({
-      success: true,
-      data: posts.map((post) => ({
+    return createSuccessResponse(
+      posts.map((post) => ({
         ...post,
         type: 'reddit',
-      })),
-    })
-  } catch (error) {
-    console.error('Reddit API error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch Reddit posts',
-      },
-      { status: 500 }
+      }))
     )
+  } catch (error) {
+    return handleAPIError(error, { method: 'GET', path: '/api/discover/reddit' })
   }
-}
+})

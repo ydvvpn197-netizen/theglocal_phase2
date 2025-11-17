@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { generateVotingHash, isPollActive } from '@/lib/utils/poll-anonymity'
+import { handleAPIError } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export const POST = withRateLimit(async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id: pollId } = params
+    const { id: pollId } = await params
     const body = await request.json()
     const { option_id } = body
 
@@ -98,12 +103,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       },
     })
   } catch (error) {
-    console.error('Poll vote error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to vote on poll',
-      },
-      { status: 500 }
-    )
+    const { id: errorPollId } = await params
+    return handleAPIError(error, { method: 'POST', path: `/api/polls/${errorPollId}/vote` })
   }
-}
+})

@@ -1,26 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { MODERATION_ACTIONS } from '@/lib/utils/constants'
+import {
+  requireSuperAdminOrCommunityAdminModerator,
+  AdminAccessDeniedError,
+} from '@/lib/utils/admin-verification'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // POST /api/moderation - Take moderation action on content
-export async function POST(request: NextRequest) {
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/moderation')
   try {
     const body = await request.json()
     const { content_type, content_id, action, reason, report_id } = body
 
     if (!content_type || !content_id || !action || !reason) {
-      return NextResponse.json(
-        { error: 'content_type, content_id, action, and reason are required' },
-        { status: 400 }
-      )
+      throw APIErrors.badRequest('content_type, content_id, action, and reason are required')
     }
 
     if (!['post', 'comment', 'poll', 'user'].includes(content_type)) {
-      return NextResponse.json({ error: 'Invalid content_type' }, { status: 400 })
+      throw APIErrors.badRequest('Invalid content_type')
     }
 
     if (!MODERATION_ACTIONS.includes(action)) {
-      return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
+      throw APIErrors.badRequest('Invalid action')
     }
 
     const supabase = await createClient()
@@ -31,11 +36,8 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
-
-    // TODO: Verify user is admin or moderator
-    // For now, we'll implement basic checks
 
     // Get community_id based on content
     let communityId: string | null = null
@@ -53,7 +55,11 @@ export async function POST(request: NextRequest) {
         .select('posts!inner(community_id)')
         .eq('id', content_id)
         .single()
-      communityId = comment?.posts?.community_id || null
+      const commentPosts = comment?.posts as { community_id?: string } | undefined
+      communityId =
+        (Array.isArray(commentPosts)
+          ? commentPosts[0]?.community_id
+          : commentPosts?.community_id) || null
     } else if (content_type === 'poll') {
       const { data: poll } = await supabase
         .from('polls')
@@ -61,6 +67,16 @@ export async function POST(request: NextRequest) {
         .eq('id', content_id)
         .single()
       communityId = poll?.community_id || null
+    }
+
+    // Verify user is super admin OR community admin/moderator
+    try {
+      await requireSuperAdminOrCommunityAdminModerator(user.id, communityId)
+    } catch (error) {
+      if (error instanceof AdminAccessDeniedError) {
+        throw APIErrors.forbidden()
+      }
+      throw error
     }
 
     // Take action on content
@@ -87,7 +103,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (logError) {
-      console.error('Error logging moderation action:', logError)
+      logger.error('Error logging moderation action:', logError)
       // Continue anyway
     }
 
@@ -103,28 +119,20 @@ export async function POST(request: NextRequest) {
         .eq('id', report_id)
     }
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Moderation action completed successfully',
-        data: moderationLog,
-      },
-      { status: 201 }
-    )
+    return createSuccessResponse(moderationLog, {
+      message: 'Moderation action completed successfully',
+    })
   } catch (error) {
-    console.error('Moderation action error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to execute moderation action',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: '/api/moderation',
+    })
   }
-}
+})
 
 // Helper function to remove content
 async function removeContent(
-  supabase: any,
+  supabase: Awaited<ReturnType<typeof createClient>>,
   contentType: string,
   contentId: string
 ): Promise<void> {
@@ -158,4 +166,3 @@ async function removeContent(
       .eq('id', contentId)
   }
 }
-

@@ -1,11 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// GET /api/feed - Location-based feed aggregating posts from joined communities
-export async function GET(request: NextRequest) {
+/**
+ * GET /api/feed - Location-based feed aggregating posts from joined communities
+ *
+ * @param request - Next.js request with query parameters
+ * @returns Personalized feed of posts
+ */
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/feed')
+
   try {
     const searchParams = request.nextUrl.searchParams
-    const limit = parseInt(searchParams.get('limit') || '20')
+    const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100) // Max 100
     const offset = parseInt(searchParams.get('offset') || '0')
     const sort = searchParams.get('sort') || 'recent' // 'recent' or 'popular'
     const city = searchParams.get('city')
@@ -17,6 +27,14 @@ export async function GET(request: NextRequest) {
     const {
       data: { user },
     } = await supabase.auth.getUser()
+
+    logger.info('Fetching feed', {
+      userId: user?.id || 'anonymous',
+      city,
+      sort,
+      limit,
+      offset,
+    })
 
     let query = supabase
       .from('posts')
@@ -63,24 +81,23 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: data || [],
-      meta: {
-        limit,
-        offset,
-        sort,
-        city,
-        radius,
-      },
+    logger.info('Feed fetched successfully', {
+      count: data?.length || 0,
+      userId: user?.id || 'anonymous',
+    })
+
+    return createSuccessResponse(data || [], {
+      count: data?.length || 0,
+      limit,
+      offset,
+      sort,
+      city,
+      radius,
     })
   } catch (error) {
-    console.error('Feed error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch feed',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'GET',
+      path: '/api/feed',
+    })
   }
-}
+})

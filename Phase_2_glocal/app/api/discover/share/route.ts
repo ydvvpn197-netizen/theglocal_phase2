@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function POST(request: NextRequest) {
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/discover/share')
   try {
     const body = await request.json()
     const { community_id, title, body: postBody, external_url, content_type } = body
@@ -70,12 +74,6 @@ export async function POST(request: NextRequest) {
       data: post,
     })
   } catch (error) {
-    console.error('Share content error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to share content',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'POST', path: '/api/discover/share' })
   }
-}
+})

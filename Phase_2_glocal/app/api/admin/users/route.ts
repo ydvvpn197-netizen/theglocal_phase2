@@ -1,26 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { isSuperAdmin } from '@/lib/utils/permissions'
+import { NextRequest } from 'next/server'
+import { requireAdminOrThrow } from '@/lib/utils/require-admin'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/admin/users - List all users
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(_request: NextRequest) {
   try {
-    const supabase = await createClient()
-
-    // Get current user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
-    }
-
-    // Verify super admin
-    const isAdmin = await isSuperAdmin(user.id)
-    if (!isAdmin) {
-      return NextResponse.json({ error: 'Super admin access required' }, { status: 403 })
-    }
+    // Require admin authentication
+    const { supabase } = await requireAdminOrThrow()
 
     // Fetch all users with ban info
     const { data: users, error } = await supabase
@@ -30,17 +17,8 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: users,
-    })
+    return createSuccessResponse(users)
   } catch (error) {
-    console.error('Fetch users error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch users',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/admin/users' })
   }
-}
+})

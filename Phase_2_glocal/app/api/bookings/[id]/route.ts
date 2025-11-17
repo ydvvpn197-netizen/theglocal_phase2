@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { BOOKING_STATUSES } from '@/lib/utils/constants'
+import { createNotification, getNotificationMessage } from '@/lib/utils/notifications'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/bookings/[id] - Get booking details
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export const GET = withRateLimit(async function GET(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const logger = createAPILogger('GET', '/api/bookings/[id]')
   try {
     const supabase = await createClient()
 
@@ -32,7 +40,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     if (error) throw error
 
     if (!booking) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
+      throw APIErrors.notFound('Booking')
     }
 
     // Verify user has access to this booking
@@ -40,36 +48,33 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const isArtist = booking.artists?.user_id === user.id
 
     if (!isBookingOwner && !isArtist) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+      throw APIErrors.forbidden()
     }
 
-    return NextResponse.json({
-      success: true,
-      data: booking,
-      meta: {
-        is_artist: isArtist,
-        is_booking_owner: isBookingOwner,
-      },
+    return createSuccessResponse(booking, {
+      is_artist: isArtist,
+      is_booking_owner: isBookingOwner,
     })
   } catch (error) {
-    console.error('Fetch booking error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch booking',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'GET',
+      path: `/api/bookings/${params.id}`,
+    })
   }
-}
+})
 
 // PUT /api/bookings/[id] - Update booking status (artist only)
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export const PUT = withRateLimit(async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const logger = createAPILogger('PUT', '/api/bookings/[id]')
   try {
     const body = await request.json()
     const { status } = body
 
     if (!status || !BOOKING_STATUSES.includes(status)) {
-      return NextResponse.json({ error: 'Valid status is required' }, { status: 400 })
+      throw APIErrors.badRequest('Valid status is required')
     }
 
     const supabase = await createClient()
@@ -80,26 +85,23 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
     // Get booking and verify artist ownership
     const { data: booking, error: bookingError } = await supabase
       .from('bookings')
-      .select('*, artists!bookings_artist_id_fkey(user_id)')
+      .select('*, artists!bookings_artist_id_fkey(user_id, stage_name)')
       .eq('id', params.id)
       .single()
 
     if (bookingError || !booking) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
+      throw APIErrors.notFound('Booking')
     }
 
     // Verify user is the artist for this booking
     if (booking.artists?.user_id !== user.id) {
-      return NextResponse.json(
-        { error: 'Only the artist can update booking status' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Update booking status
@@ -112,26 +114,49 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     if (updateError) throw updateError
 
-    // TODO: Task 4.4.12 - Send notification to booking owner about status change
+    // Send notification to booking owner about status change
+    try {
+      const adminSupabase = createAdminClient()
+      const artist = booking.artists as { stage_name?: string } | undefined
+      const artistName = artist?.stage_name || 'the artist'
 
-    return NextResponse.json({
-      success: true,
+      const notificationMessage = getNotificationMessage('booking_update', {
+        artistName,
+        status,
+      })
+
+      await createNotification(adminSupabase, {
+        userId: booking.user_id,
+        type: 'booking_update',
+        title: notificationMessage.title,
+        message: notificationMessage.message,
+        link: `/bookings/${params.id}`,
+        actorId: user.id,
+        entityId: params.id,
+        entityType: 'booking',
+      })
+    } catch (error) {
+      // Log notification error but don't fail the request
+      logger.warn('Failed to send notification', { error })
+    }
+
+    return createSuccessResponse(updatedBooking, {
       message: 'Booking status updated successfully',
-      data: updatedBooking,
     })
   } catch (error) {
-    console.error('Update booking error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to update booking',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'PUT',
+      path: `/api/bookings/${params.id}`,
+    })
   }
-}
+})
 
 // DELETE /api/bookings/[id] - Cancel booking (booking owner only)
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export const DELETE = withRateLimit(async function DELETE(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const logger = createAPILogger('DELETE', '/api/bookings/[id]')
   try {
     const supabase = await createClient()
 
@@ -141,7 +166,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
     // Get booking and verify ownership
@@ -152,23 +177,17 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       .single()
 
     if (bookingError || !booking) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
+      throw APIErrors.notFound('Booking')
     }
 
     // Verify user owns this booking
     if (booking.user_id !== user.id) {
-      return NextResponse.json(
-        { error: 'Only the booking owner can cancel the booking' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Can only cancel pending or info_requested bookings
     if (!['pending', 'info_requested'].includes(booking.status)) {
-      return NextResponse.json(
-        { error: 'Can only cancel pending or info requested bookings' },
-        { status: 400 }
-      )
+      throw APIErrors.badRequest('Can only cancel pending or info requested bookings')
     }
 
     // Update to declined status (soft delete)
@@ -179,18 +198,13 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 
     if (updateError) throw updateError
 
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse(null, {
       message: 'Booking cancelled successfully',
     })
   } catch (error) {
-    console.error('Cancel booking error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to cancel booking',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'DELETE',
+      path: `/api/bookings/${params.id}`,
+    })
   }
-}
-
+})

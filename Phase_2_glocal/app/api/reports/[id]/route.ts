@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import {
+  requireSuperAdminOrCommunityAdminModerator,
+  AdminAccessDeniedError,
+} from '@/lib/utils/admin-verification'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/reports/[id] - Get report details (admin/moderator only)
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export const GET = withRateLimit(async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
   try {
     const supabase = await createClient()
 
@@ -12,11 +23,10 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
-    // TODO: Verify user is admin or moderator
-
+    // Fetch report first to get community_id for verification
     const { data: report, error } = await supabase
       .from('reports')
       .select(
@@ -26,38 +36,46 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         communities(name)
       `
       )
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (error) throw error
 
     if (!report) {
-      return NextResponse.json({ error: 'Report not found' }, { status: 404 })
+      throw APIErrors.notFound('Report')
     }
 
-    return NextResponse.json({
-      success: true,
-      data: report,
-    })
+    // Verify user is super admin OR admin/moderator of the report's community
+    try {
+      await requireSuperAdminOrCommunityAdminModerator(user.id, report.community_id || null)
+    } catch (error) {
+      if (error instanceof AdminAccessDeniedError) {
+        throw APIErrors.forbidden()
+      }
+      throw error
+    }
+
+    return createSuccessResponse(report)
   } catch (error) {
-    console.error('Fetch report error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch report',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'GET',
+      path: `/api/reports/${id}`,
+    })
   }
-}
+})
 
 // PUT /api/reports/[id] - Resolve report (admin/moderator only)
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export const PUT = withRateLimit(async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
   try {
     const body = await request.json()
     const { status, resolution_note } = body
 
     if (!['pending', 'reviewed', 'dismissed', 'actioned'].includes(status)) {
-      return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
+      throw APIErrors.badRequest('Invalid status')
     }
 
     const supabase = await createClient()
@@ -68,10 +86,31 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
-    // TODO: Verify user is admin or moderator of the community
+    // Fetch report first to get community_id for verification
+    const { data: existingReport, error: fetchError } = await supabase
+      .from('reports')
+      .select('community_id')
+      .eq('id', id)
+      .single()
+
+    if (fetchError) throw fetchError
+
+    if (!existingReport) {
+      throw APIErrors.notFound('Report')
+    }
+
+    // Verify user is super admin OR admin/moderator of the report's community
+    try {
+      await requireSuperAdminOrCommunityAdminModerator(user.id, existingReport.community_id || null)
+    } catch (error) {
+      if (error instanceof AdminAccessDeniedError) {
+        throw APIErrors.forbidden()
+      }
+      throw error
+    }
 
     // Update report
     const { data: report, error: updateError } = await supabase
@@ -82,25 +121,19 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         resolved_by: user.id,
         resolved_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
     if (updateError) throw updateError
 
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse(report, {
       message: 'Report resolved successfully',
-      data: report,
     })
   } catch (error) {
-    console.error('Resolve report error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to resolve report',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'PUT',
+      path: `/api/reports/${id}`,
+    })
   }
-}
-
+})

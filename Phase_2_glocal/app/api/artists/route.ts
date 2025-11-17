@@ -1,8 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// GET /api/artists - List artists
-export async function GET(request: NextRequest) {
+/**
+ * GET /api/artists - List artists
+ *
+ * @param request - Next.js request with query parameters
+ * @returns List of artists
+ */
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/artists')
+
   try {
     const searchParams = request.nextUrl.searchParams
     const city = searchParams.get('city')
@@ -10,6 +20,8 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search')
     const limit = parseInt(searchParams.get('limit') || '20')
     const offset = parseInt(searchParams.get('offset') || '0')
+
+    logger.info('Fetching artists', { city, category, search, limit, offset })
 
     const supabase = await createClient()
 
@@ -39,23 +51,26 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: data || [],
-    })
-  } catch (error) {
-    console.error('Fetch artists error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch artists',
-      },
-      { status: 500 }
-    )
-  }
-}
+    logger.info('Artists fetched successfully', { count: data?.length || 0 })
 
-// POST /api/artists - Create artist profile
-export async function POST(request: NextRequest) {
+    return createSuccessResponse(data || [])
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'GET',
+      path: '/api/artists',
+    })
+  }
+})
+
+/**
+ * POST /api/artists - Create artist profile
+ *
+ * @param request - Next.js request with artist data
+ * @returns Created artist profile
+ */
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/artists')
+
   try {
     const body = await request.json()
     const {
@@ -69,10 +84,7 @@ export async function POST(request: NextRequest) {
     } = body
 
     if (!stage_name || !service_category || !location_city) {
-      return NextResponse.json(
-        { error: 'stage_name, service_category, and location_city are required' },
-        { status: 400 }
-      )
+      throw APIErrors.badRequest('stage_name, service_category, and location_city are required')
     }
 
     const supabase = await createClient()
@@ -83,8 +95,14 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Creating artist profile', {
+      userId: user.id,
+      stage_name: stage_name.substring(0, 50),
+      service_category,
+    })
 
     // Check if user already has an artist profile
     const { data: existingArtist } = await supabase
@@ -94,7 +112,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (existingArtist) {
-      return NextResponse.json({ error: 'You already have an artist profile' }, { status: 400 })
+      throw APIErrors.badRequest('You already have an artist profile')
     }
 
     // Create artist profile
@@ -116,18 +134,18 @@ export async function POST(request: NextRequest) {
 
     if (createError) throw createError
 
-    return NextResponse.json({
-      success: true,
+    logger.info('Artist profile created successfully', {
+      artistId: artist.id,
+      userId: user.id,
+    })
+
+    return createSuccessResponse(artist, {
       message: 'Artist profile created successfully',
-      data: artist,
     })
   } catch (error) {
-    console.error('Create artist error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create artist profile',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: '/api/artists',
+    })
   }
-}
+})

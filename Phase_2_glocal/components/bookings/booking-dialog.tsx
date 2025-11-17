@@ -18,7 +18,7 @@ interface BookingDialogProps {
   children: React.ReactNode
 }
 
-export function BookingDialog({ artistId, artistName, children }: BookingDialogProps) {
+function BookingDialog({ artistId, artistName, children }: BookingDialogProps) {
   const [open, setOpen] = useState(false)
   const { user } = useAuth()
 
@@ -45,7 +45,6 @@ export function BookingDialog({ artistId, artistName, children }: BookingDialogP
         <BookingForm
           artistId={artistId}
           artistName={artistName}
-          userId={user.id}
           onSuccess={() => setOpen(false)}
           onCancel={() => setOpen(false)}
         />
@@ -54,3 +53,5 @@ export function BookingDialog({ artistId, artistName, children }: BookingDialogP
   )
 }
 
+export default BookingDialog
+export { BookingDialog }

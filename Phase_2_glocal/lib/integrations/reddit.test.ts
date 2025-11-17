@@ -43,10 +43,10 @@ describe('Reddit API Client', () => {
       const posts = await fetchLocalRedditPosts('Mumbai', 10)
 
       expect(posts).toHaveLength(1)
-      expect(posts[0].title).toBe('Test Reddit Post')
-      expect(posts[0].subreddit).toBe('test')
-      expect(posts[0].upvotes).toBe(100)
-      expect(posts[0].comments).toBe(20)
+      expect(posts[0]?.title).toBe('Test Reddit Post')
+      expect(posts[0]?.subreddit).toBe('test')
+      expect(posts[0]?.upvotes).toBe(100)
+      expect(posts[0]?.comments).toBe(20)
     })
 
     it('should map location to correct subreddits', async () => {
@@ -109,7 +109,7 @@ describe('Reddit API Client', () => {
       const posts = await fetchLocalRedditPosts('test')
 
       expect(posts).toHaveLength(1)
-      expect(posts[0].title).toBe('Regular Post')
+      expect(posts[0]?.title).toBe('Regular Post')
     })
 
     it('should handle API errors gracefully', async () => {
@@ -161,7 +161,7 @@ describe('Reddit API Client', () => {
 
       const posts = await fetchLocalRedditPosts('test')
 
-      expect(posts[0].imageUrl).toBe('https://example.com/image.jpg')
+      expect(posts[0]?.imageUrl).toBe('https://example.com/image.jpg')
     })
   })
 
@@ -222,8 +222,8 @@ describe('Reddit API Client', () => {
       const posts = await fetchMultipleSubreddits(['sub1', 'sub2'], 10)
 
       expect(posts).toHaveLength(2)
-      expect(posts[0].subreddit).toBe('sub1')
-      expect(posts[1].subreddit).toBe('sub2')
+      expect(posts[0]?.subreddit).toBe('sub1')
+      expect(posts[1]?.subreddit).toBe('sub2')
     })
 
     it('should sort by upvotes', async () => {
@@ -276,8 +276,8 @@ describe('Reddit API Client', () => {
 
       const posts = await fetchMultipleSubreddits(['sub1', 'sub2'], 10)
 
-      expect(posts[0].upvotes).toBeGreaterThan(posts[1].upvotes)
-      expect(posts[0].title).toBe('High Upvotes')
+      expect(posts[0]?.upvotes).toBeGreaterThan(posts[1]?.upvotes ?? 0)
+      expect(posts[0]?.title).toBe('High Upvotes')
     })
   })
 })

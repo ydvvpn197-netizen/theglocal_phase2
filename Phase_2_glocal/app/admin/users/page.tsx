@@ -1,19 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { logger } from '@/lib/utils/logger'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, Search, AlertTriangle, Ban, Eye } from 'lucide-react'
-import Link from 'next/link'
+import { Loader2, Search, AlertTriangle, Ban } from 'lucide-react'
+import type { ApiResponse, AdminUser } from '@/lib/types/api.types'
 
-interface User {
-  id: string
-  email: string
-  anonymous_handle: string
-  created_at: string
-  is_banned: boolean
+interface User extends AdminUser {
   ban_expires_at?: string
   ban_reason?: string
 }
@@ -24,9 +20,27 @@ export default function AdminUsersPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
 
+  const fetchUsers = useCallback(async () => {
+    try {
+      const response = await fetch('/api/admin/users')
+      const result = (await response.json()) as ApiResponse<User[]>
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to fetch users')
+      }
+
+      setUsers(result.data || [])
+      setFilteredUsers(result.data || [])
+    } catch (error) {
+      logger.error('Error fetching users:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
   useEffect(() => {
     fetchUsers()
-  }, [])
+  }, [fetchUsers])
 
   useEffect(() => {
     if (!searchTerm) {
@@ -44,26 +58,10 @@ export default function AdminUsersPage() {
     }
   }, [searchTerm, users])
 
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch('/api/admin/users')
-      const result = await response.json()
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to fetch users')
-      }
-
-      setUsers(result.data || [])
-      setFilteredUsers(result.data || [])
-    } catch (error) {
-      console.error('Error fetching users:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   const handleBanUser = async (userId: string, duration: 'temporary' | 'permanent') => {
-    const reason = prompt(duration === 'temporary' ? 'Reason for temporary ban (7 days):' : 'Reason for permanent ban:')
+    const reason = prompt(
+      duration === 'temporary' ? 'Reason for temporary ban (7 days):' : 'Reason for permanent ban:'
+    )
     if (!reason) return
 
     try {
@@ -76,7 +74,7 @@ export default function AdminUsersPage() {
         }),
       })
 
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<unknown>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to ban user')
@@ -96,7 +94,7 @@ export default function AdminUsersPage() {
         method: 'PUT',
       })
 
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<unknown>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to unban user')

@@ -1,11 +1,12 @@
 'use client'
 
+import { logger } from '@/lib/utils/logger'
 import { useState, useEffect, useCallback } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Loader2, Flag, CheckSquare, Square } from 'lucide-react'
 import { ReportCard } from '@/components/moderation/report-card'
+import type { ApiResponse } from '@/lib/types/api.types'
 
 interface Report {
   id: string
@@ -56,7 +57,7 @@ export default function AdminReportsPage() {
       if (contentTypeFilter !== 'all') params.append('content_type', contentTypeFilter)
 
       const response = await fetch(`/api/reports?${params}`)
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<Report[]>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch reports')
@@ -64,7 +65,7 @@ export default function AdminReportsPage() {
 
       setReports(result.data || [])
     } catch (error) {
-      console.error('Error fetching reports:', error)
+      logger.error('Error fetching reports:', error)
     } finally {
       setIsLoading(false)
     }
@@ -112,7 +113,7 @@ export default function AdminReportsPage() {
       setSelectedReports(new Set())
       fetchReports()
     } catch (error) {
-      console.error('Bulk dismiss error:', error)
+      logger.error('Bulk dismiss error:', error)
     } finally {
       setIsBulkProcessing(false)
     }
@@ -129,14 +130,8 @@ export default function AdminReportsPage() {
           </div>
 
           {selectedReports.size > 0 && (
-            <Button
-              variant="outline"
-              onClick={handleBulkDismiss}
-              disabled={isBulkProcessing}
-            >
-              {isBulkProcessing ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}
+            <Button variant="outline" onClick={handleBulkDismiss} disabled={isBulkProcessing}>
+              {isBulkProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Dismiss Selected ({selectedReports.size})
             </Button>
           )}

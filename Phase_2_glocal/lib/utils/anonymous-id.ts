@@ -112,3 +112,36 @@ export function isValidAnonymousHandle(handle: string): boolean {
   const pattern = /^Local[A-Z][a-z]+[A-Z][a-z]+\d{3}$/
   return pattern.test(handle)
 }
+
+/**
+ * Generates a unique anonymous handle for a user
+ * Checks database to ensure uniqueness
+ */
+export async function generateUniqueAnonymousHandle(userId: string): Promise<string> {
+  // Import here to avoid circular dependencies
+  const { createClient } = await import('@/lib/supabase/server')
+  const supabase = await createClient()
+
+  let attempts = 0
+  const maxAttempts = 10
+
+  while (attempts < maxAttempts) {
+    const handle = generateAnonymousHandle()
+
+    // Check if handle already exists
+    const { data: existing } = await supabase
+      .from('users')
+      .select('id')
+      .eq('anonymous_handle', handle)
+      .single()
+
+    if (!existing) {
+      return handle
+    }
+
+    attempts++
+  }
+
+  // Fallback: use userId-based handle if all attempts fail
+  return `LocalUser${userId.slice(0, 8)}${Math.floor(Math.random() * 900) + 100}`
+}

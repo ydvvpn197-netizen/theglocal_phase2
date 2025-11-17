@@ -1,7 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { verifyPaymentSignature } from '@/lib/integrations/razorpay'
 import { z } from 'zod'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 const verifySchema = z.object({
   razorpay_order_id: z.string(),
@@ -10,7 +13,11 @@ const verifySchema = z.object({
 })
 
 // POST /api/artists/[id]/subscribe/verify - Verify payment and activate subscription
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export const POST = withRateLimit(async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const logger = createAPILogger('POST', '/api/artists/[id]/subscribe/verify')
   try {
     const supabase = await createClient()
 
@@ -20,7 +27,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
 
     const body = await request.json()
@@ -34,7 +41,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     )
 
     if (!isValidSignature) {
-      return NextResponse.json({ error: 'Invalid payment signature' }, { status: 400 })
+      throw APIErrors.badRequest('Invalid payment signature')
     }
 
     // Get order details
@@ -46,7 +53,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       .single()
 
     if (orderError || !order) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+      throw APIErrors.notFound('Order')
     }
 
     // Update order status
@@ -75,8 +82,8 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       .eq('id', params.id)
 
     if (artistError) {
-      console.error('Error updating artist subscription:', artistError)
-      return NextResponse.json({ error: 'Failed to activate subscription' }, { status: 500 })
+      logger.error('Error updating artist subscription:', artistError)
+      throw artistError
     }
 
     // Create subscription record
@@ -94,25 +101,23 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     })
 
     if (subscriptionError) {
-      console.error('Error creating subscription record:', subscriptionError)
+      logger.error('Error creating subscription record:', subscriptionError)
       // Continue anyway, artist is activated
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Subscription activated successfully',
-      data: {
+    return createSuccessResponse(
+      {
         status: 'trial',
         trial_end: trialEndDate.toISOString(),
       },
-    })
-  } catch (error) {
-    console.error('Payment verification error:', error)
-    return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : 'Failed to verify payment',
-      },
-      { status: 500 }
+        message: 'Subscription activated successfully',
+      }
     )
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'POST',
+      path: `/api/artists/${params.id}/subscribe/verify`,
+    })
   }
-}
+})

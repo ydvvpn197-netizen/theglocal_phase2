@@ -1,42 +1,26 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { logger } from '@/lib/utils/logger'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, CheckCircle, XCircle, DollarSign, Eye } from 'lucide-react'
+import { Loader2, Eye } from 'lucide-react'
 import Link from 'next/link'
-
-interface Artist {
-  id: string
-  user_id: string
-  stage_name: string
-  service_category: string
-  location_city: string
-  subscription_status: string
-  subscription_start_date?: string
-  subscription_end_date?: string
-  subscription_cancelled_at?: string
-  pricing_starting_from?: number
-  created_at: string
-}
+import type { ApiResponse, AdminArtist } from '@/lib/types/api.types'
 
 export default function AdminArtistsPage() {
-  const [artists, setArtists] = useState<Artist[]>([])
+  const [artists, setArtists] = useState<AdminArtist[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState('all')
 
-  useEffect(() => {
-    fetchArtists()
-  }, [statusFilter])
-
-  const fetchArtists = async () => {
+  const fetchArtists = useCallback(async () => {
     try {
       const params = new URLSearchParams()
       if (statusFilter !== 'all') params.append('status', statusFilter)
 
       const response = await fetch(`/api/admin/artists?${params}`)
-      const result = await response.json()
+      const result = (await response.json()) as ApiResponse<AdminArtist[]>
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch artists')
@@ -44,11 +28,15 @@ export default function AdminArtistsPage() {
 
       setArtists(result.data || [])
     } catch (error) {
-      console.error('Error fetching artists:', error)
+      logger.error('Error fetching artists:', error)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [statusFilter])
+
+  useEffect(() => {
+    fetchArtists()
+  }, [fetchArtists])
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -127,7 +115,9 @@ export default function AdminArtistsPage() {
 
                       {artist.subscription_start_date && (
                         <div className="text-xs text-muted-foreground space-y-1 mt-2">
-                          <p>Start: {new Date(artist.subscription_start_date).toLocaleDateString()}</p>
+                          <p>
+                            Start: {new Date(artist.subscription_start_date).toLocaleDateString()}
+                          </p>
                           {artist.subscription_end_date && (
                             <p>
                               End: {new Date(artist.subscription_end_date).toLocaleDateString()}
@@ -135,7 +125,8 @@ export default function AdminArtistsPage() {
                           )}
                           {artist.subscription_cancelled_at && (
                             <p className="text-destructive">
-                              Cancelled: {new Date(artist.subscription_cancelled_at).toLocaleDateString()}
+                              Cancelled:{' '}
+                              {new Date(artist.subscription_cancelled_at).toLocaleDateString()}
                             </p>
                           )}
                         </div>

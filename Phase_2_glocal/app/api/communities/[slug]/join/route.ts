@@ -1,9 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function POST(_request: NextRequest, { params }: { params: { slug: string } }) {
+/**
+ * POST /api/communities/[slug]/join - Join a community
+ *
+ * @param _request - Next.js request
+ * @param params - Route parameters with slug
+ * @returns Success response
+ */
+export const POST = withRateLimit(async function POST(
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
-    const { slug } = params
+    const { slug } = await params
+    const logger = createAPILogger('POST', `/api/communities/${slug}/join`)
     const supabase = await createClient()
 
     // Get current user
@@ -12,8 +26,10 @@ export async function POST(_request: NextRequest, { params }: { params: { slug: 
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('User joining community', { userId: user.id, slug })
 
     // Get community
     const { data: community, error: communityError } = await supabase
@@ -25,7 +41,7 @@ export async function POST(_request: NextRequest, { params }: { params: { slug: 
     if (communityError) throw communityError
 
     if (!community) {
-      return NextResponse.json({ error: 'Community not found' }, { status: 404 })
+      throw APIErrors.notFound('Community')
     }
 
     // Check if already a member
@@ -37,7 +53,7 @@ export async function POST(_request: NextRequest, { params }: { params: { slug: 
       .single()
 
     if (existing) {
-      return NextResponse.json({ error: 'Already a member of this community' }, { status: 409 })
+      throw APIErrors.conflict('Already a member of this community')
     }
 
     // Join community
@@ -49,17 +65,19 @@ export async function POST(_request: NextRequest, { params }: { params: { slug: 
 
     if (joinError) throw joinError
 
-    return NextResponse.json({
-      success: true,
+    logger.info('User joined community successfully', {
+      userId: user.id,
+      communityId: community.id,
+    })
+
+    return createSuccessResponse(null, {
       message: `Joined ${community.name} successfully`,
     })
   } catch (error) {
-    console.error('Join community error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to join community',
-      },
-      { status: 500 }
-    )
+    const { slug: errorSlug } = await params
+    return handleAPIError(error, {
+      method: 'POST',
+      path: `/api/communities/${errorSlug}/join`,
+    })
   }
-}
+})

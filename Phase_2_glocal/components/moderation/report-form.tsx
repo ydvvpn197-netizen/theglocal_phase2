@@ -7,7 +7,7 @@ import { createReportSchema } from '@/lib/utils/validation'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useAuth } from '@/lib/context/auth-context'
 import { REPORT_REASONS } from '@/lib/utils/constants'
 import { Loader2, AlertTriangle } from 'lucide-react'
@@ -126,9 +126,7 @@ export function ReportForm({ contentType, contentId, onSuccess, onCancel }: Repo
               />
               <div className="flex-1">
                 <div className="font-medium text-sm">{reason}</div>
-                <div className="text-xs text-muted-foreground">
-                  {getReasonDescription(reason)}
-                </div>
+                <div className="text-xs text-muted-foreground">{getReasonDescription(reason)}</div>
               </div>
             </label>
           ))}
@@ -192,4 +190,3 @@ function getReasonDescription(reason: string): string {
   }
   return descriptions[reason] || ''
 }
-

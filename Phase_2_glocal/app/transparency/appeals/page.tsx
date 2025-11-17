@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Scale, Mail, Clock, CheckCircle } from 'lucide-react'
 
@@ -196,8 +195,8 @@ export default function AppealsProcessPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              Appeal decisions are final and are made by senior platform administrators. We strive to
-              be fair and consistent in all decisions.
+              Appeal decisions are final and are made by senior platform administrators. We strive
+              to be fair and consistent in all decisions.
             </p>
 
             <div>
@@ -236,4 +235,3 @@ export const metadata = {
   title: 'Appeal Process - Theglocal',
   description: 'How to appeal moderation decisions on Theglocal',
 }
-

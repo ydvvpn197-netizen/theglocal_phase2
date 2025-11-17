@@ -1,40 +1,65 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// GET /api/events/[id] - Get event details
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * GET /api/events/[id] - Get event details
+ *
+ * @param _request - Next.js request
+ * @param params - Route parameters with event ID
+ * @returns Event data
+ */
+export const GET = withRateLimit(async function GET(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: eventId } = params
+  const logger = createAPILogger('GET', `/api/events/${eventId}`)
+
   try {
+    logger.info('Fetching event', { eventId })
+
     const supabase = await createClient()
 
     const { data: event, error } = await supabase
       .from('events')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', eventId)
       .single()
 
     if (error) throw error
 
     if (!event) {
-      return NextResponse.json({ error: 'Event not found' }, { status: 404 })
+      throw APIErrors.notFound('Event')
     }
 
-    return NextResponse.json({
-      success: true,
-      data: event,
-    })
-  } catch (error) {
-    console.error('Fetch event error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch event',
-      },
-      { status: 500 }
-    )
-  }
-}
+    logger.info('Event fetched successfully', { eventId })
 
-// PUT /api/events/[id] - Update event (artist only)
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+    return createSuccessResponse(event)
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'GET',
+      path: `/api/events/${eventId}`,
+    })
+  }
+})
+
+/**
+ * PUT /api/events/[id] - Update event (artist only)
+ *
+ * @param request - Next.js request with updated event data
+ * @param params - Route parameters with event ID
+ * @returns Updated event
+ */
+export const PUT = withRateLimit(async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: eventId } = params
+  const logger = createAPILogger('PUT', `/api/events/${eventId}`)
+
   try {
     const body = await request.json()
     const {
@@ -55,8 +80,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Updating event', { eventId, userId: user.id })
 
     // Get event and verify ownership
     const { data: event, error: eventError } = await supabase
@@ -66,7 +93,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       .single()
 
     if (eventError || !event) {
-      return NextResponse.json({ error: 'Event not found' }, { status: 404 })
+      throw APIErrors.notFound('Event')
     }
 
     // Verify user owns this event
@@ -78,30 +105,34 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       .single()
 
     if (!artist) {
-      return NextResponse.json(
-        { error: 'Unauthorized. You can only edit your own events.' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Check subscription status
     if (!['trial', 'active'].includes(artist.subscription_status)) {
-      return NextResponse.json(
-        { error: 'Active subscription required to edit events' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Validate event date is in the future (if provided)
     if (event_date) {
       const eventDate = new Date(event_date)
       if (eventDate <= new Date()) {
-        return NextResponse.json({ error: 'Event date must be in the future' }, { status: 400 })
+        throw APIErrors.badRequest('Event date must be in the future')
       }
     }
 
     // Update event
-    const updateData: any = {}
+    interface EventUpdateData {
+      title?: string
+      description?: string
+      event_date?: string
+      location_city?: string
+      location_address?: string
+      category?: string
+      ticket_info?: Record<string, unknown>
+    }
+
+    const updateData: EventUpdateData = {}
     if (title !== undefined) updateData.title = title
     if (description !== undefined) updateData.description = description
     if (event_date !== undefined) updateData.event_date = event_date
@@ -119,24 +150,33 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     if (updateError) throw updateError
 
-    return NextResponse.json({
-      success: true,
+    logger.info('Event updated successfully', { eventId, userId: user.id })
+
+    return createSuccessResponse(updatedEvent, {
       message: 'Event updated successfully',
-      data: updatedEvent,
     })
   } catch (error) {
-    console.error('Update event error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to update event',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'PUT',
+      path: `/api/events/${eventId}`,
+    })
   }
-}
+})
 
-// DELETE /api/events/[id] - Delete event (artist only)
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * DELETE /api/events/[id] - Delete event (artist only)
+ *
+ * @param _request - Next.js request
+ * @param params - Route parameters with event ID
+ * @returns Success response
+ */
+export const DELETE = withRateLimit(async function DELETE(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: eventId } = params
+  const logger = createAPILogger('DELETE', `/api/events/${eventId}`)
+
   try {
     const supabase = await createClient()
 
@@ -146,8 +186,10 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Deleting event', { eventId, userId: user.id })
 
     // Get event and verify ownership
     const { data: event, error: eventError } = await supabase
@@ -157,7 +199,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       .single()
 
     if (eventError || !event) {
-      return NextResponse.json({ error: 'Event not found' }, { status: 404 })
+      throw APIErrors.notFound('Event')
     }
 
     // Verify user owns this event
@@ -169,10 +211,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       .single()
 
     if (!artist) {
-      return NextResponse.json(
-        { error: 'Unauthorized. You can only delete your own events.' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Delete event
@@ -180,18 +219,15 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 
     if (deleteError) throw deleteError
 
-    return NextResponse.json({
-      success: true,
+    logger.info('Event deleted successfully', { eventId, userId: user.id })
+
+    return createSuccessResponse(null, {
       message: 'Event deleted successfully',
     })
   } catch (error) {
-    console.error('Delete event error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to delete event',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'DELETE',
+      path: `/api/events/${eventId}`,
+    })
   }
-}
-
+})

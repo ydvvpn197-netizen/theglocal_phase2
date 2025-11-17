@@ -1,8 +1,18 @@
 'use client'
 
+import { logger } from '@/lib/utils/logger'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, Building2, FileText, Palette, TrendingUp, MessageSquare, Loader2 } from 'lucide-react'
+import {
+  Users,
+  Building2,
+  FileText,
+  Palette,
+  TrendingUp,
+  MessageSquare,
+  Loader2,
+} from 'lucide-react'
 
 interface PlatformStats {
   total_users: number
@@ -27,12 +37,12 @@ export default function TransparencyStatsPage() {
     try {
       const response = await fetch('/api/transparency/stats')
       const result = await response.json()
-      
+
       if (response.ok) {
         setStats(result.data)
       }
     } catch (error) {
-      console.error('Error fetching stats:', error)
+      logger.error('Error fetching stats:', error)
     } finally {
       setIsLoading(false)
     }
@@ -67,7 +77,9 @@ export default function TransparencyStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <Users className="h-8 w-8 text-brand-primary" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.total_users?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.total_users?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Total Users</div>
                 </div>
               </CardContent>
@@ -77,7 +89,9 @@ export default function TransparencyStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <Building2 className="h-8 w-8 text-brand-secondary" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.total_communities?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.total_communities?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Communities</div>
                 </div>
               </CardContent>
@@ -87,7 +101,9 @@ export default function TransparencyStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <FileText className="h-8 w-8 text-brand-accent" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.total_posts?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.total_posts?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Posts</div>
                 </div>
               </CardContent>
@@ -97,7 +113,9 @@ export default function TransparencyStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <Palette className="h-8 w-8 text-purple-600" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.total_artists?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.total_artists?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Artists</div>
                 </div>
               </CardContent>
@@ -113,7 +131,9 @@ export default function TransparencyStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <TrendingUp className="h-8 w-8 text-green-600" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.active_users_7d?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.active_users_7d?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Active (7 days)</div>
                 </div>
               </CardContent>
@@ -123,7 +143,9 @@ export default function TransparencyStatsPage() {
               <CardContent className="flex items-center gap-3 pt-6">
                 <Users className="h-8 w-8 text-blue-600" />
                 <div>
-                  <div className="text-2xl font-bold">{stats?.active_users_30d?.toLocaleString() || 0}</div>
+                  <div className="text-2xl font-bold">
+                    {stats?.active_users_30d?.toLocaleString() || 0}
+                  </div>
                   <div className="text-sm text-muted-foreground">Active (30 days)</div>
                 </div>
               </CardContent>
@@ -158,7 +180,9 @@ export default function TransparencyStatsPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Comments</span>
-                  <span className="font-semibold">{stats?.comments_24h?.toLocaleString() || 0}</span>
+                  <span className="font-semibold">
+                    {stats?.comments_24h?.toLocaleString() || 0}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -178,7 +202,9 @@ export default function TransparencyStatsPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Active Artists</span>
-                  <span className="font-semibold">{stats?.total_artists?.toLocaleString() || 0}</span>
+                  <span className="font-semibold">
+                    {stats?.total_artists?.toLocaleString() || 0}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -205,7 +231,10 @@ export default function TransparencyStatsPage() {
               >
                 Privacy Metrics →
               </Link>
-              <Link href="/transparency/guidelines" className="text-sm text-brand-primary hover:underline">
+              <Link
+                href="/transparency/guidelines"
+                className="text-sm text-brand-primary hover:underline"
+              >
                 Community Guidelines →
               </Link>
             </div>
@@ -215,9 +244,3 @@ export default function TransparencyStatsPage() {
     </div>
   )
 }
-
-export const metadata = {
-  title: 'Platform Transparency - Theglocal',
-  description: 'Explore platform metrics, moderation decisions, and privacy practices',
-}
-

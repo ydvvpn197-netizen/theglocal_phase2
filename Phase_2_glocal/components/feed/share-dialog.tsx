@@ -1,5 +1,6 @@
 'use client'
 
+import { logger } from '@/lib/utils/logger'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
@@ -12,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { useAuth } from '@/lib/context/auth-context'
 
 interface ShareDialogProps {
@@ -72,7 +73,7 @@ export function ShareDialog({
         setCommunities(result.data || [])
       }
     } catch (error) {
-      console.error('Failed to fetch communities:', error)
+      logger.error('Failed to fetch communities:', error)
     } finally {
       setIsFetchingCommunities(false)
     }

@@ -61,6 +61,8 @@ export default async function CommunityAdminPage({ params }: CommunityAdminPageP
     p_community_id: params.id,
   })
 
+  const statsData = stats as { growth_7d?: number } | null
+
   // Get pending reports
   const { data: reports } = await supabase
     .from('reports')
@@ -69,6 +71,12 @@ export default async function CommunityAdminPage({ params }: CommunityAdminPageP
     .eq('status', 'pending')
 
   const pendingReportsCount = reports?.length || 0
+
+  const communityData = community as {
+    name: string
+    member_count: number
+    post_count: number
+  }
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
@@ -79,7 +87,7 @@ export default async function CommunityAdminPage({ params }: CommunityAdminPageP
             <Shield className="h-6 w-6 text-brand-primary" />
             <Badge>Community Admin</Badge>
           </div>
-          <h1 className="text-3xl font-bold">{community.name}</h1>
+          <h1 className="text-3xl font-bold">{communityData.name}</h1>
           <p className="mt-2 text-muted-foreground">Moderation Dashboard</p>
         </div>
 
@@ -89,7 +97,7 @@ export default async function CommunityAdminPage({ params }: CommunityAdminPageP
             <CardContent className="flex items-center gap-3 pt-6">
               <Users className="h-8 w-8 text-brand-primary" />
               <div>
-                <div className="text-2xl font-bold">{community.member_count}</div>
+                <div className="text-2xl font-bold">{communityData.member_count}</div>
                 <div className="text-sm text-muted-foreground">Members</div>
               </div>
             </CardContent>
@@ -99,7 +107,7 @@ export default async function CommunityAdminPage({ params }: CommunityAdminPageP
             <CardContent className="flex items-center gap-3 pt-6">
               <FileText className="h-8 w-8 text-brand-secondary" />
               <div>
-                <div className="text-2xl font-bold">{community.post_count}</div>
+                <div className="text-2xl font-bold">{communityData.post_count}</div>
                 <div className="text-sm text-muted-foreground">Posts</div>
               </div>
             </CardContent>
@@ -120,7 +128,7 @@ export default async function CommunityAdminPage({ params }: CommunityAdminPageP
               <TrendingUp className="h-8 w-8 text-green-600" />
               <div>
                 <div className="text-2xl font-bold">
-                  {stats?.growth_7d ? `+${stats.growth_7d}` : '0'}
+                  {statsData?.growth_7d ? `+${statsData.growth_7d}` : '0'}
                 </div>
                 <div className="text-sm text-muted-foreground">Growth (7d)</div>
               </div>
@@ -152,4 +160,3 @@ export async function generateMetadata({ params }: CommunityAdminPageProps) {
     description: 'Manage your community, review reports, and moderate content',
   }
 }
-

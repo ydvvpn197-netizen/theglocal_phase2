@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { MapPin, Loader2 } from 'lucide-react'
 import { getCurrentLocation } from '@/lib/utils/location'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 interface LocationPermissionProps {
   onLocationSet: (city: string, coordinates?: { latitude: number; longitude: number }) => void

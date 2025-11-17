@@ -1,19 +1,10 @@
 'use client'
 
+import { logger } from '@/lib/utils/logger'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { User, Session } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
-
-interface UserProfile {
-  id: string
-  email: string | null
-  phone: string | null
-  anonymous_handle: string
-  avatar_seed: string
-  location_city: string | null
-  is_banned: boolean
-  created_at: string
-}
+import type { UserProfile } from '@/lib/types/user-profile'
 
 interface AuthContextType {
   user: User | null
@@ -22,15 +13,26 @@ interface AuthContextType {
   isLoading: boolean
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
+  updateUserLocation?: (coordinates: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+interface AuthProviderProps {
+  children: React.ReactNode
+  initialSession?: Session | null
+  initialProfile?: UserProfile | null
+}
+
+export function AuthProvider({
+  children,
+  initialSession = null,
+  initialProfile = null,
+}: AuthProviderProps) {
+  const [user, setUser] = useState<User | null>(initialSession?.user ?? null)
+  const [profile, setProfile] = useState<UserProfile | null>(initialProfile ?? null)
+  const [session, setSession] = useState<Session | null>(initialSession ?? null)
+  const [isLoading, setIsLoading] = useState(!initialSession)
 
   const supabase = createClient()
 
@@ -42,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setProfile(data)
     } catch (error) {
-      console.error('Error fetching user profile:', error)
+      logger.error('Error fetching user profile:', error)
       setProfile(null)
     } finally {
       setIsLoading(false)
@@ -50,6 +52,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    // Skip if we already have initial session
+    if (initialSession) {
+      setIsLoading(false)
+      return
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -94,6 +102,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSession(null)
   }
 
+  const updateUserLocation = async (coordinates: string) => {
+    if (!user) return
+
+    try {
+      const { error } = await supabase
+        .from('users')
+        .update({ location_coordinates: coordinates })
+        .eq('id', user.id)
+
+      if (error) throw error
+
+      await refreshProfile()
+    } catch (error) {
+      logger.error('Error updating user location:', error)
+      throw error
+    }
+  }
+
   const value = {
     user,
     profile,
@@ -101,6 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isLoading,
     signOut,
     refreshProfile,
+    updateUserLocation,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

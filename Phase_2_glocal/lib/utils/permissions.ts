@@ -4,6 +4,7 @@
  */
 
 import { createClient } from '@/lib/supabase/server'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
 // User roles
 export const ROLES = {
@@ -85,7 +86,11 @@ export async function getUserCommunityRole(
     .eq('community_id', communityId)
     .single()
 
-  return (membership?.role as any) || null
+  const role = membership?.role
+  if (role === 'admin' || role === 'moderator' || role === 'member') {
+    return role
+  }
+  return null
 }
 
 /**
@@ -119,4 +124,53 @@ export function hasPermission(userRole: Role, requiredRole: Role): boolean {
   }
 
   return roleHierarchy[userRole] >= roleHierarchy[requiredRole]
+}
+
+/**
+ * Count the number of admins in a community
+ */
+export async function countCommunityAdmins(
+  communityId: string,
+  supabase: SupabaseClient
+): Promise<number> {
+  const { count } = await supabase
+    .from('community_members')
+    .select('*', { count: 'exact', head: true })
+    .eq('community_id', communityId)
+    .eq('role', 'admin')
+
+  return count || 0
+}
+
+/**
+ * Check if a role change is allowed (prevent removing last admin)
+ */
+export async function canChangeRole(
+  communityId: string,
+  userId: string,
+  newRole: string,
+  supabase: SupabaseClient
+): Promise<boolean> {
+  // If changing to admin, always allowed
+  if (newRole === 'admin') {
+    return true
+  }
+
+  // If changing from admin, check if there are other admins
+  const adminCount = await countCommunityAdmins(communityId, supabase)
+
+  // Get current role of user
+  const { data: membership } = await supabase
+    .from('community_members')
+    .select('role')
+    .eq('community_id', communityId)
+    .eq('user_id', userId)
+    .single()
+
+  // If user is currently admin and there's only one admin, prevent role change
+  if (membership?.role === 'admin' && adminCount <= 1) {
+    return false
+  }
+
+  return true
 }

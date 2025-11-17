@@ -1,29 +1,38 @@
 'use client'
 
+import { logger } from '@/lib/utils/logger'
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { MessagesContextType, Conversation, TypingUser } from '@/lib/types/messages.types'
 import { useConversationsRealtime } from '@/lib/hooks/use-conversations-realtime'
 import { useUserPresence } from '@/lib/hooks/use-user-presence'
+import { useAuth } from '@/lib/context/auth-context'
 
 const MessagesContext = createContext<MessagesContextType | undefined>(undefined)
 
 interface MessagesProviderProps {
   children: React.ReactNode
+  initialUnreadCount?: number
 }
 
-export function MessagesProvider({ children }: MessagesProviderProps) {
-  const [unreadCount, setUnreadCount] = useState(0)
+export function MessagesProvider({ children, initialUnreadCount = 0 }: MessagesProviderProps) {
+  const [unreadCount, setUnreadCount] = useState(initialUnreadCount)
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
   const [typingUsers, setTypingUsers] = useState<Record<string, TypingUser[]>>({})
   const [isReady, setIsReady] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [pendingConversationId, setPendingConversationId] = useState<string | null>(null)
 
-  const { conversations, createConversation: createConversationHook } = useConversationsRealtime()
+  const { user } = useAuth()
+  const { conversations, createConversation: createConversationHook } = useConversationsRealtime({
+    userId: user?.id ?? null,
+    enabled: !!user,
+  })
   const { presenceMap, updatePresence } = useUserPresence()
 
   // Calculate unread count from conversations with enhanced validation
   useEffect(() => {
     if (!Array.isArray(conversations)) {
-      console.warn('Invalid conversations array in context:', conversations)
+      logger.warn('Invalid conversations array in context:', conversations)
       setUnreadCount(0)
       setIsReady(true) // Mark as ready even with invalid data
       return
@@ -31,18 +40,18 @@ export function MessagesProvider({ children }: MessagesProviderProps) {
 
     const totalUnread = conversations.reduce((sum, conv) => {
       if (!conv || typeof conv !== 'object') {
-        console.warn('Invalid conversation object:', conv)
+        logger.warn('Invalid conversation object:', conv)
         return sum
       }
-      
+
       const unreadCount = conv.unread_count
       if (typeof unreadCount === 'number' && unreadCount >= 0) {
         return sum + unreadCount
       }
-      
+
       return sum
     }, 0)
-    
+
     setUnreadCount(Math.max(0, totalUnread)) // Ensure non-negative
     setIsReady(true) // Mark as ready after processing conversations
   }, [conversations])
@@ -68,7 +77,7 @@ export function MessagesProvider({ children }: MessagesProviderProps) {
   const markAsRead = useCallback(async (messageId: string) => {
     try {
       const response = await fetch(`/api/messages/${messageId}/read`, {
-        method: 'POST'
+        method: 'POST',
       })
 
       if (!response.ok) {
@@ -76,7 +85,7 @@ export function MessagesProvider({ children }: MessagesProviderProps) {
         throw new Error(result.error || 'Failed to mark message as read')
       }
     } catch (error) {
-      console.error('Error marking message as read:', error)
+      logger.error('Error marking message as read:', error)
     }
   }, [])
 
@@ -84,25 +93,23 @@ export function MessagesProvider({ children }: MessagesProviderProps) {
   const setTyping = useCallback((conversationId: string, isTyping: boolean) => {
     // Enhanced validation for conversation ID
     if (!conversationId || typeof conversationId !== 'string') {
-      console.warn('Invalid conversationId for typing status:', conversationId)
+      logger.warn('Invalid conversationId for typing status:', conversationId)
       return
     }
 
-    setTypingUsers(prev => {
+    setTypingUsers((prev) => {
       const current = Array.isArray(prev[conversationId]) ? prev[conversationId] : []
-      
+
       if (isTyping) {
         // Check if user is already typing
-        const existingTypingUser = current.find(u => u.user_id === 'current_user')
+        const existingTypingUser = current.find((u) => u.user_id === 'current_user')
         if (existingTypingUser) {
           // Update timestamp if already typing
           return {
             ...prev,
-            [conversationId]: current.map(u => 
-              u.user_id === 'current_user' 
-                ? { ...u, timestamp: Date.now() }
-                : u
-            )
+            [conversationId]: current.map((u) =>
+              u.user_id === 'current_user' ? { ...u, timestamp: Date.now() } : u
+            ),
           }
         }
 
@@ -112,28 +119,56 @@ export function MessagesProvider({ children }: MessagesProviderProps) {
           user_handle: 'You',
           conversation_id: conversationId,
           is_typing: true,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         }
-        
+
         return {
           ...prev,
-          [conversationId]: [...current, newTypingUser]
+          [conversationId]: [...current, newTypingUser],
         }
       } else {
         // Remove current user from typing list
-        const filtered = current.filter(u => u && u.user_id !== 'current_user')
+        const filtered = current.filter((u) => u && u.user_id !== 'current_user')
         return {
           ...prev,
-          [conversationId]: filtered
+          [conversationId]: filtered,
         }
       }
     })
   }, [])
 
   // Create conversation with another user
-  const createConversation = useCallback(async (userId: string): Promise<Conversation> => {
-    return await createConversationHook(userId)
-  }, [createConversationHook])
+  const createConversation = useCallback(
+    async (userId: string): Promise<Conversation> => {
+      return await createConversationHook(userId)
+    },
+    [createConversationHook]
+  )
+
+  // Modal management
+  const openModal = useCallback(() => {
+    setIsModalOpen(true)
+  }, [])
+
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false)
+    setPendingConversationId(null)
+  }, [])
+
+  const openModalWithConversation = useCallback((conversationId: string) => {
+    setPendingConversationId(conversationId)
+    setIsModalOpen(true)
+  }, [])
+
+  const createConversationAndOpen = useCallback(
+    async (userId: string): Promise<Conversation> => {
+      const conversation = await createConversationHook(userId)
+      setPendingConversationId(conversation.id)
+      setIsModalOpen(true)
+      return conversation
+    },
+    [createConversationHook]
+  )
 
   const value: MessagesContextType = {
     unreadCount,
@@ -141,38 +176,62 @@ export function MessagesProvider({ children }: MessagesProviderProps) {
     presenceMap,
     typingUsers,
     isReady,
+    isModalOpen,
+    pendingConversationId,
     openConversation,
     closeConversation,
     markAsRead,
     updatePresence,
     setTyping,
-    createConversation
+    createConversation,
+    openModal,
+    closeModal,
+    openModalWithConversation,
+    createConversationAndOpen,
   }
 
-  return (
-    <MessagesContext.Provider value={value}>
-      {children}
-    </MessagesContext.Provider>
-  )
+  return <MessagesContext.Provider value={value}>{children}</MessagesContext.Provider>
 }
 
 export function useMessages() {
   const context = useContext(MessagesContext)
   if (context === undefined) {
     // Return safe defaults instead of throwing
-    console.warn('useMessages called outside MessagesProvider')
+    logger.warn('useMessages called outside MessagesProvider')
     return {
       unreadCount: 0,
       activeConversationId: null,
       presenceMap: {},
       typingUsers: {},
       isReady: false,
+      isModalOpen: false,
+      pendingConversationId: null,
       openConversation: () => {},
       closeConversation: () => {},
       markAsRead: async () => {},
       updatePresence: () => {},
       setTyping: () => {},
-      createConversation: async () => ({ id: '', created_at: '', updated_at: '', participant_1_id: '', participant_2_id: '', last_message_at: null, unread_count: 0 })
+      createConversation: async () => ({
+        id: '',
+        created_at: '',
+        updated_at: '',
+        participant_1_id: '',
+        participant_2_id: '',
+        last_message_at: null,
+        unread_count: 0,
+      }),
+      openModal: () => {},
+      closeModal: () => {},
+      openModalWithConversation: () => {},
+      createConversationAndOpen: async () => ({
+        id: '',
+        created_at: '',
+        updated_at: '',
+        participant_1_id: '',
+        participant_2_id: '',
+        last_message_at: null,
+        unread_count: 0,
+      }),
     }
   }
   return context

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { Check, CreditCard, Shield, Clock } from 'lucide-react'
 
 interface SubscriptionFormProps {
@@ -213,3 +213,5 @@ export function SubscriptionForm({ artistId, onSuccess }: SubscriptionFormProps)
     </div>
   )
 }
+
+export default SubscriptionForm

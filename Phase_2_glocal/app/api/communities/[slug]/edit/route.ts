@@ -1,8 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// PUT /api/communities/[slug]/edit - Update community info (admin only)
-export async function PUT(request: NextRequest, { params }: { params: { slug: string } }) {
+/**
+ * PUT /api/communities/[slug]/edit - Update community info (admin only)
+ *
+ * @param request - Next.js request with update data
+ * @param params - Route parameters with slug
+ * @returns Updated community
+ */
+export const PUT = withRateLimit(async function PUT(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
+  const logger = createAPILogger('PUT', `/api/communities/${params.slug}/edit`)
+
   try {
     const body = await request.json()
     const { name, description, rules, is_private } = body
@@ -15,8 +29,10 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Updating community', { userId: user.id, slug: params.slug })
 
     // Get community
     const { data: community, error: communityError } = await supabase
@@ -26,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
       .single()
 
     if (communityError || !community) {
-      return NextResponse.json({ error: 'Community not found' }, { status: 404 })
+      throw APIErrors.notFound('Community')
     }
 
     // Verify user is admin of this community
@@ -38,19 +54,24 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
       .single()
 
     if (!membership || membership.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Only community admins can edit community info' },
-        { status: 403 }
-      )
+      throw APIErrors.forbidden()
     }
 
     // Update community
-    const updateData: any = {}
+    interface CommunityUpdateData {
+      name?: string
+      description?: string | null
+      rules?: string | null
+      is_private?: boolean
+      updated_at: string
+    }
+    const updateData: CommunityUpdateData = {
+      updated_at: new Date().toISOString(),
+    }
     if (name !== undefined) updateData.name = name
     if (description !== undefined) updateData.description = description
     if (rules !== undefined) updateData.rules = rules
     if (is_private !== undefined) updateData.is_private = is_private
-    updateData.updated_at = new Date().toISOString()
 
     const { data: updatedCommunity, error: updateError } = await supabase
       .from('communities')
@@ -61,19 +82,18 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
 
     if (updateError) throw updateError
 
-    return NextResponse.json({
-      success: true,
+    logger.info('Community updated successfully', {
+      communityId: community.id,
+      userId: user.id,
+    })
+
+    return createSuccessResponse(updatedCommunity, {
       message: 'Community updated successfully',
-      data: updatedCommunity,
     })
   } catch (error) {
-    console.error('Update community error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to update community',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'PUT',
+      path: `/api/communities/${params.slug}/edit`,
+    })
   }
-}
-
+})

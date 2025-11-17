@@ -1,26 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { isSuperAdmin } from '@/lib/utils/permissions'
+import { NextRequest } from 'next/server'
+import { requireAdminOrThrow } from '@/lib/utils/require-admin'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/admin/health - Check health of external APIs
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(_request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/admin/health')
   try {
-    const supabase = await createClient()
-
-    // Get current user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
-    }
-
-    // Verify super admin
-    const isAdmin = await isSuperAdmin(user.id)
-    if (!isAdmin) {
-      return NextResponse.json({ error: 'Super admin access required' }, { status: 403 })
-    }
+    // Require admin authentication
+    const { supabase } = await requireAdminOrThrow()
 
     const healthChecks = []
 
@@ -41,9 +30,10 @@ export async function GET(request: NextRequest) {
         error_message: newsResponse.ok ? undefined : `HTTP ${newsResponse.status}`,
       })
     } catch (error) {
+      logger.warn('Google News API health check failed', { error })
       healthChecks.push({
         service: 'Google News API',
-        status: 'down',
+        status: 'error',
         response_time_ms: 0,
         last_checked: new Date().toISOString(),
         error_message: error instanceof Error ? error.message : 'Connection failed',
@@ -113,7 +103,7 @@ export async function GET(request: NextRequest) {
     // Check Supabase database
     try {
       const startTime = Date.now()
-      const { data, error } = await supabase.from('users').select('id').limit(1).single()
+      const { data: _data, error } = await supabase.from('users').select('id').limit(1).single()
       const responseTime = Date.now() - startTime
 
       healthChecks.push({
@@ -133,18 +123,11 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    return NextResponse.json({
-      success: true,
-      data: healthChecks,
-      checked_at: new Date().toISOString(),
-    })
+    return createSuccessResponse(healthChecks, { checked_at: new Date().toISOString() })
   } catch (error) {
-    console.error('Health check error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to check API health',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'GET',
+      path: '/api/admin/health',
+    })
   }
-}
+})

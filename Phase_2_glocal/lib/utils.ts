@@ -1,9 +1,9 @@
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-
 /**
- * Utility function to merge Tailwind CSS classes
+ * @deprecated This file is deprecated. Import from '@/lib/utils/classnames' instead.
+ *
+ * This file is kept for backward compatibility only.
+ * New code should use: import { cn } from '@/lib/utils/classnames'
  */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+
+// Re-export from utils/classnames for backward compatibility
+export { cn } from '@/lib/utils/classnames'

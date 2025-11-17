@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { BOOKING_STATUSES } from '@/lib/utils/constants'
+import { createNotification } from '@/lib/utils/notifications'
+import { handleAPIError } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/bookings - List bookings for current user
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/bookings')
   try {
     const searchParams = request.nextUrl.searchParams
     const status = searchParams.get('status')
@@ -44,7 +49,7 @@ export async function GET(request: NextRequest) {
         .eq('user_id', user.id)
     }
 
-    if (status && BOOKING_STATUSES.includes(status as any)) {
+    if (status && BOOKING_STATUSES.includes(status as (typeof BOOKING_STATUSES)[number])) {
       query = query.eq('status', status)
     }
 
@@ -65,18 +70,12 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('Fetch bookings error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch bookings',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/bookings' })
   }
-}
-
+})
 // POST /api/bookings - Create booking request
-export async function POST(request: NextRequest) {
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/bookings')
   try {
     const body = await request.json()
     const { artist_id, event_date, event_type, location, budget_range, message } = body
@@ -102,7 +101,7 @@ export async function POST(request: NextRequest) {
     // Verify artist exists and has active subscription
     const { data: artist, error: artistError } = await supabase
       .from('artists')
-      .select('id, stage_name, subscription_status')
+      .select('id, stage_name, subscription_status, user_id')
       .eq('id', artist_id)
       .single()
 
@@ -152,12 +151,28 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError) {
-      console.error('Database error creating booking:', createError)
+      logger.error('Database error creating booking:', createError)
       throw createError
     }
 
-    // TODO: Task 4.4.4 - Send notification to artist
-    // This will be implemented in the next task
+    // Send notification to artist
+    try {
+      const adminSupabase = createAdminClient()
+      if (artist?.user_id) {
+        await createNotification(adminSupabase, {
+          userId: artist.user_id,
+          type: 'booking_request',
+          title: 'New booking request',
+          message: `You have a new booking request for ${event_type}`,
+          link: `/bookings/${booking.id}`,
+          actorId: user.id,
+          entityId: booking.id,
+          entityType: 'booking',
+        })
+      }
+    } catch (error) {
+      return handleAPIError(error, { method: 'POST', path: '/api/bookings' })
+    }
 
     return NextResponse.json(
       {
@@ -168,13 +183,9 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Create booking error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create booking',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: '/api/bookings',
+    })
   }
-}
-
+})

@@ -1,9 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function GET(_request: NextRequest, { params }: { params: { slug: string } }) {
+/**
+ * GET /api/communities/[slug] - Get community by slug
+ *
+ * @param _request - Next.js request
+ * @param params - Route parameters with slug
+ * @returns Community data with membership status
+ */
+export const GET = withRateLimit(async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
-    const { slug } = params
+    const { slug } = await params
+    const logger = createAPILogger('GET', `/api/communities/${slug}`)
+
+    logger.info('Fetching community', { slug })
+
     const supabase = await createClient()
 
     // Get community
@@ -16,7 +33,7 @@ export async function GET(_request: NextRequest, { params }: { params: { slug: s
     if (communityError) throw communityError
 
     if (!community) {
-      return NextResponse.json({ error: 'Community not found' }, { status: 404 })
+      throw APIErrors.notFound('Community')
     }
 
     // Check if user is a member
@@ -39,21 +56,22 @@ export async function GET(_request: NextRequest, { params }: { params: { slug: s
       isAdmin = membership?.role === 'admin' || membership?.role === 'moderator'
     }
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        community,
-        isMember,
-        isAdmin,
-      },
+    logger.info('Community fetched successfully', {
+      communityId: community.id,
+      isMember,
+      isAdmin,
+    })
+
+    return createSuccessResponse({
+      community,
+      isMember,
+      isAdmin,
     })
   } catch (error) {
-    console.error('Fetch community error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch community',
-      },
-      { status: 500 }
-    )
+    const { slug: errorSlug } = await params
+    return handleAPIError(error, {
+      method: 'GET',
+      path: `/api/communities/${errorSlug}`,
+    })
   }
-}
+})

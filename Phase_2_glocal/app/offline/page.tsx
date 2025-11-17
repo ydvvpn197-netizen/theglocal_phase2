@@ -24,4 +24,3 @@ export const metadata = {
   title: 'Offline - Theglocal',
   description: 'You are currently offline',
 }
-

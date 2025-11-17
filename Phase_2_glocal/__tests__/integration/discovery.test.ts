@@ -54,9 +54,13 @@ describe('Discovery Feed Integration Tests', () => {
         return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
       })
 
-      expect(new Date(sorted[0].publishedAt).getTime()).toBeGreaterThan(
-        new Date(sorted[1].publishedAt).getTime()
-      )
+      expect(sorted[0]?.publishedAt).toBeDefined()
+      expect(sorted[1]?.publishedAt).toBeDefined()
+      if (sorted[0]?.publishedAt && sorted[1]?.publishedAt) {
+        expect(new Date(sorted[0].publishedAt).getTime()).toBeGreaterThan(
+          new Date(sorted[1].publishedAt).getTime()
+        )
+      }
     })
 
     it('should respect limit parameter', async () => {
@@ -168,7 +172,7 @@ describe('Discovery Feed Integration Tests', () => {
       const filtered = posts.filter((p) => !p.stickied)
 
       expect(filtered).toHaveLength(1)
-      expect(filtered[0].title).toBe('Normal Post')
+      expect(filtered[0]?.title).toBe('Normal Post')
     })
 
     it('should cache Reddit responses for 15 minutes', async () => {
@@ -200,8 +204,6 @@ describe('Discovery Feed Integration Tests', () => {
     })
 
     it('should validate community membership before sharing', async () => {
-      const userId = 'user-123'
-      const communityId = 'community-456'
       const isMember = true
 
       if (!isMember) {

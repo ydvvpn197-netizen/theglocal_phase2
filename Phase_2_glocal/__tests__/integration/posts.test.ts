@@ -8,7 +8,6 @@ describe('Posts Integration Tests', () => {
   describe('Post CRUD Operations', () => {
     it('should create a new post', async () => {
       // Mock user session
-      const mockUserId = 'user-123'
       const mockCommunityId = 'community-456'
 
       const postData = {
@@ -49,7 +48,6 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should edit a post within 10 minutes', async () => {
-      const postId = 'post-789'
       const updateData = {
         title: 'Updated Title',
         body: 'Updated body text',
@@ -73,8 +71,6 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should soft delete a post', async () => {
-      const postId = 'post-789'
-
       // Expected API call: DELETE /api/posts/post-789
       // Expected result: post.is_deleted = true
       const expectedResult = {
@@ -151,7 +147,6 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should edit a comment within 10 minutes', async () => {
-      const commentId = 'comment-789'
       const updateData = {
         text: 'Updated comment text',
       }
@@ -161,8 +156,6 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should soft delete a comment with [deleted] text', async () => {
-      const commentId = 'comment-789'
-
       // Expected API call: DELETE /api/comments/comment-789
       // Expected result: text = '[deleted]', is_deleted = true
       const expectedResult = {
@@ -187,7 +180,6 @@ describe('Posts Integration Tests', () => {
 
   describe('Voting System', () => {
     it('should upvote a post', async () => {
-      const postId = 'post-123'
       const voteData = {
         vote_type: 'upvote',
       }
@@ -197,7 +189,6 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should downvote a post', async () => {
-      const postId = 'post-123'
       const voteData = {
         vote_type: 'downvote',
       }
@@ -243,7 +234,6 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should vote on comments', async () => {
-      const commentId = 'comment-456'
       const voteData = {
         vote_type: 'upvote',
       }
@@ -253,19 +243,16 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should enforce one vote per user per content', async () => {
-      const userId = 'user-123'
-      const postId = 'post-456'
-
       // Database should have unique constraint or check
       // Expected query: SELECT * FROM votes WHERE user_id = ? AND content_id = ? AND content_type = ?
       const mockExistingVote = {
-        user_id: userId,
-        content_id: postId,
+        user_id: 'user-123',
+        content_id: 'post-456',
         content_type: 'post',
       }
 
-      expect(mockExistingVote.user_id).toBe(userId)
-      expect(mockExistingVote.content_id).toBe(postId)
+      expect(mockExistingVote.user_id).toBe('user-123')
+      expect(mockExistingVote.content_id).toBe('post-456')
     })
 
     it('should return updated vote counts after voting', async () => {
@@ -347,7 +334,7 @@ describe('Posts Integration Tests', () => {
       const requestedLimit = 20
       const returnedPosts = 15
 
-      const hasMore = returnedPosts === requestedLimit
+      const hasMore = returnedPosts >= requestedLimit
       expect(hasMore).toBe(false)
     })
 
@@ -373,13 +360,14 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should only allow author to edit own post', async () => {
-      const postAuthorId = 'user-123'
-      const currentUserId = 'user-456'
+      // Simulate different user IDs
+      const postAuthorId: string = 'user-123'
+      const currentUserId: string = 'user-456'
 
-      if (postAuthorId !== currentUserId) {
-        // Should return 403 error
-        expect(postAuthorId).not.toBe(currentUserId)
-      }
+      // Should return 403 error when author doesn't match
+      // In real implementation, API would check if postAuthorId === currentUserId
+      const areDifferent = postAuthorId !== currentUserId
+      expect(areDifferent).toBe(true)
     })
 
     it('should only allow author to delete own post', async () => {
@@ -393,8 +381,6 @@ describe('Posts Integration Tests', () => {
     })
 
     it('should validate community membership before posting', async () => {
-      const userId = 'user-123'
-      const communityId = 'community-456'
       const isMember = true
 
       if (!isMember) {

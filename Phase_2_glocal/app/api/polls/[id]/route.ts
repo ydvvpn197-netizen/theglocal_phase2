@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { generateVotingHash } from '@/lib/utils/poll-anonymity'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function GET(_request: NextRequest, { params }: { params: { id: string } }) {
+export const GET = withRateLimit(async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id: pollId } = params
+    const { id: pollId } = await params
 
     const supabase = await createClient()
 
@@ -28,7 +34,7 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
       .single()
 
     if (pollError || !poll) {
-      return NextResponse.json({ error: 'Poll not found' }, { status: 404 })
+      throw APIErrors.notFound('Poll')
     }
 
     // Check if user has voted (if authenticated)
@@ -57,22 +63,17 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
       (a: { position: number }, b: { position: number }) => a.position - b.position
     )
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        ...poll,
-        options: sortedOptions,
-        user_voted: userVoted,
-        user_selected_option: userSelectedOption,
-      },
+    return createSuccessResponse({
+      ...poll,
+      options: sortedOptions,
+      user_voted: userVoted,
+      user_selected_option: userSelectedOption,
     })
   } catch (error) {
-    console.error('Fetch poll error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch poll',
-      },
-      { status: 500 }
-    )
+    const { id: errorPollId } = await params
+    return handleAPIError(error, {
+      method: 'GET',
+      path: `/api/polls/${errorPollId}`,
+    })
   }
-}
+})

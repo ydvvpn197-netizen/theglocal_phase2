@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { handleAPIError } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/moderation/log - Get public moderation log
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const communityId = searchParams.get('community_id')
@@ -22,9 +24,13 @@ export async function GET(request: NextRequest) {
     if (error) throw error
 
     // Apply action filter if specified
-    let filteredData = data || []
+    interface ModerationLogEntry {
+      action: string
+      [key: string]: unknown
+    }
+    let filteredData = (data || []) as ModerationLogEntry[]
     if (action && action !== 'all') {
-      filteredData = filteredData.filter((log: any) => log.action === action)
+      filteredData = filteredData.filter((log) => log.action === action)
     }
 
     return NextResponse.json({
@@ -38,13 +44,6 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('Fetch moderation log error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch moderation log',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/moderation/log' })
   }
-}
-
+})

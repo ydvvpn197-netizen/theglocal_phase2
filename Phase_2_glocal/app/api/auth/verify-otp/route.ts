@@ -1,23 +1,39 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
 import { generateAnonymousHandle, generateAvatarSeed } from '@/lib/utils/anonymous-id'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function POST(request: NextRequest) {
+/**
+ * POST /api/auth/verify-otp - Verify OTP and create/login user
+ *
+ * @param request - Next.js request with contact and OTP
+ * @returns User data and session on successful verification
+ */
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/auth/verify-otp')
+
   try {
     const { contact, otp } = await request.json()
 
     if (!contact || !otp) {
-      return NextResponse.json({ error: 'Contact and OTP are required' }, { status: 400 })
+      throw APIErrors.badRequest('Contact and OTP are required')
     }
 
     if (otp.length !== 6 || !/^\d{6}$/.test(otp)) {
-      return NextResponse.json({ error: 'OTP must be 6 digits' }, { status: 400 })
+      throw APIErrors.badRequest('OTP must be 6 digits')
     }
 
     const supabase = await createClient()
 
     // Determine if contact is email or phone
     const isEmail = contact.includes('@')
+
+    logger.info('Verifying OTP', {
+      contactType: isEmail ? 'email' : 'phone',
+      contact: contact.substring(0, 5) + '***',
+    })
 
     let verifyResult
 
@@ -47,7 +63,7 @@ export async function POST(request: NextRequest) {
     const userId = verifyResult.user?.id
 
     if (!userId) {
-      throw new Error('User ID not found after verification')
+      throw APIErrors.internalError()
     }
 
     const { data: existingUser } = await supabase
@@ -58,19 +74,30 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       // User already exists, return their data
-      return NextResponse.json({
-        success: true,
-        message: 'Login successful',
-        data: {
+      logger.info('User logged in successfully', {
+        userId,
+        contactType: isEmail ? 'email' : 'phone',
+      })
+
+      return createSuccessResponse(
+        {
           user: existingUser,
           session: verifyResult.session,
         },
-      })
+        {
+          message: 'Login successful',
+        }
+      )
     }
 
     // Create new user profile with anonymous handle
     const anonymousHandle = generateAnonymousHandle()
     const avatarSeed = generateAvatarSeed(userId)
+
+    logger.info('Creating new user profile', {
+      userId,
+      contactType: isEmail ? 'email' : 'phone',
+    })
 
     const { data: newUser, error: insertError } = await supabase
       .from('users')
@@ -103,36 +130,45 @@ export async function POST(request: NextRequest) {
 
         if (retryError) throw retryError
 
-        return NextResponse.json({
-          success: true,
-          message: 'Account created successfully',
-          data: {
+        logger.info('User account created successfully (retry)', {
+          userId,
+          anonymousHandle: retryHandle,
+        })
+
+        return createSuccessResponse(
+          {
             user: retryUser,
             session: verifyResult.session,
             anonymous_handle: retryHandle,
           },
-        })
+          {
+            message: 'Account created successfully',
+          }
+        )
       }
 
       throw insertError
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Account created successfully',
-      data: {
+    logger.info('User account created successfully', {
+      userId,
+      anonymousHandle,
+    })
+
+    return createSuccessResponse(
+      {
         user: newUser,
         session: verifyResult.session,
         anonymous_handle: anonymousHandle,
       },
-    })
-  } catch (error) {
-    console.error('OTP verification error:', error)
-    return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : 'Verification failed',
-      },
-      { status: 500 }
+        message: 'Account created successfully',
+      }
     )
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'POST',
+      path: '/api/auth/verify-otp',
+    })
   }
-}
+})

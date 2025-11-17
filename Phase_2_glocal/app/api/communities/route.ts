@@ -1,12 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-// GET /api/communities - List communities with optional filtering
-export async function GET(request: NextRequest) {
+/**
+ * GET /api/communities - List communities with optional filtering
+ *
+ * @param request - Next.js request with query parameters
+ * @returns List of communities
+ */
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/communities')
+
   try {
     const searchParams = request.nextUrl.searchParams
     const filter = searchParams.get('filter') || 'all'
     const city = searchParams.get('city')
+
+    logger.info('Fetching communities', { filter, city })
 
     const supabase = await createClient()
 
@@ -27,29 +39,32 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: data || [],
-    })
-  } catch (error) {
-    console.error('Fetch communities error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch communities',
-      },
-      { status: 500 }
-    )
-  }
-}
+    logger.info('Communities fetched successfully', { count: data?.length || 0 })
 
-// POST /api/communities - Create a new community
-export async function POST(request: NextRequest) {
+    return createSuccessResponse(data || [])
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'GET',
+      path: '/api/communities',
+    })
+  }
+})
+
+/**
+ * POST /api/communities - Create a new community
+ *
+ * @param request - Next.js request with community data
+ * @returns Created community
+ */
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/communities')
+
   try {
     const body = await request.json()
     const { name, description, rules, location_city, is_private } = body
 
     if (!name || !location_city) {
-      return NextResponse.json({ error: 'Name and location_city are required' }, { status: 400 })
+      throw APIErrors.badRequest('Name and location_city are required')
     }
 
     const supabase = await createClient()
@@ -60,8 +75,14 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      throw APIErrors.unauthorized()
     }
+
+    logger.info('Creating community', {
+      userId: user.id,
+      name: name.substring(0, 50),
+      location_city,
+    })
 
     // Generate slug from name
     const slug = name
@@ -87,10 +108,7 @@ export async function POST(request: NextRequest) {
     if (createError) {
       // Handle duplicate slug
       if (createError.code === '23505') {
-        return NextResponse.json(
-          { error: 'A community with this name already exists in your city' },
-          { status: 409 }
-        )
+        throw APIErrors.conflict('A community with this name already exists in your city')
       }
       throw createError
     }
@@ -108,18 +126,18 @@ export async function POST(request: NextRequest) {
       throw memberError
     }
 
-    return NextResponse.json({
-      success: true,
+    logger.info('Community created successfully', {
+      communityId: community.id,
+      userId: user.id,
+    })
+
+    return createSuccessResponse(community, {
       message: 'Community created successfully',
-      data: community,
     })
   } catch (error) {
-    console.error('Create community error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create community',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, {
+      method: 'POST',
+      path: '/api/communities',
+    })
   }
-}
+})

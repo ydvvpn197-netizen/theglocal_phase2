@@ -465,7 +465,7 @@
     - [x] 4.3.7 Write tests for artist event creation
   - [x] 4.4 **Booking System**
     - [x] 4.4.1 Create booking form component (event date, type, location, budget, message)
-    - [x] 4.4.2 Add "Request Booking" button on artist profile  
+    - [x] 4.4.2 Add "Request Booking" button on artist profile
     - [x] 4.4.3 Build booking creation endpoint (POST /api/bookings)
     - [ ] 4.4.4 Send notification to artist on new booking request
     - [x] 4.4.5 Create bookings listing page (app/bookings/page.tsx)
@@ -569,7 +569,7 @@
     - [x] 6.2.8 Verify location data privacy (city-level only in public APIs)
     - [x] 6.2.9 Audit third-party dependencies for vulnerabilities
   - [x] 6.3 **Comprehensive Testing**
-    - [x] 6.3.1 Write E2E test for complete onboarding flow (__tests__/e2e/onboarding.spec.ts)
+    - [x] 6.3.1 Write E2E test for complete onboarding flow (**tests**/e2e/onboarding.spec.ts)
     - [x] 6.3.2 Write E2E test for post creation → comment → vote
     - [x] 6.3.3 Write E2E test for artist registration → booking flow
     - [x] 6.3.4 Write E2E test for moderation workflow

@@ -18,7 +18,7 @@ export default function MessagesPage() {
   const [showSearch, setShowSearch] = useState(false)
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
   const { activeConversationId, openConversation, closeConversation } = useMessages()
-  const { conversations } = useConversationsRealtime()
+  const { conversations } = useConversationsRealtime({ userId: user?.id || null })
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function MessagesPage() {
   }, [user, authLoading, router])
 
   const handleSelectConversation = (conversationId: string) => {
-    const conversation = conversations.find(c => c.id === conversationId)
+    const conversation = conversations.find((c) => c.id === conversationId)
     if (conversation) {
       setSelectedConversation(conversation)
       openConversation(conversationId)
@@ -70,9 +70,7 @@ export default function MessagesPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold">Messages</h1>
-            <p className="text-muted-foreground">
-              Connect with other users on the platform
-            </p>
+            <p className="text-muted-foreground">Connect with other users on the platform</p>
           </div>
           <Button onClick={handleCreateConversation}>
             <Plus className="h-4 w-4 mr-2" />
@@ -128,9 +126,9 @@ export default function MessagesPage() {
                 </Button>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold truncate">
-                    {selectedConversation.participant_1?.anonymous_handle || 
-                     selectedConversation.participant_2?.anonymous_handle || 
-                     'Unknown User'}
+                    {selectedConversation.participant_1?.anonymous_handle ||
+                      selectedConversation.participant_2?.anonymous_handle ||
+                      'Unknown User'}
                   </h3>
                 </div>
               </div>

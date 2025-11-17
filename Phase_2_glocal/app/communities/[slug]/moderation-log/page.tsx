@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 import { ModerationLogTable } from '@/components/moderation/moderation-log-table'
 import { Shield, Info } from 'lucide-react'
 
@@ -71,4 +70,3 @@ export async function generateMetadata({ params }: ModerationLogPageProps) {
     description: 'View the transparent moderation log for this community',
   }
 }
-

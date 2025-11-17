@@ -1,26 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { isSuperAdmin } from '@/lib/utils/permissions'
+import { NextRequest } from 'next/server'
+import { requireAdminOrThrow } from '@/lib/utils/require-admin'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // PUT /api/admin/users/[id]/unban - Unban a user
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export const PUT = withRateLimit(async function PUT(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const supabase = await createClient()
-
-    // Get current user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
-    }
-
-    // Verify super admin
-    const isAdmin = await isSuperAdmin(user.id)
-    if (!isAdmin) {
-      return NextResponse.json({ error: 'Super admin access required' }, { status: 403 })
-    }
+    const { id } = await params
+    // Require admin authentication
+    const { user, supabase } = await requireAdminOrThrow()
 
     // Update user to remove ban
     const { data: unbannedUser, error: unbanError } = await supabase
@@ -31,7 +22,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         ban_reason: null,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -42,22 +33,18 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       action: 'unban_user',
       actor_id: user.id,
       target_type: 'user',
-      target_id: params.id,
+      target_id: id,
       details: { reason: 'Manual unban by super admin' },
     })
 
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse(unbannedUser, {
       message: 'User unbanned successfully',
-      data: unbannedUser,
     })
   } catch (error) {
-    console.error('Unban user error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to unban user',
-      },
-      { status: 500 }
-    )
+    const { id: errorId } = await params
+    return handleAPIError(error, {
+      method: 'PUT',
+      path: `/api/admin/users/${errorId}/unban`,
+    })
   }
-}
+})

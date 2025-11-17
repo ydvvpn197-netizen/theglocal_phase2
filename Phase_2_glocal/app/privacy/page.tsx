@@ -17,10 +17,12 @@ export default function PrivacyPolicyPage() {
           </CardHeader>
           <CardContent className="prose prose-sm max-w-none">
             <p>
-              At Theglocal, privacy isn't an afterthought—it's our foundation. We believe you should be able to participate in your local community without sacrificing your privacy.
+              At Theglocal, privacy isn't an afterthought—it's our foundation. We believe you should
+              be able to participate in your local community without sacrificing your privacy.
             </p>
             <p>
-              This policy explains what data we collect, how we use it, and your rights regarding your information.
+              This policy explains what data we collect, how we use it, and your rights regarding
+              your information.
             </p>
           </CardContent>
         </Card>
@@ -71,7 +73,9 @@ export default function PrivacyPolicyPage() {
             <CardTitle>2. How We Use Your Data</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <p><strong>To Provide Our Service:</strong></p>
+            <p>
+              <strong>To Provide Our Service:</strong>
+            </p>
             <ul className="ml-6 list-disc space-y-1">
               <li>Authenticate your account</li>
               <li>Show you relevant local content</li>
@@ -79,14 +83,18 @@ export default function PrivacyPolicyPage() {
               <li>Process payments and subscriptions</li>
             </ul>
 
-            <p><strong>To Improve Our Service:</strong></p>
+            <p>
+              <strong>To Improve Our Service:</strong>
+            </p>
             <ul className="ml-6 list-disc space-y-1">
               <li>Understand how features are used</li>
               <li>Fix bugs and improve performance</li>
               <li>Develop new features</li>
             </ul>
 
-            <p><strong>For Safety and Security:</strong></p>
+            <p>
+              <strong>For Safety and Security:</strong>
+            </p>
             <ul className="ml-6 list-disc space-y-1">
               <li>Prevent fraud and abuse</li>
               <li>Enforce our community guidelines</li>
@@ -104,16 +112,25 @@ export default function PrivacyPolicyPage() {
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <p className="font-semibold text-green-800 mb-2">We Do NOT Sell Your Data</p>
               <p className="text-green-700">
-                We never sell, rent, or share your personal information with third parties for marketing purposes.
+                We never sell, rent, or share your personal information with third parties for
+                marketing purposes.
               </p>
             </div>
 
             <div>
               <h3 className="font-semibold mb-2">We Share Data With:</h3>
               <ul className="ml-6 list-disc text-muted-foreground space-y-1">
-                <li><strong>Service Providers:</strong> Supabase (hosting), Razorpay (payments), Resend (emails) - only as needed to provide service</li>
-                <li><strong>Legal Requirements:</strong> If required by law or to protect rights and safety</li>
-                <li><strong>With Your Consent:</strong> When you explicitly agree to share</li>
+                <li>
+                  <strong>Service Providers:</strong> Supabase (hosting), Razorpay (payments),
+                  Resend (emails) - only as needed to provide service
+                </li>
+                <li>
+                  <strong>Legal Requirements:</strong> If required by law or to protect rights and
+                  safety
+                </li>
+                <li>
+                  <strong>With Your Consent:</strong> When you explicitly agree to share
+                </li>
               </ul>
             </div>
           </CardContent>
@@ -127,16 +144,31 @@ export default function PrivacyPolicyPage() {
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p>You have the right to:</p>
             <ul className="ml-6 list-disc space-y-2">
-              <li><strong>Access:</strong> Request a copy of your data</li>
-              <li><strong>Rectification:</strong> Correct inaccurate data</li>
-              <li><strong>Erasure:</strong> Delete your account and data</li>
-              <li><strong>Portability:</strong> Export your data</li>
-              <li><strong>Object:</strong> Opt out of certain data processing</li>
-              <li><strong>Withdraw Consent:</strong> Revoke permissions at any time</li>
+              <li>
+                <strong>Access:</strong> Request a copy of your data
+              </li>
+              <li>
+                <strong>Rectification:</strong> Correct inaccurate data
+              </li>
+              <li>
+                <strong>Erasure:</strong> Delete your account and data
+              </li>
+              <li>
+                <strong>Portability:</strong> Export your data
+              </li>
+              <li>
+                <strong>Object:</strong> Opt out of certain data processing
+              </li>
+              <li>
+                <strong>Withdraw Consent:</strong> Revoke permissions at any time
+              </li>
             </ul>
 
             <p className="mt-4">
-              To exercise these rights, email us at <a href="mailto:privacy@theglocal.com" className="text-brand-primary hover:underline">privacy@theglocal.com</a>
+              To exercise these rights, email us at{' '}
+              <a href="mailto:privacy@theglocal.com" className="text-brand-primary hover:underline">
+                privacy@theglocal.com
+              </a>
             </p>
           </CardContent>
         </Card>
@@ -148,11 +180,22 @@ export default function PrivacyPolicyPage() {
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <ul className="ml-6 list-disc space-y-2">
-              <li><strong>Account Data:</strong> Retained while account is active</li>
-              <li><strong>Content:</strong> Retained indefinitely but anonymized if you delete your account</li>
-              <li><strong>Deleted Accounts:</strong> Personal data deleted within 30 days</li>
-              <li><strong>Backup Data:</strong> Removed from backups within 90 days</li>
-              <li><strong>Legal Hold:</strong> Data may be retained longer if legally required</li>
+              <li>
+                <strong>Account Data:</strong> Retained while account is active
+              </li>
+              <li>
+                <strong>Content:</strong> Retained indefinitely but anonymized if you delete your
+                account
+              </li>
+              <li>
+                <strong>Deleted Accounts:</strong> Personal data deleted within 30 days
+              </li>
+              <li>
+                <strong>Backup Data:</strong> Removed from backups within 90 days
+              </li>
+              <li>
+                <strong>Legal Hold:</strong> Data may be retained longer if legally required
+              </li>
             </ul>
           </CardContent>
         </Card>
@@ -181,7 +224,9 @@ export default function PrivacyPolicyPage() {
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground">
             <p>
-              Our service is not intended for children under 13. We do not knowingly collect information from children under 13. If you believe we have collected data from a child under 13, please contact us immediately.
+              Our service is not intended for children under 13. We do not knowingly collect
+              information from children under 13. If you believe we have collected data from a child
+              under 13, please contact us immediately.
             </p>
           </CardContent>
         </Card>
@@ -193,7 +238,9 @@ export default function PrivacyPolicyPage() {
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground">
             <p>
-              We may update this policy from time to time. We will notify you of significant changes via email or prominent notice on the platform. Continued use after changes constitutes acceptance.
+              We may update this policy from time to time. We will notify you of significant changes
+              via email or prominent notice on the platform. Continued use after changes constitutes
+              acceptance.
             </p>
           </CardContent>
         </Card>
@@ -206,7 +253,10 @@ export default function PrivacyPolicyPage() {
           <CardContent className="text-sm text-muted-foreground">
             <p>Questions about this privacy policy?</p>
             <p className="mt-2">
-              Email: <a href="mailto:privacy@theglocal.com" className="text-brand-primary hover:underline">privacy@theglocal.com</a>
+              Email:{' '}
+              <a href="mailto:privacy@theglocal.com" className="text-brand-primary hover:underline">
+                privacy@theglocal.com
+              </a>
             </p>
           </CardContent>
         </Card>
@@ -219,4 +269,3 @@ export const metadata = {
   title: 'Privacy Policy - Theglocal',
   description: 'How we protect your privacy and handle your data',
 }
-

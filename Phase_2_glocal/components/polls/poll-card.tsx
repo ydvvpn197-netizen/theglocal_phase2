@@ -9,42 +9,17 @@ import { Avatar } from '@/components/ui/avatar'
 import { CheckCircle2, Clock, Building2 } from 'lucide-react'
 import { generateGeometricAvatar } from '@/lib/utils/avatar-generator'
 import { isPollActive } from '@/lib/utils/poll-anonymity'
+import { createSafeSVG } from '@/lib/security/sanitize'
 import { PollResults } from './poll-results'
 import { useAuth } from '@/lib/context/auth-context'
-import { useToast } from '@/hooks/use-toast'
-
-interface PollOption {
-  id: string
-  text: string
-  vote_count: number
-}
-
-interface Poll {
-  id: string
-  community_id: string
-  author_id: string
-  question: string
-  category: string
-  expires_at: string | null
-  tagged_authority: string | null
-  total_votes: number
-  created_at: string
-  author?: {
-    anonymous_handle: string
-    avatar_seed: string
-  }
-  community?: {
-    name: string
-    slug: string
-  }
-  options: PollOption[]
-  user_voted?: boolean
-  user_selected_option?: string
-}
+import { useToast } from '@/lib/hooks/use-toast'
+import { Poll } from '@/lib/types/poll.types'
 
 interface PollCardProps {
   poll: Poll
   showCommunity?: boolean
+  onUpdate?: (updatedPoll: Poll) => void
+  onDelete?: (pollId: string) => void
 }
 
 export function PollCard({ poll, showCommunity = true }: PollCardProps) {
@@ -62,6 +37,7 @@ export function PollCard({ poll, showCommunity = true }: PollCardProps) {
   const avatarSvg = poll.author?.avatar_seed
     ? generateGeometricAvatar(poll.author.avatar_seed)
     : null
+  const safeSvg = avatarSvg ? createSafeSVG(avatarSvg) : null
   const timeAgo = getTimeAgo(poll.created_at)
 
   const handleVote = async () => {
@@ -123,9 +99,9 @@ export function PollCard({ poll, showCommunity = true }: PollCardProps) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 flex-1">
-            {avatarSvg && (
+            {safeSvg && (
               <Avatar className="h-10 w-10">
-                <div dangerouslySetInnerHTML={{ __html: avatarSvg }} />
+                <div dangerouslySetInnerHTML={safeSvg} />
               </Avatar>
             )}
             <div className="flex-1">

@@ -9,7 +9,7 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { Loader2, Calendar, MapPin, Ticket } from 'lucide-react'
 
 // Event categories
@@ -31,11 +31,11 @@ type EventFormData = Omit<z.infer<typeof createEventSchema>, 'event_date'> & {
 }
 
 interface CreateEventFormProps {
-  artistId: string
   artistName: string
+  onSuccess?: (eventId: string) => void
 }
 
-export function CreateEventForm({ artistId, artistName }: CreateEventFormProps) {
+export function CreateEventForm({ artistName, onSuccess }: CreateEventFormProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
@@ -106,7 +106,12 @@ export function CreateEventForm({ artistId, artistName }: CreateEventFormProps) 
         description: 'Your event has been created successfully',
       })
 
-      router.push(`/events/${result.data.id}`)
+      // Call onSuccess callback if provided
+      if (onSuccess && result.data?.id) {
+        onSuccess(result.data.id)
+      } else {
+        router.push(`/events/${result.data.id}`)
+      }
     } catch (error) {
       toast({
         title: 'Error',
@@ -268,4 +273,3 @@ export function CreateEventForm({ artistId, artistName }: CreateEventFormProps) 
     </form>
   )
 }
-

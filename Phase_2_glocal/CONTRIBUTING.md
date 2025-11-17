@@ -7,6 +7,7 @@ Thank you for your interest in contributing to Theglocal! This document provides
 ## 🎯 Our Mission
 
 Build a privacy-first, hyper-local digital public square that:
+
 - Protects user anonymity and privacy
 - Enables meaningful community engagement
 - Supports local artists and creators
@@ -20,6 +21,7 @@ Build a privacy-first, hyper-local digital public square that:
 ### **Types of Contributions**
 
 We welcome:
+
 - 🐛 Bug fixes
 - ✨ New features
 - 📝 Documentation improvements
@@ -57,7 +59,7 @@ cp .env.local.example .env.local
 # Edit .env.local with your Supabase credentials
 ```
 
-See `ENV_SETUP.md` for detailed configuration.
+See `docs/setup/environment.md` for detailed configuration.
 
 ### **4. Run Development Server**
 
@@ -80,6 +82,7 @@ git checkout -b fix/bug-description
 ```
 
 **Branch Naming:**
+
 - `feature/` - New features
 - `fix/` - Bug fixes
 - `docs/` - Documentation
@@ -128,6 +131,7 @@ git commit -m "docs: update API documentation"
 ```
 
 **Commit Types:**
+
 - `feat:` - New feature
 - `fix:` - Bug fix
 - `docs:` - Documentation
@@ -229,6 +233,7 @@ Then create a Pull Request on GitHub.
 ### **Key Patterns**
 
 **API Routes:**
+
 ```typescript
 // app/api/resource/route.ts
 export async function GET(request: NextRequest) {
@@ -240,6 +245,7 @@ export async function GET(request: NextRequest) {
 ```
 
 **Components:**
+
 ```typescript
 // components/feature/component.tsx
 'use client' // Only if needed
@@ -253,13 +259,11 @@ export function Component({ prop }: Props) {
 ```
 
 **Database Access:**
+
 ```typescript
 // Always use Supabase client
 const supabase = await createClient()
-const { data, error } = await supabase
-  .from('table')
-  .select('*')
-  .eq('column', value)
+const { data, error } = await supabase.from('table').select('*').eq('column', value)
 ```
 
 ---
@@ -280,6 +284,7 @@ A clear description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce:
+
 1. Go to '...'
 2. Click on '...'
 3. See error
@@ -291,6 +296,7 @@ What should happen
 If applicable
 
 **Environment:**
+
 - Browser: [e.g. Chrome 120]
 - Device: [e.g. iPhone 12]
 - OS: [e.g. iOS 16]
@@ -351,7 +357,7 @@ Mockups, examples, references
 ```typescript
 /**
  * Brief description of function
- * 
+ *
  * @param param1 - Description
  * @param param2 - Description
  * @returns Description of return value
@@ -366,9 +372,9 @@ export function myFunction(param1: string, param2: number): Result {
 ```typescript
 /**
  * ComponentName
- * 
+ *
  * Description of what the component does
- * 
+ *
  * @example
  * <ComponentName prop1="value" />
  */
@@ -385,12 +391,12 @@ Document all endpoints in code comments:
 ```typescript
 /**
  * GET /api/resource
- * 
+ *
  * Description
- * 
+ *
  * Query params:
  * - param1 (string): Description
- * 
+ *
  * Returns:
  * {
  *   success: boolean
@@ -486,6 +492,7 @@ describe('utilityFunction', () => {
 ## 🏆 Recognition
 
 Contributors will be:
+
 - Listed in CONTRIBUTORS.md
 - Mentioned in release notes
 - Credited in the application (if significant contribution)
@@ -499,4 +506,3 @@ By contributing, you agree that your contributions will be licensed under the sa
 ---
 
 **Thank you for contributing to Theglocal! Together, we're building something special for local communities.** 🎉
-

@@ -22,6 +22,7 @@ Before deploying, ensure you have:
 ### **Phase 1: Database Setup**
 
 1. **Create Supabase Production Project:**
+
    ```bash
    # Go to https://supabase.com/dashboard
    # Click "New Project"
@@ -30,18 +31,20 @@ Before deploying, ensure you have:
    ```
 
 2. **Apply Database Migrations:**
+
    ```bash
    # Link to production project
    supabase link --project-ref your-project-ref
-   
+
    # Push all migrations
    supabase db push
-   
+
    # Verify migrations
    supabase db remote changes
    ```
 
 3. **Generate TypeScript Types:**
+
    ```bash
    supabase gen types typescript --project-id your-project-id > lib/types/database.types.ts
    ```
@@ -64,6 +67,7 @@ Before deploying, ensure you have:
    - Generate API keys
 
 2. **Create Subscription Plan:**
+
    ```bash
    # Via Razorpay Dashboard or API
    # Plan: Artist Subscription
@@ -79,6 +83,7 @@ Before deploying, ensure you have:
 #### **Resend Configuration**
 
 1. **Add and Verify Domain:**
+
    ```bash
    # Add your domain in Resend dashboard
    # Add DNS records (SPF, DKIM, DMARC)
@@ -93,7 +98,6 @@ Before deploying, ensure you have:
 
 1. **Google News API:**
    - Get key from [newsapi.org](https://newsapi.org)
-   
 2. **Reddit API:**
    - Create app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps)
    - Get client ID and secret
@@ -119,6 +123,7 @@ vercel link
 ```
 
 Or use Vercel Dashboard:
+
 - Go to [vercel.com/new](https://vercel.com/new)
 - Import your GitHub repository
 - Select Next.js framework preset
@@ -198,6 +203,7 @@ Vercel automatically detects `vercel.json` cron configuration:
 ```
 
 **Verify cron jobs:**
+
 - Vercel Dashboard → Project → Settings → Cron Jobs
 - Test manually: `curl https://yourdomain.com/api/cron/expire-subscriptions -H "Authorization: Bearer YOUR_CRON_SECRET"`
 
@@ -210,27 +216,51 @@ Vercel automatically detects `vercel.json` cron configuration:
 
 #### **3. Set Up Monitoring**
 
+See [Monitoring Guide](docs/MONITORING.md) for complete monitoring setup instructions.
+
 **Vercel Analytics:**
+
 ```bash
 # Already enabled by default
 # View at: Vercel Dashboard → Project → Analytics
 ```
 
 **Sentry Error Tracking:**
-```bash
-npm install @sentry/nextjs
 
-# Configure in sentry.config.js
-# Add SENTRY_DSN to environment variables
-```
+1. Create Sentry project at [sentry.io](https://sentry.io)
+2. Add environment variables:
+   ```bash
+   NEXT_PUBLIC_SENTRY_DSN=https://your-dsn@sentry.io/project-id
+   SENTRY_ORG=your-org
+   SENTRY_PROJECT=theglocal
+   SENTRY_AUTH_TOKEN=your-auth-token
+   ```
+3. Sentry is already configured in the codebase
+4. Verify error tracking is working
+
+**Performance Monitoring:**
+
+- Web Vitals tracking via `/api/analytics/web-vitals`
+- Custom metrics tracking
+- See [Monitoring Guide](docs/MONITORING.md) for details
 
 **Uptime Monitoring:**
+
 - Use Vercel's built-in monitoring
 - Or external: UptimeRobot, Pingdom, StatusCake
+- Configure alerts for downtime
+
+**Alert Configuration:**
+
+- Configure alerts in Sentry dashboard
+- Set up Slack notifications
+- Configure email alerts
+- See [Monitoring Guide](docs/MONITORING.md) for alert setup
 
 #### **4. Configure Razorpay Webhook**
 
 Update webhook URL to production:
+
 - Razorpay Dashboard → Settings → Webhooks
 - Update URL: `https://yourdomain.com/api/artists/subscription-webhook`
 - Test webhook delivery
@@ -299,31 +329,70 @@ npx lighthouse https://yourdomain.com --view
 
 ## 📊 Monitoring After Launch
 
+See [Monitoring Guide](docs/MONITORING.md) for comprehensive monitoring documentation.
+
 ### **1. Error Tracking**
 
 Monitor Sentry dashboard for:
+
 - JavaScript errors
 - API failures
 - Database errors
 - Payment issues
+- Error rate trends
+- Affected users
+
+**Access:** [Sentry Dashboard](https://sentry.io) → Your Project
 
 ### **2. Performance Monitoring**
 
-Track in Vercel Analytics:
+Track in Vercel Analytics and Sentry:
+
 - Page load times
 - API response times
-- Core Web Vitals (LCP, FID, CLS)
+- Core Web Vitals (LCP, INP, CLS, TTFB, FCP)
 - Bandwidth usage
+- Database query performance
+- External API performance
+
+**Access:**
+
+- Vercel Dashboard → Analytics
+- Sentry Dashboard → Performance
 
 ### **3. Business Metrics**
 
 Monitor daily:
+
 - New user signups
 - Active communities
 - Posts created
 - Artist subscriptions
 - Booking requests
 - Reports submitted
+- User engagement metrics
+
+**Access:** Admin Dashboard → Analytics
+
+### **4. System Health**
+
+Monitor continuously:
+
+- Database connection status
+- External API health
+- Storage status
+- Cron job execution
+- Server resources
+
+**Access:** Admin Dashboard → Health
+
+### **5. Alert Response**
+
+- Respond to alerts promptly
+- Review error logs daily
+- Address critical issues immediately
+- Document incidents
+- See [Monitoring Guide](docs/MONITORING.md) for alert configuration
 
 ---
 
@@ -332,6 +401,7 @@ Monitor daily:
 ### **Automatic Deployments**
 
 Vercel automatically deploys:
+
 - **Production:** Pushes to `main` branch
 - **Preview:** All pull requests
 - **Development:** Pushes to `dev` branch (if configured)
@@ -358,6 +428,7 @@ If issues arise:
 ### **Automated Backups (Supabase)**
 
 Supabase automatically backs up your database:
+
 - **Pro Plan:** Daily backups, 7-day retention
 - **Team Plan:** Daily backups, 14-day retention
 
@@ -374,6 +445,7 @@ supabase db restore backup-20250101.sql
 ### **Backup Verification**
 
 Test restore procedure monthly:
+
 ```bash
 # Create test project
 # Restore backup
@@ -410,16 +482,19 @@ Test restore procedure monthly:
 ## 📈 Scaling Considerations
 
 ### **Database:**
+
 - Upgrade Supabase plan as needed (Pro → Team → Enterprise)
 - Add read replicas for heavy reads
 - Implement connection pooling
 
 ### **Application:**
+
 - Vercel scales automatically
 - Monitor bandwidth and function invocations
 - Upgrade plan if needed
 
 ### **External APIs:**
+
 - Monitor API quotas (News, Reddit, BookMyShow)
 - Implement fallbacks and caching
 - Upgrade plans as traffic grows
@@ -437,20 +512,26 @@ After deployment, verify:
 5. **Emails sending:** Check Resend logs
 6. **Cron jobs running:** Check logs after scheduled time
 7. **APIs functional:** News, Reddit, Events loading
+8. **Monitoring active:** Sentry receiving errors, Analytics tracking
+9. **Alerts configured:** Test alert notifications
+
+See [Launch Checklist](docs/LAUNCH_CHECKLIST.md) for complete post-deployment verification steps.
 
 ---
 
 ## 🎉 You're Live!
 
-Congratulations! Your platform is now live. 
+Congratulations! Your platform is now live.
 
 **Next steps:**
+
 1. Monitor error rates and performance
 2. Gather user feedback
 3. Iterate based on data
 4. Scale as needed
 
 For support during deployment, refer to:
+
 - Vercel Docs: [vercel.com/docs](https://vercel.com/docs)
 - Supabase Docs: [supabase.com/docs](https://supabase.com/docs)
 - This repository's documentation
@@ -459,4 +540,3 @@ For support during deployment, refer to:
 
 **Last Updated:** October 8, 2025  
 **Version:** 1.0.0-beta
-

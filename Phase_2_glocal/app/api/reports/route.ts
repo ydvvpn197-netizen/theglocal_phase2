@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { createReportSchema } from '@/lib/utils/validation'
 import { RATE_LIMITS } from '@/lib/utils/constants'
+import { createNotification } from '@/lib/utils/notifications'
+import { handleAPIError, createSuccessResponse } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
 // GET /api/reports - List reports (admin/moderators only)
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/reports')
   try {
     const searchParams = request.nextUrl.searchParams
     const status = searchParams.get('status') || 'all'
@@ -49,23 +54,14 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: reports || [],
-    })
+    return createSuccessResponse(reports || [])
   } catch (error) {
-    console.error('Fetch reports error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch reports',
-      },
-      { status: 500 }
-    )
+    return handleAPIError(error, { method: 'GET', path: '/api/reports' })
   }
-}
-
+})
 // POST /api/reports - Submit a report
-export async function POST(request: NextRequest) {
+export const POST = withRateLimit(async function POST(request: NextRequest) {
+  const logger = createAPILogger('POST', '/api/reports')
   try {
     const body = await request.json()
 
@@ -93,7 +89,7 @@ export async function POST(request: NextRequest) {
       .gte('created_at', oneDayAgo)
 
     if (countError) {
-      console.error('Error checking report rate limit:', countError)
+      logger.error('Error checking report rate limit:', countError)
     }
 
     if (recentReports && recentReports.length >= RATE_LIMITS.REPORTS_PER_DAY) {
@@ -141,7 +137,11 @@ export async function POST(request: NextRequest) {
         .select('posts!inner(community_id)')
         .eq('id', content_id)
         .single()
-      communityId = comment?.posts?.community_id || null
+      const commentPosts = comment?.posts as { community_id?: string } | undefined
+      communityId =
+        (Array.isArray(commentPosts)
+          ? commentPosts[0]?.community_id
+          : commentPosts?.community_id) || null
     } else if (content_type === 'poll') {
       const { data: poll } = await supabase
         .from('polls')
@@ -167,12 +167,86 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError) {
-      console.error('Database error creating report:', createError)
+      logger.error('Database error creating report:', createError)
       throw createError
     }
 
-    // TODO: Task 5.1.7 - Send notification to community admin and super admin
-    // This will be implemented when notification system is built
+    // Send notification to community admins and super admins
+    try {
+      const adminSupabase = createAdminClient()
+      const adminUserIds = new Set<string>()
+
+      // Get community admins if communityId exists
+      if (communityId) {
+        const { data: communityAdmins } = await adminSupabase
+          .from('community_members')
+          .select('user_id')
+          .eq('community_id', communityId)
+          .eq('role', 'admin')
+
+        if (communityAdmins) {
+          communityAdmins.forEach((admin) => {
+            if (admin.user_id) {
+              adminUserIds.add(admin.user_id)
+            }
+          })
+        }
+      }
+
+      // Get super admins
+      // Query by is_super_admin flag
+      const { data: superAdminsByFlag } = await adminSupabase
+        .from('users')
+        .select('id')
+        .eq('is_super_admin', true)
+
+      if (superAdminsByFlag) {
+        superAdminsByFlag.forEach((admin) => {
+          if (admin.id) {
+            adminUserIds.add(admin.id)
+          }
+        })
+      }
+
+      // Also check SUPER_ADMIN_EMAILS env var
+      const superAdminEmails =
+        process.env.SUPER_ADMIN_EMAILS?.split(',')
+          .map((e) => e.trim().toLowerCase())
+          .filter(Boolean) || []
+
+      if (superAdminEmails.length > 0) {
+        const { data: superAdminsByEmail } = await adminSupabase
+          .from('users')
+          .select('id')
+          .in('email', superAdminEmails)
+
+        if (superAdminsByEmail) {
+          superAdminsByEmail.forEach((admin) => {
+            if (admin.id) {
+              adminUserIds.add(admin.id)
+            }
+          })
+        }
+      }
+
+      // Create notifications for all admins
+      const notificationPromises = Array.from(adminUserIds).map((adminUserId) =>
+        createNotification(adminSupabase, {
+          userId: adminUserId,
+          type: 'content_reported',
+          title: 'New content report',
+          message: `A ${content_type} has been reported: ${reason}`,
+          link: `/admin/reports/${report.id}`,
+          actorId: user.id,
+          entityId: report.id,
+          entityType: 'report',
+        })
+      )
+
+      await Promise.allSettled(notificationPromises)
+    } catch (error) {
+      return handleAPIError(error, { method: 'POST', path: '/api/reports' })
+    }
 
     return NextResponse.json(
       {
@@ -183,17 +257,23 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'name' in error &&
+      error.name === 'ZodError' &&
+      'errors' in error
+    ) {
       return NextResponse.json(
         {
           error: 'Validation error',
-          details: error.errors,
+          details: (error as { errors: unknown }).errors,
         },
         { status: 400 }
       )
     }
 
-    console.error('Create report error:', error)
+    logger.error('Create report error:', error)
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : 'Failed to submit report',
@@ -201,5 +281,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-}
-
+})

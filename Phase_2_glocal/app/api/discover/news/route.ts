@@ -1,7 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { fetchLocalNews } from '@/lib/integrations/google-news'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
 
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(async function GET(request: NextRequest) {
+  const logger = createAPILogger('GET', '/api/discover/news')
   try {
     const searchParams = request.nextUrl.searchParams
     const city = searchParams.get('city') || 'India'
@@ -9,20 +13,13 @@ export async function GET(request: NextRequest) {
 
     const articles = await fetchLocalNews(city, limit)
 
-    return NextResponse.json({
-      success: true,
-      data: articles.map((article) => ({
+    return createSuccessResponse(
+      articles.map((article) => ({
         ...article,
         type: 'news',
-      })),
-    })
-  } catch (error) {
-    console.error('News API error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch news',
-      },
-      { status: 500 }
+      }))
     )
+  } catch (error) {
+    return handleAPIError(error, { method: 'GET', path: '/api/discover/news' })
   }
-}
+})

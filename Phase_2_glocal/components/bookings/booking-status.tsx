@@ -58,4 +58,3 @@ export function BookingStatusDescription({ status }: { status: string }) {
 
   return <p className="text-sm text-muted-foreground">{config.description}</p>
 }
-

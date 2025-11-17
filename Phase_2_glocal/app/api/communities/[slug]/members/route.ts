@@ -1,10 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAPILogger } from '@/lib/utils/logger-context'
+import { handleAPIError, createSuccessResponse, APIErrors } from '@/lib/utils/api-response'
 
-// GET /api/communities/[slug]/members - Get community members
-export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
+import { withRateLimit } from '@/lib/middleware/with-rate-limit'
+/**
+ * GET /api/communities/[slug]/members - Get community members
+ *
+ * @param _request - Next.js request
+ * @param params - Route parameters with slug
+ * @returns List of community members
+ */
+export const GET = withRateLimit(async function GET(
+  _request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
+  const logger = createAPILogger('GET', `/api/communities/${params.slug}/members`)
+
   try {
     const supabase = await createClient()
+
+    logger.info('Fetching community members', { slug: params.slug })
 
     // Get community by slug
     const { data: community, error: communityError } = await supabase
@@ -14,7 +30,7 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
       .single()
 
     if (communityError || !community) {
-      return NextResponse.json({ error: 'Community not found' }, { status: 404 })
+      throw APIErrors.notFound('Community')
     }
 
     // Get members with user info
@@ -26,18 +42,16 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
 
     if (error) throw error
 
-    return NextResponse.json({
-      success: true,
-      data: members || [],
+    logger.info('Community members fetched successfully', {
+      communityId: community.id,
+      memberCount: members?.length || 0,
     })
-  } catch (error) {
-    console.error('Fetch members error:', error)
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to fetch members',
-      },
-      { status: 500 }
-    )
-  }
-}
 
+    return createSuccessResponse(members || [])
+  } catch (error) {
+    return handleAPIError(error, {
+      method: 'GET',
+      path: `/api/communities/${params.slug}/members`,
+    })
+  }
+})
