@@ -1,0 +1,388 @@
+---
+alwaysApply: true
+---
+# Theglocal - Cursor AI Rules
+# Privacy-First Local Community Platform
+
+## 🧭 Project Overview
+- **Frontend:** Next.js 15 with App Router, TypeScript, TailwindCSS + shadcn/ui
+- **Backend:** Supabase (PostgreSQL + PostGIS, Auth, Storage)
+- **Deployment:** Vercel with MCP servers for AI-powered operations
+- **Domain:** https://theglocal.in
+- **Architecture:** Privacy-first, anonymous community platform with artist ecosystem
+
+## 🎯 Core Development Principles
+
+### Code Quality & Standards
+- **TypeScript First:** Strict mode enabled, no `any` types, comprehensive type safety
+- **Performance:** Optimize for Core Web Vitals, lazy loading, image optimization
+- **Accessibility:** WCAG 2.1 AA compliance, semantic HTML, keyboard navigation
+- **Security:** Row Level Security (RLS), input validation, XSS protection
+- **Privacy:** Anonymous by default, minimal data collection, GDPR compliant
+
+### Architecture Patterns
+- **Component Structure:** Atomic design (atoms → molecules → organisms → templates)
+- **State Management:** React Query for server state, React hooks for local state
+- **Data Flow:** Unidirectional, props down, events up
+- **Error Handling:** Error boundaries, graceful degradation, user-friendly messages
+- **Testing:** Unit tests (Jest), integration tests, E2E tests (Playwright)
+
+## 🛠️ Development Workflow
+
+### Before Making Changes
+1. **Run quality checks:** `npm run lint && npm run type-check && npm test`
+2. **Check MCP status:** Ensure Supabase and Vercel MCP servers are active
+3. **Review related code:** Use grep/search to understand existing patterns
+4. **Plan the change:** Consider impact on privacy, performance, and user experience
+
+### Code Organization
+```
+app/                    # Next.js App Router
+├── (auth)/            # Auth route groups
+├── api/               # API routes with proper error handling
+├── admin/             # Admin-only pages with RLS
+└── [feature]/         # Feature-based routing
+
+components/            # Reusable UI components
+├── ui/               # shadcn/ui base components
+├── [feature]/        # Feature-specific components
+└── layout/           # Layout components
+
+lib/                  # Core utilities
+├── supabase/         # Database client & queries
+├── integrations/     # External API integrations
+├── middleware/       # Auth & rate limiting
+└── types/           # TypeScript definitions
+```
+
+### File Naming Conventions
+- **Components:** PascalCase (`UserProfile.tsx`)
+- **Hooks:** camelCase with `use` prefix (`useAuth.ts`)
+- **Utilities:** camelCase (`formatDate.ts`)
+- **Types:** PascalCase with `Type` suffix (`UserType.ts`)
+- **Constants:** UPPER_SNAKE_CASE (`API_ENDPOINTS.ts`)
+
+## 🔧 Technology-Specific Rules
+
+### Next.js 15 (App Router)
+- **Server Components:** Use by default, add `"use client"` only when necessary
+- **Data Fetching:** Prefer server-side fetching, use React Query for client-side
+- **Routing:** Use route groups `(auth)` for layout sharing
+- **Metadata:** Always include proper SEO metadata
+- **Images:** Use `next/image` with proper optimization
+- **API Routes:** Implement proper error handling and validation
+
+### Supabase Integration
+- **RLS Policies:** Always implement Row Level Security
+- **Type Safety:** Use generated types from `lib/types/database.types.ts`
+- **Queries:** Use the MCP server for complex database operations
+- **Auth:** Implement proper session management and refresh
+- **Storage:** Use signed URLs for secure file access
+
+### TailwindCSS + shadcn/ui
+- **Design System:** Follow the 8px base unit system from PRD
+- **Colors:** Use CSS variables for theming (`hsl(var(--primary))`)
+- **Components:** Extend shadcn/ui components, don't modify directly
+- **Responsive:** Mobile-first approach, use container queries when needed
+- **Animations:** Use predefined animations from `tailwind.config.ts`
+
+### TypeScript Configuration
+- **Strict Mode:** All strict flags enabled
+- **Path Mapping:** Use `@/` for absolute imports
+- **Type Definitions:** Comprehensive interfaces for all data structures
+- **Generic Types:** Use generics for reusable components and utilities
+
+## 🧪 Testing Strategy
+
+### Test Structure
+- **Unit Tests:** Components and utilities (`__tests__/unit/`)
+- **Integration Tests:** API routes and database operations (`__tests__/integration/`)
+- **E2E Tests:** Critical user flows (`__tests__/e2e/`)
+
+### Test Requirements
+- **Coverage:** Minimum 80% for new code
+- **Mocking:** Mock external APIs and services
+- **Data:** Use test fixtures, clean up after tests
+- **Performance:** Test loading states and error scenarios
+
+### Running Tests
+```bash
+npm test                 # All tests
+npm run test:watch       # Watch mode
+npm run test:e2e         # E2E tests
+npm run test:coverage    # Coverage report
+```
+
+## 🔒 Privacy & Security Rules
+
+### Data Handling
+- **Anonymous by Default:** No real names, auto-generated handles
+- **Location Privacy:** City-level only, coordinates rounded to ~1km
+- **Minimal Collection:** Only collect necessary data
+- **Data Retention:** Implement proper cleanup policies
+- **User Rights:** Support data export and deletion
+
+### Security Measures
+- **Input Validation:** Use Zod schemas for all inputs
+- **XSS Protection:** Sanitize user content, use CSP headers
+- **CSRF Protection:** Use proper CSRF tokens
+- **Rate Limiting:** Implement on all API endpoints
+- **Authentication:** Secure session management
+
+### RLS Implementation
+- **All Tables:** Must have RLS policies
+- **User Context:** Use `auth.uid()` for user-specific data
+- **Admin Access:** Separate policies for admin operations
+- **Public Data:** Explicit policies for public content
+
+## 🚀 Performance Optimization
+
+### Core Web Vitals
+- **LCP:** Optimize images, use proper sizing
+- **FID:** Minimize JavaScript execution time
+- **CLS:** Prevent layout shifts, use proper dimensions
+- **INP:** Optimize interactions, use proper event handling
+
+### Optimization Techniques
+- **Code Splitting:** Dynamic imports for large components
+- **Image Optimization:** Use `next/image` with proper formats
+- **Caching:** Implement proper cache headers
+- **Bundle Size:** Monitor and optimize bundle size
+- **Database Queries:** Optimize queries, use proper indexing
+
+## 🤖 MCP Server Integration
+
+### Supabase MCP Server
+- **Database Operations:** Use MCP for complex queries
+- **Schema Management:** Sync schema changes via MCP
+- **Data Analysis:** Use MCP for insights and statistics
+- **Testing:** Use MCP for test data setup
+
+### Vercel MCP Server
+- **Deployments:** Use MCP for deployment management
+- **Environment:** Sync environment variables
+- **Logs:** Access deployment logs via MCP
+- **Analytics:** Monitor performance metrics
+
+### MCP Commands
+```bash
+npm run mcp:setup       # Setup MCP environment
+npm run mcp:test        # Test MCP servers
+npm run mcp:examples    # See MCP examples
+```
+
+## 📱 Mobile & Responsive Design
+
+### Breakpoints
+- **Mobile:** 320px - 767px
+- **Tablet:** 768px - 1023px
+- **Desktop:** 1024px+
+- **Large:** 1280px+
+
+### Mobile-First Approach
+- **Design:** Start with mobile, enhance for larger screens
+- **Touch:** Optimize for touch interactions
+- **Performance:** Prioritize mobile performance
+- **PWA:** Consider Progressive Web App features
+
+## 🔄 State Management
+
+### React Query (TanStack Query)
+- **Server State:** Use React Query for all server state
+- **Caching:** Implement proper cache invalidation
+- **Optimistic Updates:** Use for better UX
+- **Error Handling:** Implement proper error states
+
+### Local State
+- **useState:** For simple component state
+- **useReducer:** For complex state logic
+- **Context:** For shared state across components
+- **Custom Hooks:** For reusable state logic
+
+## 🎨 UI/UX Guidelines
+
+### Design System
+- **Colors:** Use brand colors from `tailwind.config.ts`
+- **Typography:** Follow the font hierarchy
+- **Spacing:** Use the 8px base unit system
+- **Components:** Consistent with shadcn/ui patterns
+
+### User Experience
+- **Loading States:** Always show loading indicators
+- **Error States:** Provide clear error messages
+- **Empty States:** Design for empty data scenarios
+- **Accessibility:** Ensure keyboard navigation and screen reader support
+
+### Animation Guidelines
+- **Micro-interactions:** Subtle animations for feedback
+- **Page Transitions:** Smooth transitions between pages
+- **Loading Animations:** Engaging loading states
+- **Performance:** Use CSS transforms, avoid layout thrashing
+
+## 🚨 Error Handling
+
+### Error Boundaries
+- **Component Level:** Catch component errors
+- **Page Level:** Catch page-level errors
+- **Global Level:** Catch unhandled errors
+- **Fallback UI:** Provide meaningful error messages
+
+### API Error Handling
+- **Validation Errors:** Show field-specific errors
+- **Network Errors:** Handle offline scenarios
+- **Server Errors:** Show generic error messages
+- **Retry Logic:** Implement retry for transient errors
+
+## 📊 Monitoring & Analytics
+
+### Performance Monitoring
+- **Core Web Vitals:** Monitor LCP, FID, CLS
+- **Bundle Analysis:** Regular bundle size checks
+- **Database Performance:** Monitor query performance
+- **Error Tracking:** Track and analyze errors
+
+### User Analytics
+- **Privacy-First:** No personal data collection
+- **Aggregate Data:** Only collect anonymous usage data
+- **Performance Metrics:** Track app performance
+- **Feature Usage:** Understand feature adoption
+
+## 🔧 Development Tools
+
+### Required Extensions
+- **ESLint:** Code linting and formatting
+- **Prettier:** Code formatting
+- **TypeScript:** Type checking
+- **Tailwind CSS IntelliSense:** CSS class suggestions
+
+### Recommended Extensions
+- **Auto Rename Tag:** HTML/JSX tag renaming
+- **Bracket Pair Colorizer:** Code structure visualization
+- **GitLens:** Git integration
+- **Thunder Client:** API testing
+
+## 📝 Code Review Checklist
+
+### Before Submitting
+- [ ] All tests pass (`npm test`)
+- [ ] TypeScript compiles without errors (`npm run type-check`)
+- [ ] ESLint passes (`npm run lint`)
+- [ ] Code is properly formatted (`npm run format`)
+- [ ] RLS policies are implemented
+- [ ] Privacy considerations addressed
+- [ ] Performance impact assessed
+- [ ] Accessibility requirements met
+- [ ] Error handling implemented
+- [ ] Documentation updated
+
+### Code Quality
+- [ ] Functions are pure and testable
+- [ ] Components are reusable and composable
+- [ ] Types are comprehensive and accurate
+- [ ] Error boundaries are in place
+- [ ] Loading states are handled
+- [ ] Mobile responsiveness verified
+
+## 🚀 Deployment Rules
+
+### Pre-Deployment
+1. **Run full test suite:** `npm test && npm run test:e2e`
+2. **Build verification:** `npm run build`
+3. **Type checking:** `npm run type-check`
+4. **Linting:** `npm run lint`
+5. **Security scan:** Check for secrets and vulnerabilities
+
+### Deployment Process
+1. **Environment sync:** Ensure all environment variables are set
+2. **Database migration:** Apply any pending migrations
+3. **MCP server check:** Verify MCP servers are working
+4. **Deploy via Vercel:** Use MCP server for deployment
+5. **Post-deployment:** Verify critical functionality
+
+### Rollback Plan
+- **Database:** Keep migration rollback scripts
+- **Code:** Use Vercel's rollback feature
+- **Environment:** Document environment variable changes
+- **Monitoring:** Watch for errors post-deployment
+
+## 🎯 Feature Development
+
+### New Feature Checklist
+- [ ] **Requirements:** Clear understanding of requirements
+- [ ] **Design:** UI/UX design considerations
+- [ ] **Privacy:** Privacy impact assessment
+- [ ] **Security:** Security considerations
+- [ ] **Performance:** Performance impact analysis
+- [ ] **Testing:** Test strategy and coverage
+- [ ] **Documentation:** Update relevant documentation
+- [ ] **Migration:** Database migration if needed
+- [ ] **Deployment:** Deployment considerations
+
+### Feature Flags
+- **Environment Variables:** Use for feature toggles
+- **Database Flags:** Use for user-specific features
+- **A/B Testing:** Implement for feature validation
+- **Gradual Rollout:** Use for risk mitigation
+
+## 🔍 Debugging & Troubleshooting
+
+### Common Issues
+- **RLS Policies:** Check user context and policies
+- **Type Errors:** Verify type definitions and imports
+- **Build Errors:** Check for missing dependencies
+- **Runtime Errors:** Use error boundaries and logging
+- **Performance Issues:** Profile and optimize
+
+### Debug Tools
+- **React DevTools:** Component debugging
+- **Supabase Dashboard:** Database debugging
+- **Vercel Dashboard:** Deployment debugging
+- **Browser DevTools:** Performance profiling
+- **MCP Server Logs:** Server-side debugging
+
+## 📚 Documentation Standards
+
+### Code Documentation
+- **JSDoc:** Document all public functions
+- **README:** Keep README updated
+- **API Docs:** Document all API endpoints
+- **Component Docs:** Document component props and usage
+
+### Architecture Documentation
+- **System Design:** Document system architecture
+- **Database Schema:** Document table relationships
+- **API Design:** Document API contracts
+- **Deployment Guide:** Document deployment process
+
+## 🎉 Success Metrics
+
+### Technical Metrics
+- **Test Coverage:** >80% for new code
+- **Build Time:** <5 minutes
+- **Bundle Size:** Monitor and optimize
+- **Performance:** Core Web Vitals in green
+- **Security:** No high-severity vulnerabilities
+
+### User Metrics
+- **Page Load Time:** <3 seconds
+- **Time to Interactive:** <5 seconds
+- **Error Rate:** <1%
+- **User Satisfaction:** Monitor feedback
+- **Feature Adoption:** Track usage metrics
+
+---
+
+## 🚨 Critical Reminders
+
+1. **Privacy First:** Every decision should prioritize user privacy
+2. **Security:** Implement RLS and proper validation
+3. **Performance:** Optimize for mobile and slow connections
+4. **Accessibility:** Ensure the app is usable by everyone
+5. **Testing:** Write tests for all new functionality
+6. **Documentation:** Keep documentation up to date
+7. **MCP Integration:** Leverage MCP servers for complex operations
+8. **Error Handling:** Always handle errors gracefully
+9. **User Experience:** Focus on intuitive and responsive design
+10. **Code Quality:** Maintain high standards for maintainability
+
+Remember: This is a privacy-first platform. Every feature should be evaluated through the lens of user privacy and data protection.

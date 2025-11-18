@@ -1,0 +1,143 @@
+# ======================================================
+# 🧪 Cursor Test Suite Configuration for TheGlocal Project
+# ======================================================
+
+version: 1.0
+
+project:
+  name: "Phase_2_glocal"
+  description: "Full-stack Next.js app powered by Supabase (DB/Auth/Storage) and deployed via Vercel MCP server."
+  frontend: "https://theglocal.in"
+
+# ------------------------------------------------------
+# 🧰 Global Execution Settings
+# ------------------------------------------------------
+execution:
+  auto_run: true               # Automatically run tests on file save or commit
+  max_retries: 2               # Retry failed stages up to 2 times
+  stop_on_failure: false        # Continue pipeline even if a stage fails (logs error but doesn't stop session)
+  show_logs_in_cursor: true     # All logs and results must appear only inside Cursor terminal
+  parallel_stages: false        # Run tasks sequentially for clarity
+  env_file: ".env.local"        # Use synced environment file
+
+# ------------------------------------------------------
+# 🧹 Stage 1: Linting
+# ------------------------------------------------------
+lint:
+  name: "Code Quality & Formatting"
+  command: "npm run lint"
+  auto_fix: true
+  retry_on_error: true
+  error_handling:
+    on_fail: "auto-fix"
+    show_logs: true
+    notify_user: true
+  success_message: "✅ Code linting passed cleanly."
+  fail_message: "❌ Linting failed — attempting auto-fix..."
+
+# ------------------------------------------------------
+# 🧩 Stage 2: Unit & Integration Tests
+# ------------------------------------------------------
+tests:
+  name: "Unit & Integration Tests"
+  framework: "jest"
+  command: "npm run test"
+  retry_on_error: true
+  collect_coverage: true
+  min_coverage: 80
+  show_logs: true
+  error_handling:
+    on_fail: "retry"
+    retry_limit: 2
+  success_message: "✅ All tests passed successfully."
+  fail_message: "❌ Test suite failed. Retrying..."
+
+# ------------------------------------------------------
+# 🏗️ Stage 3: Build Validation
+# ------------------------------------------------------
+build:
+  name: "Next.js Build Validation"
+  command: "npm run build"
+  retry_on_error: true
+  show_logs: true
+  auto_fix: true
+  error_handling:
+    on_fail: "analyze-and-fix"
+    fix_suggestions:
+      - "Ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set."
+      - "Check for missing imports or invalid TypeScript configs."
+      - "Verify dependencies via npm install."
+  success_message: "✅ Build completed successfully."
+  fail_message: "❌ Build failed — attempting recovery..."
+
+# ------------------------------------------------------
+# 🚀 Stage 4: Deployment via Vercel MCP Server
+# ------------------------------------------------------
+deploy:
+  name: "Automated Vercel Deployment"
+  provider: "vercel"
+  command: "vercel --prod --yes"
+  condition: "on_build_success"
+  retry_on_error: true
+  show_logs: true
+  log_output: "cursor-terminal"
+  error_handling:
+    on_fail: "retry"
+    retry_limit: 1
+    on_persistent_fail: "report"
+  success_message: "🚀 Deployment successful to production at https://theglocal.in"
+  fail_message: "⚠️ Deployment failed — please check environment or build logs."
+
+# ------------------------------------------------------
+# 🗃️ Stage 5: Supabase Schema & Policy Sync
+# ------------------------------------------------------
+database:
+  name: "Supabase Schema Sync"
+  provider: "supabase"
+  command: "supabase db push"
+  auto_sync: true
+  retry_on_error: true
+  post_check: "supabase migration list"
+  show_logs: true
+  error_handling:
+    on_fail: "retry"
+  success_message: "🗄️ Supabase database schema is fully synchronized."
+  fail_message: "⚠️ Supabase sync failed — attempting retry..."
+
+# ------------------------------------------------------
+# 🔄 Stage 6: Environment Parity Verification
+# ------------------------------------------------------
+env_sync:
+  name: "Environment Consistency Check"
+  command: "cursor sync env"
+  verify:
+    - ".env.local"
+    - "Vercel"
+    - "Supabase"
+  show_logs: true
+  retry_on_error: true
+  success_message: "🔐 Environment variables are consistent across all platforms."
+  fail_message: "⚠️ Environment variable mismatch detected. Syncing..."
+
+# ------------------------------------------------------
+# 🧠 Cursor Behavior
+# ------------------------------------------------------
+cursor_behavior:
+  handle_errors_in_terminal: true
+  auto_fix_common_issues: true
+  auto_commit_on_success: false     # Change to true if you want auto commits after pipeline success
+  deployment_branch: "main"
+  maintain_session: true
+  auto_sync_envs: true
+  interactive_prompts: false
+  preferred_terminal_output: "compact"
+
+# ------------------------------------------------------
+# ✅ Completion Summary
+# ------------------------------------------------------
+on_complete:
+  summary_report: true
+  report_location: "cursor-terminal"
+  notify_user: true
+  success_message: "🎉 All stages completed successfully. Project is live and verified!"
+  fail_message: "❗ Some stages failed. Check Cursor terminal logs for details."

@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "node",
+      "args": ["supabase-mcp-server.mjs"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "vercel": {
+      "command": "node",
+      "args": ["mcp/vercel-mcp-server.mjs"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}

@@ -1,0 +1,1038 @@
+{
+  "results": [
+    {
+      "file": "app\\api\\admin\\artists\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\communities\\orphaned\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\communities\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\communities\\[id]\\feature\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\geocoding\\stats\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\health\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\jobs\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\performance\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\recalculate-counts\\route.ts",
+      "migrated": true,
+      "changes": [
+        "Replaced NextResponse.json error response with throw APIErrors.unauthorized()... in GET handler",
+        "Updated GET catch block to use handleAPIError",
+        "Replaced NextResponse.json error response with throw APIErrors.unauthorized()... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.notFound('Post... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('In... in POST handler",
+        "Updated POST catch block to use handleAPIError",
+        "File written"
+      ],
+      "errors": [],
+      "issues": ["Found incorrect method name in POST handler"]
+    },
+    {
+      "file": "app\\api\\admin\\stats\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\subscriptions\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\users\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\users\\[id]\\ban\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\admin\\users\\[id]\\unban\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\analytics\\web-vitals\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\me\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\paypal-webhook\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\subscription-webhook\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\verify\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\verify-paypal\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscription\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\auth\\callback\\route.ts",
+      "migrated": false,
+      "changes": ["Skipped GET handler (complex structure - may need manual review)"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\auth\\login\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\auth\\logout\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\auth\\signup\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\auth\\verify-otp\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\bookings\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\bookings\\[id]\\messages\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\bookings\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\comments\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\comments\\[id]\\vote\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\archived\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\user\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\analytics\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\delete\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\edit\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\join\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\leave\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\[userId]\\ban\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\[userId]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\reclaim-admin\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\restore\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\cron\\cleanup-orphaned-media\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\cron\\expire-subscriptions\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\cron\\geocode-locations\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\cron\\handle-grace-period\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\cron\\send-event-reminders\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\cron\\send-renewal-reminders\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\cron\\sync-subscription-status\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\discover\\bookmyshow\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\discover\\news\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\discover\\news\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\discover\\reddit\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\discover\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\discover\\share\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\docs\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\drafts\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\drafts\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\eventbrite\\auth\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\eventbrite\\callback\\route.ts",
+      "migrated": false,
+      "changes": ["Skipped GET handler (contains redirect)"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\categories\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\cities\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\cleanup\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\cleanup-duplicates\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\health\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\sources\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\sync\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\sync-bookmyshow\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\events\\[id]\\rsvp\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\feed\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\geocoding\\process\\route.ts",
+      "migrated": true,
+      "changes": [
+        "Replaced NextResponse.json error response with throw APIErrors.unauthorized()... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('ta... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('In... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.notFound('Reco... in POST handler",
+        "Updated POST catch block to use handleAPIError",
+        "File written"
+      ],
+      "errors": [],
+      "issues": ["Found incorrect method name in POST handler"]
+    },
+    {
+      "file": "app\\api\\jobs\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\locations\\saved\\route.ts",
+      "migrated": true,
+      "changes": [
+        "Skipped GET handler (complex structure - may need manual review)",
+        "Skipped POST handler (complex structure - may need manual review)",
+        "Updated PATCH catch block to use handleAPIError",
+        "Skipped DELETE handler (complex structure - may need manual review)",
+        "File written"
+      ],
+      "errors": [],
+      "issues": [
+        "Found incorrect method name in POST handler",
+        "Found incorrect method name in PATCH handler",
+        "Found incorrect method name in DELETE handler",
+        "Fixed incorrect method name in PATCH handler error context"
+      ]
+    },
+    {
+      "file": "app\\api\\meetup\\auth\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\meetup\\callback\\route.ts",
+      "migrated": false,
+      "changes": ["Skipped GET handler (contains redirect)"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\messages\\conversations\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\messages\\conversations\\[id]\\messages\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\messages\\conversations\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\messages\\presence\\route.ts",
+      "migrated": true,
+      "changes": [
+        "Replaced NextResponse.json error response with throw APIErrors.unauthorized()... in GET handler",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('us... in GET handler",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('At... in GET handler",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('To... in GET handler",
+        "Updated GET catch block to use handleAPIError",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('In... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.unauthorized()... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.notFound('User... in POST handler",
+        "Updated POST catch block to use handleAPIError",
+        "File written"
+      ],
+      "errors": [],
+      "issues": ["Found incorrect method name in POST handler"]
+    },
+    {
+      "file": "app\\api\\messages\\search\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\reactions\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\read\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\moderation\\log\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\moderation\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\notifications\\cleanup\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\notifications\\preferences\\route.ts",
+      "migrated": true,
+      "changes": [],
+      "errors": [
+        "Could not extract function body for GET handler - skipping",
+        "Could not extract function body for PATCH handler - skipping"
+      ],
+      "issues": ["Found incorrect method name in PATCH handler"]
+    },
+    {
+      "file": "app\\api\\notifications\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\notifications\\summary\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\notifications\\unread-count\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\notifications\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\polls\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\analytics\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\comments\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\results\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\vote\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\posts\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\announcement\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\comments\\enhanced\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\comments\\route.ts",
+      "migrated": true,
+      "changes": [
+        "Added logger to GET handler",
+        "Wrapped GET handler in try-catch",
+        "Added logger to POST handler",
+        "Wrapped POST handler in try-catch",
+        "File written"
+      ],
+      "errors": [],
+      "issues": ["Found incorrect method name in POST handler"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\edit-history\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\pin\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\view\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\vote\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\profile\\activity\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\profile\\delete\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\profile\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\reports\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\reports\\[id]\\route.ts",
+      "migrated": true,
+      "changes": [
+        "Added logger to GET handler",
+        "Wrapped GET handler in try-catch",
+        "Added logger to PUT handler",
+        "Wrapped PUT handler in try-catch",
+        "File written"
+      ],
+      "errors": [],
+      "issues": ["Found incorrect method name in PUT handler"]
+    },
+    {
+      "file": "app\\api\\stats\\public\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\transparency\\stats\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\upload\\chunked\\chunk\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\upload\\chunked\\complete\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\upload\\chunked\\init\\route.ts",
+      "migrated": true,
+      "changes": [
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('Up... in GET handler",
+        "Replaced NextResponse.json error response with throw APIErrors.forbidden()... in GET handler",
+        "Replaced NextResponse.json error response with throw new APIError('Error', 50... in GET handler",
+        "Updated GET catch block to use handleAPIError",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('Mi... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.badRequest('Un... in POST handler",
+        "Replaced NextResponse.json error response with throw APIErrors.unauthorized()... in POST handler",
+        "Updated POST catch block to use handleAPIError",
+        "File written"
+      ],
+      "errors": [],
+      "issues": ["Found incorrect method name in POST handler"]
+    },
+    {
+      "file": "app\\api\\upload\\message-attachment\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\upload\\multiple\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\upload\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\upload\\video\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\users\\[handle]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\analytics\\location-stats\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\artists\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\communities\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\events\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\feed\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\locations\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\locations\\[id]\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\locations\\[id]\\set-primary\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    },
+    {
+      "file": "app\\api\\v2\\search\\route.ts",
+      "migrated": false,
+      "changes": ["Already uses standardized pattern"],
+      "errors": [],
+      "issues": []
+    }
+  ],
+  "summary": {
+    "total": 138,
+    "migrated": 8,
+    "issues": 8,
+    "errors": 1
+  }
+}

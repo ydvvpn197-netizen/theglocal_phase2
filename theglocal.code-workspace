@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"github.repository": "ydvvpn197-netizen/theglocal_phase2",
+		"git.enabled": true,
+		"git.autoRepositoryDetection": true
+	}
+}
+

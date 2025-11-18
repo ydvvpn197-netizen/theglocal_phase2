@@ -1,0 +1,1122 @@
+{
+  "totalRoutes": 138,
+  "routesWithRateLimit": 131,
+  "routesWithoutRateLimit": 0,
+  "routesExcluded": 7,
+  "routesWithOldRateLimit": 0,
+  "routes": [
+    {
+      "path": "/api/upload",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/reports",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/profile",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "PUT"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/polls",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/notifications",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PATCH"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/moderation",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/feed",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/discover",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/docs",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/drafts",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/bookings",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/locations",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/search",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/feed",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/events",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/artists",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/communities",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/users/:handle",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/upload/video",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/upload/multiple",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/upload/message-attachment",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/transparency/stats",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/stats/public",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/reports/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "PUT"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/profile/delete",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/profile/activity",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PATCH", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/polls/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/notifications/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PATCH", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/notifications/unread-count",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/notifications/summary",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/notifications/preferences",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "PATCH"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/notifications/cleanup",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/moderation/log",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/messages/presence",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST", "GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/messages/conversations",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/meetup/callback",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/messages/:messageId",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PATCH", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/meetup/auth",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/messages/search",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/locations/saved",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST", "DELETE", "PATCH"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/geocoding/process",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/jobs/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "PUT", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/sync",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/sources",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/cleanup-duplicates",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/sync-bookmyshow",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/health",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/cleanup",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/cities",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/eventbrite/auth",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/eventbrite/callback",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/categories",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/discover/news",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/discover/reddit",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/discover/share",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/drafts/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/cron/sync-subscription-status",
+      "hasRateLimit": false,
+      "usesWithRateLimit": false,
+      "usesOldRateLimit": false,
+      "httpMethods": [],
+      "shouldExclude": true,
+      "exclusionReason": "Cron job route"
+    },
+    {
+      "path": "/api/cron/send-event-reminders",
+      "hasRateLimit": false,
+      "usesWithRateLimit": false,
+      "usesOldRateLimit": false,
+      "httpMethods": [],
+      "shouldExclude": true,
+      "exclusionReason": "Cron job route"
+    },
+    {
+      "path": "/api/cron/handle-grace-period",
+      "hasRateLimit": false,
+      "usesWithRateLimit": false,
+      "usesOldRateLimit": false,
+      "httpMethods": [],
+      "shouldExclude": true,
+      "exclusionReason": "Cron job route"
+    },
+    {
+      "path": "/api/cron/send-renewal-reminders",
+      "hasRateLimit": false,
+      "usesWithRateLimit": false,
+      "usesOldRateLimit": false,
+      "httpMethods": [],
+      "shouldExclude": true,
+      "exclusionReason": "Cron job route"
+    },
+    {
+      "path": "/api/cron/expire-subscriptions",
+      "hasRateLimit": false,
+      "usesWithRateLimit": false,
+      "usesOldRateLimit": false,
+      "httpMethods": [],
+      "shouldExclude": true,
+      "exclusionReason": "Cron job route"
+    },
+    {
+      "path": "/api/cron/cleanup-orphaned-media",
+      "hasRateLimit": false,
+      "usesWithRateLimit": false,
+      "usesOldRateLimit": false,
+      "httpMethods": [],
+      "shouldExclude": true,
+      "exclusionReason": "Cron job route"
+    },
+    {
+      "path": "/api/communities/user",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/cron/geocode-locations",
+      "hasRateLimit": false,
+      "usesWithRateLimit": false,
+      "usesOldRateLimit": false,
+      "httpMethods": [],
+      "shouldExclude": true,
+      "exclusionReason": "Cron job route"
+    },
+    {
+      "path": "/api/communities/:slug",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/archived",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/comments/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PATCH"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/bookings/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "PUT", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/auth/verify-otp",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/auth/signup",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/auth/login",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/auth/logout",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "PUT", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists/paypal-webhook",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists/subscription-webhook",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists/me",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/auth/callback",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/analytics/web-vitals",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/users",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/recalculate-counts",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST", "GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/stats",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/jobs",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/performance",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/health",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/communities",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/subscriptions",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/artists",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/locations/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PUT", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/analytics/location-stats",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/upload/chunked/init",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST", "GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/upload/chunked/complete",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/upload/chunked/chunk",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts/:id/vote",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts/:id/pin",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts/:id/edit-history",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts/:id/comments",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts/:id/announcement",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/polls/:id/vote",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts/:id/view",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/polls/:id/comments",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/polls/:id/analytics",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/polls/:id/results",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/messages/conversations/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/messages/:messageId/read",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/messages/:messageId/reactions",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/events/:id/rsvp",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/discover/news/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/discover/bookmyshow/:id",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/restore",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/reclaim-admin",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/members",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/join",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/edit",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PUT"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/leave",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/delete",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/analytics",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/comments/:id/vote",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/bookings/:id/messages",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists/:id/subscription",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "PATCH"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists/:id/subscribe",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/geocoding/stats",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/communities/orphaned",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/v2/locations/:id/set-primary",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PUT"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/posts/:id/comments/enhanced",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/messages/conversations/:id/messages",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["GET", "POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/members/:userId",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PATCH", "DELETE"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists/:id/subscribe/verify-paypal",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/artists/:id/subscribe/verify",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/users/:id/ban",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PUT"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/users/:id/unban",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PUT"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/admin/communities/:id/feature",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["PUT"],
+      "shouldExclude": false
+    },
+    {
+      "path": "/api/communities/:slug/members/:userId/ban",
+      "hasRateLimit": true,
+      "usesWithRateLimit": true,
+      "usesOldRateLimit": false,
+      "httpMethods": ["POST", "DELETE"],
+      "shouldExclude": false
+    }
+  ],
+  "missingRateLimit": [],
+  "recommendations": []
+}

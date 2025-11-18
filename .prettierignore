@@ -1,0 +1,28 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# Testing
+coverage
+
+# Misc
+.DS_Store
+*.pem
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+

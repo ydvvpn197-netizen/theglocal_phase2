@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "node",
+      "args": ["C:\\Users\\ydvvp\\Phase_2_glocal\\supabase-mcp-server.mjs"],
+      "env": {
+        "SUPABASE_URL": "${NEXT_PUBLIC_SUPABASE_URL}",
+        "SUPABASE_SERVICE_ROLE_KEY": "${SUPABASE_SERVICE_ROLE_KEY}"
+      }
+    },
+    "vercel": {
+      "command": "node",
+      "args": ["C:\\Users\\ydvvp\\Phase_2_glocal\\mcp\\vercel-mcp-server.mjs"],
+      "env": {
+        "VERCEL_TOKEN": "${VERCEL_TOKEN}",
+        "VERCEL_PROJECT_ID": "${VERCEL_PROJECT_ID}",
+        "VERCEL_TEAM_ID": "${VERCEL_TEAM_ID}"
+      }
+    }
+  }
+}

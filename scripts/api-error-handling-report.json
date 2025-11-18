@@ -1,0 +1,1387 @@
+{
+  "total": 138,
+  "migrated": 137,
+  "needsMigration": 1,
+  "routes": [
+    {
+      "file": "app\\api\\upload\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\reports\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\profile\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "PUT"]
+    },
+    {
+      "file": "app\\api\\posts\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\polls\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\notifications\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "PATCH"]
+    },
+    {
+      "file": "app\\api\\moderation\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\feed\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\events\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\drafts\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST", "DELETE"]
+    },
+    {
+      "file": "app\\api\\docs\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\discover\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\communities\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\bookings\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\artists\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\v2\\locations\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST", "DELETE"]
+    },
+    {
+      "file": "app\\api\\v2\\feed\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\v2\\events\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\v2\\communities\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\v2\\artists\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\v2\\search\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\users\\[handle]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\upload\\video\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\upload\\message-attachment\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\upload\\multiple\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\transparency\\stats\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\stats\\public\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\reports\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "PUT"]
+    },
+    {
+      "file": "app\\api\\profile\\delete\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\profile\\activity\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PATCH", "DELETE"]
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\notifications\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PATCH", "DELETE"]
+    },
+    {
+      "file": "app\\api\\notifications\\unread-count\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\notifications\\summary\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\notifications\\preferences\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "PATCH"]
+    },
+    {
+      "file": "app\\api\\notifications\\cleanup\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\moderation\\log\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\meetup\\callback\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\meetup\\auth\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\jobs\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\locations\\saved\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST", "DELETE", "PATCH"]
+    },
+    {
+      "file": "app\\api\\geocoding\\process\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST", "GET"]
+    },
+    {
+      "file": "app\\api\\events\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "PUT", "DELETE"]
+    },
+    {
+      "file": "app\\api\\events\\sync-bookmyshow\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\events\\sync\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\events\\sources\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\events\\health\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\events\\cleanup-duplicates\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\events\\cleanup\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\events\\cities\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\events\\categories\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\eventbrite\\callback\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\eventbrite\\auth\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\drafts\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "DELETE"]
+    },
+    {
+      "file": "app\\api\\discover\\share\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\discover\\reddit\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\discover\\news\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\communities\\archived\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\communities\\user\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\cron\\sync-subscription-status\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\cron\\send-renewal-reminders\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\cron\\send-event-reminders\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\cron\\handle-grace-period\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\cron\\geocode-locations\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\cron\\cleanup-orphaned-media\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\cron\\expire-subscriptions\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\bookings\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "PUT", "DELETE"]
+    },
+    {
+      "file": "app\\api\\auth\\verify-otp\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\auth\\signup\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\auth\\logout\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\auth\\login\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\auth\\callback\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": false,
+      "needsMigration": true,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\comments\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PATCH", "DELETE"]
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "PUT", "DELETE"]
+    },
+    {
+      "file": "app\\api\\artists\\subscription-webhook\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\artists\\me\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\artists\\paypal-webhook\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\analytics\\web-vitals\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PATCH", "DELETE"]
+    },
+    {
+      "file": "app\\api\\messages\\search\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\messages\\presence\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST", "GET"]
+    },
+    {
+      "file": "app\\api\\messages\\conversations\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\admin\\users\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\admin\\subscriptions\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\admin\\stats\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\admin\\recalculate-counts\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST", "GET"]
+    },
+    {
+      "file": "app\\api\\admin\\performance\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\admin\\jobs\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\admin\\health\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\admin\\communities\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\admin\\artists\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\v2\\locations\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PUT", "DELETE"]
+    },
+    {
+      "file": "app\\api\\v2\\analytics\\location-stats\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\upload\\chunked\\init\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST", "GET"]
+    },
+    {
+      "file": "app\\api\\upload\\chunked\\complete\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\upload\\chunked\\chunk\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\view\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\vote\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\pin\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\comments\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\edit-history\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\announcement\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\vote\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\results\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\analytics\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\polls\\[id]\\comments\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\events\\[id]\\rsvp\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\discover\\news\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\discover\\bookmyshow\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\restore\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\reclaim-admin\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\leave\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["DELETE"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\join\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\edit\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PUT"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\delete\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["DELETE"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\analytics\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\bookings\\[id]\\messages\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\comments\\[id]\\vote\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscription\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "PATCH"]
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\read\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\messages\\[messageId]\\reactions\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST", "DELETE"]
+    },
+    {
+      "file": "app\\api\\messages\\conversations\\[id]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "DELETE"]
+    },
+    {
+      "file": "app\\api\\admin\\geocoding\\stats\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET"]
+    },
+    {
+      "file": "app\\api\\admin\\communities\\orphaned\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\v2\\locations\\[id]\\set-primary\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PUT"]
+    },
+    {
+      "file": "app\\api\\posts\\[id]\\comments\\enhanced\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\[userId]\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PATCH", "DELETE"]
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\verify-paypal\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\artists\\[id]\\subscribe\\verify\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST"]
+    },
+    {
+      "file": "app\\api\\messages\\conversations\\[id]\\messages\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["GET", "POST"]
+    },
+    {
+      "file": "app\\api\\admin\\users\\[id]\\unban\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PUT"]
+    },
+    {
+      "file": "app\\api\\admin\\users\\[id]\\ban\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PUT"]
+    },
+    {
+      "file": "app\\api\\admin\\communities\\[id]\\feature\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["PUT"]
+    },
+    {
+      "file": "app\\api\\communities\\[slug]\\members\\[userId]\\ban\\route.ts",
+      "hasHandleAPIError": true,
+      "hasCreateSuccessResponse": true,
+      "hasCreateAPILogger": true,
+      "hasTryCatch": true,
+      "hasHandleAPIErrorCall": true,
+      "needsMigration": false,
+      "methods": ["POST", "DELETE"]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+
+# Environment & Secrets
+.env*
+.env.local
+.env.production
+
+
+# MCP & Configs (already configured)
+mcp-settings.json
+cursor-mcp-config.json
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

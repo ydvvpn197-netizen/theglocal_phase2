@@ -1,0 +1,151 @@
+Product Requirements Document: Theglocal (MVP)
+Feature Name: Theglocal - Local Community & Creator Platform
+
+Version: 1.0 (MVP)
+
+Date: 2025-10-06
+
+1. Introduction/Overview
+Theglocal is a hyper-local mobile and web application designed to be a virtual town square where local populations can connect, share information, and engage with their community, all while maintaining user anonymity. The platform combines the core features of a community forum (like Reddit) with a marketplace for booking local artists and creators (like BookMyShow). This initial version (MVP) will focus on establishing the core pillars: anonymous communities, location-based news aggregation, and the artist discovery/booking platform.
+
+2. Goals
+Launch a functional MVP with the three core features: Communities, News, and Artist Booking.
+
+Provide a seamless, location-aware content feed for users upon first launch.
+
+Establish a secure and reliable system for artists to register, subscribe, and be booked.
+
+Create a simple and effective content moderation system for community and platform admins.
+
+3. User Stories
+As a General Resident (Anonymous User)...
+I want to sign up anonymously (using only an email/username) so that I can participate without revealing my real identity.
+
+I want the app to automatically use my location to show me relevant posts, news, and events nearby so that my feed is always relevant.
+
+I want to join a community for my neighborhood so that I can discuss local happenings.
+
+I want to share a post (text or image) in a community to ask questions or share information.
+
+I want to browse and discover local artists/creators so that I can hire them for an event.
+
+I want to book an artist through the platform securely, knowing my public identity remains anonymous during the process.
+
+As an Artist/Creator...
+I want to create a public profile with my name, services, portfolio, and contact information so that users can discover me.
+
+I want to pay a monthly subscription (500 INR) to keep my profile active and listed on the platform.
+
+I want to receive booking requests from users and manage them through a dashboard.
+
+I want to create "event" pages to promote my upcoming performances, which users can then discuss.
+
+As a Community Admin...
+I want to be automatically assigned as an admin for the community I create.
+
+I want to review content that has been reported by other users in my community.
+
+I want to have the ability to remove posts or comments that violate community guidelines.
+
+I want to be able to add other users as admins to help me moderate.
+
+As a Super Admin...
+I want a dashboard to view and manage all users, artists, and community admins to ensure the platform is healthy and safe.
+
+I want to be able to resolve moderation disputes and take action on any user or content on the platform.
+
+4. Functional Requirements
+FR-01: User & Identity System
+Anonymous User Accounts: Users must be able to create an account with a username and password, without needing to provide a real name or photo.
+
+Artist Accounts: A user account can be converted to an "Artist" account.
+
+Artist Profiles: Artist profiles must be public and include fields for a real name/stage name, service description, photo gallery, location, and rates.
+
+Super Admin Role: There must be a distinct "Super Admin" role with platform-wide privileges accessible via a separate dashboard.
+
+FR-02: Community & Content
+Create Community: Any user can create a new community. The creator automatically becomes the admin.
+
+Join/Leave Community: Users can join and leave communities.
+
+Create Post: Users can create posts within a community. Posts can contain a title, text body, and one optional image.
+
+Comment on Post: Users can comment on posts.
+
+Location-Based Feed: The main feed must be a mix of posts from a user's joined communities and aggregated news, prioritized by the user's physical location. The app must request location permissions upon first use.
+
+FR-03: News Aggregation
+The system must integrate with the Google News API to fetch news articles.
+
+News articles displayed in the feed must be based on the user's location.
+
+Users should be able to click a news item to read it and have an option to share it as a post within a community.
+
+FR-04: Artist & Booking System
+Artist Subscription: Artists must subscribe for 500 INR/month to be listed. Integrate a payment gateway (e.g., Razorpay, Stripe) for this. The profile should be hidden/inactive if the subscription lapses.
+
+Artist Discovery: Users must be able to search for and filter artists based on location and category (e.g., "Musician," "Painter").
+
+Booking Request: Users can send a booking request to an artist. The booking flow should handle communication securely.
+
+Artist Events: Artists must be able to create simple event pages (Title, Date, Description, Location). These pages will have a discussion/comment section for logged-in users.
+
+FR-05: Moderation
+Report Content: Any logged-in user can report a post or comment.
+
+Flagging: When content is reported, it should be flagged in the system. The content remains visible to the public.
+
+Admin Notification: A notification/entry for the reported content must appear in both the relevant Community Admin's dashboard and the Super Admin's dashboard.
+
+Admin Actions: Admins must have the ability to "Remove Content" or "Dismiss Report".
+
+5. Non-Goals (Out of Scope for MVP)
+One-on-one anonymous chat between users.
+
+A polling system for local issues.
+
+Tagging government authorities in posts.
+
+Advanced user analytics or dashboards for artists.
+
+Integration with Reddit or BookMyShow APIs (we will focus on Google News first).
+
+Users enabling/disabling their exact location (for MVP, location is mandatory for the core experience).
+
+6. Design Considerations
+Look & Feel: The UI should be minimalist, clean, and modern, drawing inspiration from platforms like X (formerly Twitter).
+
+Responsiveness: The design must be fully responsive and provide an excellent experience on both mobile devices and web browsers.
+
+Key Screens: Prioritize the design for:
+
+The main location-based feed.
+
+The community page (post list).
+
+The post detail/comment view.
+
+The artist search/discovery page.
+
+The artist profile page.
+
+7. Technical Considerations
+Scalability: The backend architecture should be designed to support millions of users.
+
+Geolocation: The system must efficiently handle and query user location data to power the feed.
+
+API Integration: The backend will need robust integration with the Google News API.
+
+Payment Gateway: A secure and reliable payment gateway must be integrated to handle artist subscriptions.
+
+8. Success Metrics
+Number of Daily Active Users (DAU).
+
+Number of new communities created per week.
+
+Average number of posts and comments per active user.
+
+Number of registered and subscribed artists.
+
+Number of booking requests initiated per month.
